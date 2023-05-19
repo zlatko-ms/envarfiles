@@ -1,7 +1,7 @@
 #!/bin/sh -l
 
 varfile=$1
-output="["
+output=""
 
 echo "[ZDBG] definining test value myvalye=ZDBGValue"
 echo "myvalue=ZDBGValue" >> $GITHUB_ENV
@@ -12,12 +12,15 @@ if [ "x$varfile" == "x" ] ; then
     exit 255
 fi
 
+output="from file $varfile ["
 while read p; do
     k=$(echo $p | sed s'/[ ]*=[ ]*/=/g')
     n=$(echo $k | cut -f1 -d'=')
     v=$(echo $k | cut -f2 -d'=')
+    output="$output $k"
     echo "$k" >> $GITHUB_ENV
 done < "$varfile"
+echo "definitions=$output" >> $GITHUB_OUTPUT
 
 
 # if [ -z "$varfile" ] ; then
