@@ -3,7 +3,8 @@
 varfile=$1
 output="["
 
-echo "definitions=none from varfile $varfile"
+echo "myvalye=ZDBGValue" >> $GITHUB_ENV
+
 
 # if [ -z "$varfile" ] ; then
 #     echo "ERROR : missing varfile parameter"
@@ -19,5 +20,7 @@ echo "definitions=none from varfile $varfile"
 #     done < $varfile
 #     echo "definitions=$output" >> $GITHUB_OUTPUT
 # fi
+
+#echo "definitions=none from varfile $varfile"
 
 
