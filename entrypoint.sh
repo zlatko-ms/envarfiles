@@ -3,6 +3,9 @@
 varfile=$1
 output="["
 
+
+echo "ZDBG starting import process"
+
 if [ -z "$varfile" ] ; then
     echo "ERROR : missing varfile parameter"
 else:
@@ -12,6 +15,8 @@ else:
             v=$(echo $k | cut -f2 -d'=')
             output="$output $n=$v"
             echo "$k" >> $GITHUB_ENV
+            echo "ZDBG adding definition $k"
+
     done < $varfile
     echo "definitions=$output" >> $GITHUB_OUTPUT
 fi
