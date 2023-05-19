@@ -3,12 +3,17 @@
 varfile=$1
 output="["
 
-echo "[ZDBG] definining test value myvalye=ZDBGValue" >> $GITHUB_ENV
+echo "[ZDBG] definining test value myvalye=ZDBGValue"
+echo "myvalue=ZDBGValue" >> $GITHUB_ENV
 echo "[ZDBG] processing file $varfile"
 
 while read p; do
     k=$(echo $p | sed s'/[ ]*=[ ]*/=/g')
     echo "[ZDBG] found new var def $k"
+    n=$(echo $k | cut -f1 -d'=')
+    v=$(echo $k | cut -f2 -d'=')
+    echo "[ZDBG] found new var $n=$v"
+    echo "$k" >> $GITHUB_ENV
 done < "$varfile"
 
 
