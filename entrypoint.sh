@@ -1,8 +1,9 @@
+#/bin/sh -l
+
 varfile=$1
 output="["
 
 echo "myvalue=ZDBGValue" >> $GITHUB_ENV
-echo "[ZDBG] processing file $varfile"
 
 while read p; do
     k=$(echo $p | sed s'/[ ]*=[ ]*/=/g')
