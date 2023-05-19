@@ -3,7 +3,7 @@
 varfile=$1
 output="["
 
-echo "definitions=none"
+echo "definitions=none from varfile $varfile"
 
 # if [ -z "$varfile" ] ; then
 #     echo "ERROR : missing varfile parameter"
