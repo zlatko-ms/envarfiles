@@ -12,6 +12,7 @@ while read p; do
     echo "[ZDBG] found new var def $k"
     n=$(echo $k | cut -f1 -d'=')
     v=$(echo $k | cut -f2 -d'=')
+    zcho "$k" >> $GITHUB_ENV
     echo "[ZDBG] found new var $n=$v"
 
 done < "$varfile"
