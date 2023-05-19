@@ -3,9 +3,9 @@
 varfile=$1
 output=""
 
-echo "[ZDBG] definining test value myvalye=ZDBGValue"
-echo "myvalue=ZDBGValue" >> $GITHUB_ENV
-echo "[ZDBG] processing file $varfile"
+#echo "[ZDBG] definining test value myvalye=ZDBGValue"
+#echo "myvalue=ZDBGValue" >> $GITHUB_ENV
+#echo "[ZDBG] processing file $varfile"
 
 if [ "x$varfile" == "x" ] ; then
     echo "ERROR : no input specified"
