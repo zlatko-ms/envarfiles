@@ -16,4 +16,3 @@ else:
     echo "definitions=$output" >> $GITHUB_OUTPUT
 fi
 
-
