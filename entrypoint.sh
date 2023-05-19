@@ -16,7 +16,7 @@ else:
         output="$output $k"
     done < "$varfile"
 fi
-echo "definitions=$output" >> >> $GITHUB_OUTPUT
+echo "definitions=$output" >> $GITHUB_OUTPUT
 
 
 
