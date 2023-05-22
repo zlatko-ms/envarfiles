@@ -1,7 +1,7 @@
 #!/bin/sh -l
 
 paths=$1
-output=""
+output="["
 
 function logMessage() {
 
@@ -32,6 +32,10 @@ function readVariablesFiles() {
 
 }
 
+if [ "x$varfile" == "x" ] ; then
+    logMessage "fatal" "no input files specified"
+    exit 255
+fi
 
 for varfile in $paths; do
     if [ -f "$varfile" ] ; then 
@@ -43,12 +47,9 @@ for varfile in $paths; do
 
 done
 
-echo "definitions=$output" >> $GITHUB_OUTPUT
+echo "processed=$output ]" >> $GITHUB_OUTPUT
 
-#if [ "x$varfile" == "x" ] ; then
-#    echo "ERROR : no input specified"
-#    exit 255
-#fi
+
 
 
 

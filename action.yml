@@ -6,7 +6,7 @@ inputs:
     required: true
     default: 'PROJECTVARS.cfg'
 outputs:
-  definitions: # id of output
+  processed: # id of output
     description: 'The file paths that were processed'
 runs:
   using: 'docker'
