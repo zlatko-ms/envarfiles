@@ -21,13 +21,6 @@ For more information on github action variables please check [Variables](https:/
 
 **Optional** set to False if you do not want to override already existing variables defined in the workflow. Defaults to *"true"*.
 
-## Outputs
-
-### definitions
-
-List of file paths that have been processed for value injection in the github environnement.
-Note that the files that cannot be found during the action execution will be ignored.
-
 ## Example usage 
 
 ### Basic usage 
