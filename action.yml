@@ -1,6 +1,10 @@
 name: 'GH Environnement variables injector'
 description: 'Injects Github environnement variables declared in source files'
 inputs:
+  override:
+    description: 'set to true to override existing workflow variables with definitions from the file(s)'
+    required: true
+    default: 'true'
   paths:  
     description: 'path to the variable file where the env variables are defined'
     required: true
@@ -12,4 +16,5 @@ runs:
   using: 'docker'
   image: 'Dockerfile'
   args:
+    - ${{ inputs.override }}
     - ${{ inputs.paths }}
