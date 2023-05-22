@@ -5,7 +5,7 @@ output=""
 
 echo "[ZDBG] paths=$paths"
 
-for i in $paths: do
+for i in $paths; do
     echo "[ZDBG] one path=$i"
 done
 
