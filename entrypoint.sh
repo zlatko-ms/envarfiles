@@ -2,15 +2,37 @@
 
 paths=$1
 output=""
-
 echo "[ZDBG] paths=$paths"
+
+function readVariablesFiles() {
+
+    override = $1
+    varfile = $2
+
+    #output="$output $varfile=["
+
+    while read p; do
+        k=$(echo $p | sed s'/[ ]*=[ ]*/=/g')
+        n=$(echo $k | cut -f1 -d'=')
+        v=$(echo $k | cut -f2 -d'=')
+        echo "[ZDBG] checking if $n exists"
+        echo "[ZDBG] current value of $n is ${!$n}"
+        echo "[ZDBG] file value of $n is $v"
+        #output=" $output $k"
+        echo "$k" >> $GITHUB_ENV
+    done < "$varfile"
+
+    #output="$output ]"
+
+}
 
 # let's parse all the provided files
 for varfile in $paths; do
     echo "[ZDBG] file = $varfile"
 
     if [ -f "$varfile" ] ; then 
-        echo "[ZDBG] reading file $varfile"
+        #echo "[ZDBG] reading file $varfile"
+        readVariablesFiles(1,"$varfile")
     else
         echo "[WARN] ignoring file $varfile as it cannot be accessed"
     fi
