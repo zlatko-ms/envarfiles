@@ -35,34 +35,34 @@ jobs:
           ./test/projectvars.properties
           ./test/someohterfile.properties
 
-    # - name: Ensure variables defined 
-    #   run: |
-    #     function assertDefinedAndEqualTo() {  
+    - name: Ensure variables defined 
+      run: |
+        function assertDefinedAndEqualTo() {  
           
-    #       name=$1
-    #       expected=$2
+          name=$1
+          expected=$2
           
-    #       if [ -z "${!name}" ] ; then
-    #         echo "[ERROR] variable $name is not defined";
-    #         exit 255;
-    #       fi
+          if [ -z "${!name}" ] ; then
+            echo "[ERROR] variable $name is not defined";
+            exit 255;
+          fi
           
-    #       if [ "${!name}" != "$expected" ] ; then 
-    #         echo "[ERROR] variable $name , expected=$expected provided=${!name}";
-    #         exit 255;
-    #       fi
+          if [ "${!name}" != "$expected" ] ; then 
+            echo "[ERROR] variable $name , expected=$expected provided=${!name}";
+            exit 255;
+          fi
           
-    #     }
+        }
         
-    #     # Test workflow defined variable
-    #     assertDefinedAndEqualTo "TheBoss" "Miles Davis"
+        # Test workflow defined variable
+        assertDefinedAndEqualTo "TheBoss" "Miles Davis"
         
-    #     # Test file injected variables
-    #     assertDefinedAndEqualTo "theCommander" "John Coltrane"
-    #     assertDefinedAndEqualTo "RELEASE" "1.2.3"
-    #     assertDefinedAndEqualTo "myFavorite" "Things"
+        # Test file injected variables
+        assertDefinedAndEqualTo "theCommander" "John Coltrane"
+        assertDefinedAndEqualTo "RELEASE" "1.2.3"
+        assertDefinedAndEqualTo "myFavorite" "Things"
         
-    #     # Test local variable overriden from file
-    #     assertDefinedAndEqualTo "Trumpet" "Miles Davis"
+        # Test local variable overriden from file
+        assertDefinedAndEqualTo "Trumpet" "Miles Davis"
       
         

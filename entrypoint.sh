@@ -20,7 +20,7 @@ function readVariablesFiles() {
         k=$(echo $p | sed s'/[ ]*=[ ]*/=/g')
         n=$(echo $k | cut -f1 -d'=')
         v=$(echo $k | cut -f2 -d'=')
-    #     echo "[ZDBG] checking if $n exists"
+        logMessage "debug" "current var $n value is ${!$n}"
     #     echo "[ZDBG] current value of $n is ${!$n}"
     #     echo "[ZDBG] file value of $n is $v"
     #     #output=" $output $k"
@@ -32,7 +32,7 @@ function readVariablesFiles() {
 }
 
 
-logMessage "INFO" "Starting processing"
+logMessage "INFO" "Starting variable definition processing"
 
 
 # let's parse all the provided files
