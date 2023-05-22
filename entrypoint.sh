@@ -2,12 +2,17 @@
 
 paths=$1
 output=""
-echo "[ZDBG] paths=$paths"
+
+function logMessage() {
+    level = $1
+    message = $2
+    now = `date +%Y%m%d-%H%M%S`
+    echo "[$now] [$level] $message"
+}
 
 function readVariablesFiles() {
 
-    override = $1
-    varfile = $2
+    varfile = $1
 
     #output="$output $varfile=["
 
@@ -26,13 +31,17 @@ function readVariablesFiles() {
 
 }
 
+
+logMessage "INFO" "Starting processing"
+
+
 # let's parse all the provided files
 for varfile in $paths; do
     echo "[ZDBG] file = $varfile"
 
     if [ -f "$varfile" ] ; then 
-        #echo "[ZDBG] reading file $varfile"
-        readVariablesFiles 1 "$varfile"
+        echo "[INFO] reading variable definitions from file $varfile"
+        readVariablesFiles "$varfile"
     else
         echo "[WARN] ignoring file $varfile as it cannot be accessed"
     fi
