@@ -40,7 +40,7 @@ function readVariablesFiles() {
 for varfile in $paths; do
     if [ -f "$varfile" ] ; then 
         output="$output $varfile"
-        retCall=$(readVariablesFiles "$varfile")
+        readVariablesFiles "$varfile"
     else
         logMessage "warn" "ignoring file $varfile as it cannot be found"
     fi
