@@ -38,7 +38,7 @@ jobs:
           ./test/override.properties
           ./test/nonexistingfile.properties
         
-    - name: Ensure variables are defined from file 
+    - name: Ensure variables are defined from file without overrides 
       run: |
         # source the assertion shell function
         source ./test/vartestfunction.sh
@@ -51,10 +51,10 @@ jobs:
         assertDefinedAndEqualTo "RELEASE" "1.2.3"
         assertDefinedAndEqualTo "myFavorite" "Things"
         
-        # Test local variable overriden from file
-        #assertDefinedAndEqualTo "Trumpet" "Miles Davis"
+        # Test local variable is not overriden from file
+        assertDefinedAndEqualTo "Trumpet" "Freddy.Hubbard"
 
-    - name: Import project variables without overriding
+    - name: Import project variables with overriding
       uses: zlatko-ms/varfiletoenv@2-add-support-for-override-flag
       with:
         override: true
