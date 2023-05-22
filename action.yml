@@ -13,9 +13,6 @@ inputs:
     description: 'indicates whenever the action should provide internal logs upon execution'
     required: true
     default: 'false'
-outputs:
-  processed: # id of output
-    description: 'The file paths that were processed'
 runs:
   using: 'docker'
   image: 'Dockerfile'

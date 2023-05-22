@@ -3,10 +3,6 @@
 logs=`echo "$1" | tr '[:lower:]' '[:upper:]'`
 override=`echo "$2" | tr '[:lower:]' '[:upper:]'`
 paths=$3
-output="["
-
-
-echo "ZDBG >>> logs=$logs"
 
 function logMessage() {
     levelIn=$1
@@ -49,8 +45,6 @@ for varfile in $paths; do
         logMessage "warn" "ignoring file $varfile as it cannot be found"
     fi
 done
-
-echo "processed=$output ]" >> $GITHUB_OUTPUT
 
 
 
