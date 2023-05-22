@@ -28,7 +28,7 @@ jobs:
       uses: actions/checkout@v3
 
     - name: Import project variables without overriding
-      uses: zlatko-ms/varfiletoenv@2-add-support-for-override-flag
+      uses: zlatko-ms/varfiletoenv@main
       with:
         override: false
         paths: |
@@ -52,7 +52,7 @@ jobs:
         assertDefinedAndEqualTo "Trumpet" "Freddy.Hubbard"
 
     - name: Import project variables with overriding
-      uses: zlatko-ms/varfiletoenv@2-add-support-for-override-flag
+      uses: zlatko-ms/varfiletoenv@main
       with:
         paths: ./test/override.properties
 
