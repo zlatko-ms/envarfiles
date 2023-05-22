@@ -13,6 +13,9 @@ inputs:
     description: 'indicates whenever the action should provide internal logs upon execution'
     required: true
     default: 'false'
+branding:
+  icon: 'file-text'
+  color: 'orange'
 runs:
   using: 'docker'
   image: 'Dockerfile'

@@ -35,7 +35,7 @@ SW_TAG=latest
 In order to create the github env variables from this file, simply use the action in it's simplest form : 
 
 ```yaml
-uses: zlatko-ms/varfiletoenv@main
+uses: zlatko-ms/varfiletoenv@v1.0
 with:
   paths: ./src/main/resources/versions.txt
 ```
@@ -54,7 +54,7 @@ SW_TAG=latest
 In order to create the github env variables from the above listed files, just provide multiple paths : 
 
 ```yaml
-uses: zlatko-ms/varfiletoenv@main
+uses: zlatko-ms/varfiletoenv@v1.0
 with:
   paths: |
     ./src/main/resources/versions.txt
@@ -70,7 +70,7 @@ If you'd like to disable the override behaviour and make sure your local workflo
 
 ```yaml
     - name: Import project variables with overriding
-      uses: zlatko-ms/varfiletoenv@main
+      uses: zlatko-ms/varfiletoenv@v1.0
       with:
         override: false
         paths: ./src/main/resources/tags.txt
