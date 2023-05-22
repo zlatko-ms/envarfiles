@@ -28,15 +28,16 @@ jobs:
     - name: Checkout sources
       uses: actions/checkout@v3
 
-    - name: Import project variables
+    - name: Import project variables without overriding
       uses: zlatko-ms/varfiletoenv@2-add-support-for-override-flag
       with:
+        override: false
         paths: |
           ./test/projectvars.properties
           ./test/release.properties
           ./test/nonexistingfile.properties
         
-    - name: Ensure variables defined 
+    - name: Ensure variables are defined from file 
       run: |
         function assertDefinedAndEqualTo() {  
           
@@ -64,6 +65,6 @@ jobs:
         assertDefinedAndEqualTo "myFavorite" "Things"
         
         # Test local variable overriden from file
-        assertDefinedAndEqualTo "Trumpet" "Miles Davis"
+        #assertDefinedAndEqualTo "Trumpet" "Miles Davis"
       
         
