@@ -4,15 +4,16 @@ paths=$1
 output=""
 
 function logMessage() {
-    level = $1
-    message = $2
-    now = `date +%Y%m%d-%H%M%S`
+
+    level=$1
+    message=$2
+    now=`date +%Y%m%d-%H%M%S`
     echo "[$now] [$level] $message"
 }
 
 function readVariablesFiles() {
 
-    varfile = $1
+    varfile=$1
 
     #output="$output $varfile=["
 
