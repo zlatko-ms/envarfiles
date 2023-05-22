@@ -32,7 +32,7 @@ SW_RELEASE=1.0.0
 SW_TAG=latest
 ```
 
-In order to create the variables in the github project env placeholder, all you have to do is the following : 
+In order to create the github env variables from this file, simply use the action in it's simplest form : 
 
 ```yaml
 uses: zlatko-ms/varfiletoenv@main
@@ -50,7 +50,8 @@ SW_RELEASE=1.0.0
 cat ./src/main/resources/tags.txt
 SW_TAG=latest
 ```
-In order to create the variables in the github project env placeholder, all you have to do is the following : 
+
+In order to create the github env variables from the above listed files, just provide multiple paths : 
 
 ```yaml
 uses: zlatko-ms/varfiletoenv@main
@@ -60,11 +61,12 @@ with:
     ./src/main/resources/tags.txt
 ```
 
-### Overrde control
+### Override control
 
-Per default the action will override all the values with the ones defined in the file set.
+The default behaviour of the action is to override the definitions of the github env variables if they are present in the definition file(s).
 
-If you'd like to make sure no override happens to your locally defined variabales, just specify the override flag to false : 
+
+If you'd like to disable the override behaviour and make sure your local workflow variables are preserved, the use the override input parameter : 
 
 ```yaml
     - name: Import project variables with overriding
