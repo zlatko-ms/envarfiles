@@ -13,15 +13,14 @@ For more information on github action variables please check [Variables](https:/
 
 ## Inputs
 
-### paths
+| Name      | Required | Description                                                                                     | Default Value             |
+| --------- | -------- | ------------------------------------------------------------------------------------------------| ------------------------- |
+| paths     | Yes      | The paths of files that contain the definitions of the variable                                 | ./project.vars.properties |
+| override  | No       | Indicates if already existing workflow variables should be updated with defintions from file(s) | true |
+| logs      | No       | Indicates whenever to provide internal actions logs, handy in case of troubleshooting           | false |
 
-**Required** the paths to the files that contains variable defintions. Defaults to *"project.vars.properties"*.
 
-### override
-
-**Optional** set to False if you do not want to override already existing variables defined in the workflow. Defaults to *"true"*.
-
-## Example usage 
+## Example usages 
 
 ### Basic usage 
 
@@ -36,14 +35,14 @@ SW_TAG=latest
 In order to create the variables in the github project env placeholder, all you have to do is the following : 
 
 ```yaml
-uses: actions/varfiletoenv@main
+uses: zlatko-ms/varfiletoenv@main
 with:
   paths: ./src/main/resources/versions.txt
 ```
 
 ### Multiple files
 
-Let's consider your variables are dispatched between *./src/main/resources/versions.txt* and *./src/main/resources/tags.txt* file : 
+Let's consider your variables are dispatched between *./src/main/resources/versions.txt* and *./src/main/resources/tags.txt* : 
 
 ```bash
 cat ./src/main/resources/versions.txt
@@ -54,7 +53,7 @@ SW_TAG=latest
 In order to create the variables in the github project env placeholder, all you have to do is the following : 
 
 ```yaml
-uses: actions/varfiletoenv@main
+uses: zlatko-ms/varfiletoenv@main
 with:
   paths: |
     ./src/main/resources/versions.txt
@@ -69,46 +68,12 @@ If you'd like to make sure no override happens to your locally defined variabale
 
 ```yaml
     - name: Import project variables with overriding
-      uses: zlatko-ms/varfiletoenv@2-add-support-for-override-flag
+      uses: zlatko-ms/varfiletoenv@main
       with:
         override: false
         paths: ./src/main/resources/tags.txt
 ```
 
-### Global example
+## Global example
 
-If you'd like to see all the possibilities of this file, the most conveninent way is to check the source of the 
-[test github action workflow](./.github/workflows/test.yml) provided with the project.
-
-# OLD 
-
-A global example would look like this : 
-
-```yaml
-
-name: Greeting on variable day
-
-on:
-  workflow_dispatch
-
-jobs:
-  example_job:
-    
-    runs-on: ubuntu-latest
-    
-    env:
-      WorkflowLocalVar: Value1
-
-    steps:
-      - name: "Import project variables from source file "
-        uses: actions/varfiletoenv@main
-        with:
-            paths: ./src/main/resources/versions.txt
-
-      - name: "Display available variables "
-        run: |
-            echo "workflow defined variable in env section :  " ${{ env.WorkflowLocalVar }}
-            echo "defined from source, software release    :  " ${{ env.SW_RELEASE }
-            echo "defined from source, software tag        :  " ${{ env.SW_TAG }
-
-```
+If you'd like to see all the possibilities of this action, pleaase take a look at the [test github action workflow](./.github/workflows/test.yml) provided with the project.
