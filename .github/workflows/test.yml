@@ -29,7 +29,7 @@ jobs:
       uses: actions/checkout@v3
 
     - name: Import project variables
-      uses: zlatko-ms/varfiletoenv@main
+      uses: zlatko-ms/varfiletoenv@2-add-support-for-override-flag
       with:
         paths: |
           ./test/projectvars.properties
