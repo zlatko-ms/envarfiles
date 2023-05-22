@@ -6,6 +6,8 @@ paths=$3
 output="["
 
 
+echo "ZDBG >>> logs=$logs"
+
 function logMessage() {
     levelIn=$1
     message=$2
