@@ -1,16 +1,17 @@
 #!/bin/sh -l
 
-override=`echo "$1" | tr '[:lower:]' '[:upper:]'`
-paths=$2
-output="["
-
+logs=`echo "$1" | tr '[:lower:]' '[:upper:]'`
+override=`echo "$2" | tr '[:lower:]' '[:upper:]'`
+paths=$3
 
 function logMessage() {
     levelIn=$1
     message=$2
-    level=`echo "$levelIn" | tr '[:lower:]' '[:upper:]'`
-    now=`date +%Y%m%d-%H%M%S`
-    echo "[$now] [$level] [varfiletoenv] $message"
+    if [ "$logs" == "TRUE" ] ; then 
+        level=`echo "$levelIn" | tr '[:lower:]' '[:upper:]'`
+        now=`date +%Y%m%d-%H%M%S`
+        echo "[$now] varfiletoenv [$level] $message"
+    fi
 }
 
 function readVariablesFiles() {
@@ -44,8 +45,6 @@ for varfile in $paths; do
         logMessage "warn" "ignoring file $varfile as it cannot be found"
     fi
 done
-
-echo "processed=$output ]" >> $GITHUB_OUTPUT
 
 
 
