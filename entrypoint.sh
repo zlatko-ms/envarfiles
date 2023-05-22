@@ -32,7 +32,7 @@ for varfile in $paths; do
 
     if [ -f "$varfile" ] ; then 
         #echo "[ZDBG] reading file $varfile"
-        readVariablesFiles(1,"$varfile")
+        readVariablesFiles 1 "$varfile"
     else
         echo "[WARN] ignoring file $varfile as it cannot be accessed"
     fi
