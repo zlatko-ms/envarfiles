@@ -32,10 +32,10 @@ function readVariablesFiles() {
 
 }
 
-if [ "x$varfile" == "x" ] ; then
-    logMessage "fatal" "no input files specified"
-    exit 255
-fi
+# if [ "x$paths" == "x" ] ; then
+#     logMessage "fatal" "no input files specified !"
+#     exit 255
+# fi
 
 for varfile in $paths; do
     if [ -f "$varfile" ] ; then 
