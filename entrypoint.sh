@@ -5,8 +5,16 @@ output=""
 
 echo "[ZDBG] paths=$paths"
 
-for i in $paths; do
-    echo "[ZDBG] one path=$i"
+# let's parse all the provided files
+for varfile in $paths; do
+    echo "[ZDBG] file = $varfile"
+
+    if [ -f "$varfile"] then ; 
+        echo "[ZDBG] reading file $varfile"
+    else
+        echo "[WARN] ignoring file $varfile as it cannot be accessed"
+    fi
+    
 done
 
 
