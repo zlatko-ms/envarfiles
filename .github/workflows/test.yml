@@ -31,7 +31,6 @@ jobs:
       uses: zlatko-ms/varfiletoenv@4-add-a-flag-for-internal-logs
       with:
         override: false
-        logs: true
         paths: |
           ./test/projectvars.properties
           ./test/release.properties
