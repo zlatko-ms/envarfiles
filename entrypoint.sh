@@ -16,16 +16,16 @@ function readVariablesFiles() {
     varfile=$1
     logMessage "info" "reading variable definitions from $varfile"
 
-    # while read p; do
-    #     k=$(echo $p | sed s'/[ ]*=[ ]*/=/g')
-    #     n=$(echo $k | cut -f1 -d'=')
-    #     v=$(echo $k | cut -f2 -d'=')
+    while read p; do
+        k=$(echo $p | sed s'/[ ]*=[ ]*/=/g')
+        n=$(echo $k | cut -f1 -d'=')
+        v=$(echo $k | cut -f2 -d'=')
     #     echo "[ZDBG] checking if $n exists"
     #     echo "[ZDBG] current value of $n is ${!$n}"
     #     echo "[ZDBG] file value of $n is $v"
     #     #output=" $output $k"
-    #     echo "$k" >> $GITHUB_ENV
-    # done < "$varfile"
+        echo "$k" >> $GITHUB_ENV
+    done < "$varfile"
 
     #output="$output ]"
 
