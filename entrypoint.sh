@@ -25,11 +25,11 @@ function readVariablesFiles() {
         eval current="\$$n"
         if [ -n "$current" ]; then
             if [ "$overrideVar" == "TRUE" ]; then
-                logMessage "info" "overriding $n=$v from file $varfile"
+                logMessage "info" "overriding $n='$v' from file $varfile"
                 echo "$k" >> $GITHUB_ENV
             fi
         else
-            logMessage "info" "defining $n=$v from file"
+            logMessage "info" "defining $n='$v' from file $varfile"
             echo "$k" >> $GITHUB_ENV
         fi
     done < "$varfile"
