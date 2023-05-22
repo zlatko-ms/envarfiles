@@ -9,6 +9,10 @@ inputs:
     description: 'path to the variable file where the env variables are defined'
     required: true
     default: 'project.vars.properties'
+  logs:
+    description: 'indicates whenever the action should provide internal logs upon execution'
+    required: true
+    default: 'false'
 outputs:
   processed: # id of output
     description: 'The file paths that were processed'
@@ -16,5 +20,6 @@ runs:
   using: 'docker'
   image: 'Dockerfile'
   args:
+    - ${{ inputs.logs }}
     - ${{ inputs.override }}
     - ${{ inputs.paths }}

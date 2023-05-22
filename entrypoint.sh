@@ -1,16 +1,19 @@
 #!/bin/sh -l
 
 override=`echo "$1" | tr '[:lower:]' '[:upper:]'`
-paths=$2
+logs=`echo "$2" | tr '[:lower:]' '[:upper:]'`
+paths=$3
 output="["
 
 
 function logMessage() {
     levelIn=$1
     message=$2
-    level=`echo "$levelIn" | tr '[:lower:]' '[:upper:]'`
-    now=`date +%Y%m%d-%H%M%S`
-    echo "[$now] [$level] [varfiletoenv] $message"
+    if [ "$logs" == "TRUE"] ; then 
+        level=`echo "$levelIn" | tr '[:lower:]' '[:upper:]'`
+        now=`date +%Y%m%d-%H%M%S`
+        echo "[$now] [$level] [varfiletoenv] $message"
+    fi
 }
 
 function readVariablesFiles() {
