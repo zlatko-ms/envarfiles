@@ -9,7 +9,7 @@ output="["
 function logMessage() {
     levelIn=$1
     message=$2
-    if [ "$logs" == "TRUE"] ; then 
+    if [ "$logs" == "TRUE" ] ; then 
         level=`echo "$levelIn" | tr '[:lower:]' '[:upper:]'`
         now=`date +%Y%m%d-%H%M%S`
         echo "[$now] [$level] [varfiletoenv] $message"
