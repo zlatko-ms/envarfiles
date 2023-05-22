@@ -5,6 +5,11 @@ output=""
 
 echo "[ZDBG] paths=$paths"
 
+for i in $paths: do
+    echo "[ZDBG] one path=$i"
+done
+
+
 #if [ "x$varfile" == "x" ] ; then
 #    echo "ERROR : no input specified"
 #    exit 255
