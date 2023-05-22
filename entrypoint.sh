@@ -9,7 +9,7 @@ echo "[ZDBG] paths=$paths"
 for varfile in $paths; do
     echo "[ZDBG] file = $varfile"
 
-    if [ -f "$varfile"]; then 
+    if [ -f "$varfile" ] ; then 
         echo "[ZDBG] reading file $varfile"
     else
         echo "[WARN] ignoring file $varfile as it cannot be accessed"
