@@ -33,7 +33,7 @@ jobs:
       with:
         paths: |
           ./test/projectvars.properties
-          ./test/projectvars2.properties
+          ./test/release.properties
           ./test/nonexistingfile.properties
   
 
