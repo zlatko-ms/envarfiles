@@ -33,7 +33,8 @@ jobs:
       with:
         paths: |
           ./test/projectvars.properties
-          ./test/someohterfile.properties
+          ./test/projectvars2.properties
+          ./test/nonexistingfile.properties
 
     - name: Ensure variables defined 
       run: |
