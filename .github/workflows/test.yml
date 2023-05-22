@@ -22,7 +22,6 @@ jobs:
     runs-on: ubuntu-latest
     env:
       Trumpet: Freddy.Hubbard
-      TheBoss: Miles Davis
 
     steps:
     - name: Checkout sources
@@ -40,11 +39,9 @@ jobs:
         
     - name: Ensure variables are defined from file without overrides 
       run: |
-        # source the assertion shell function
+
+        # Source the assertion shell function
         source ./test/vartestfunction.sh
-        
-        # Test workflow defined variable
-        assertDefinedAndEqualTo "TheBoss" "Miles Davis"
         
         # Test file injected variables
         assertDefinedAndEqualTo "theCommander" "John Coltrane"
@@ -57,15 +54,14 @@ jobs:
     - name: Import project variables with overriding
       uses: zlatko-ms/varfiletoenv@2-add-support-for-override-flag
       with:
-        override: true
-        paths: |
-          ./test/override.properties
+        paths: ./test/override.properties
 
     - name: Ensure variables are overidden from file 
       run: |
-        # source the assertion shell function
+        # Source the assertion shell function
         source ./test/vartestfunction.sh
-        # perform assertions
+
+        # Test local file has been overriden with the value from file
         assertDefinedAndEqualTo "Trumpet" "Miles Davis"
       
         

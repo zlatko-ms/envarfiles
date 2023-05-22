@@ -10,7 +10,7 @@ function logMessage() {
     message=$2
     level=`echo "$levelIn" | tr '[:lower:]' '[:upper:]'`
     now=`date +%Y%m%d-%H%M%S`
-    echo "[$now] [$level] $message"
+    echo "[$now] [$level] [varfiletoenv] $message"
 }
 
 function readVariablesFiles() {
