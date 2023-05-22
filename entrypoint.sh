@@ -39,7 +39,6 @@ function readVariablesFiles() {
 # fi
 
 for varfile in $paths; do
-    logMessage "zbdg" "checking file $varfile"
     if [ -f "$varfile" ] ; then 
         output="$output $varfile"
         readVariablesFiles "$varfile"
