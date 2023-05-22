@@ -1,10 +1,14 @@
 name: 'GH Environnement variables injector'
-description: 'Injects GH environnement variables declared in a file '
+description: 'Injects Github environnement variables declared in source files'
 inputs:
-  paths:  # id of input
+  paths:  
     description: 'path to the variable file where the env variables are defined'
     required: true
     default: 'PROJECTVARS.cfg'
+  loglevel: 
+    description: '0 for no logs, 1 for standard logs'
+    required: false
+    default: 0
 outputs:
   processed: # id of output
     description: 'The file paths that were processed'
