@@ -35,6 +35,7 @@ jobs:
           ./test/projectvars.properties
           ./test/projectvars2.properties
           ./test/nonexistingfile.properties
+  
 
     - name: Ensure variables defined 
       run: |
