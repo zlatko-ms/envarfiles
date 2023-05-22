@@ -29,10 +29,13 @@ jobs:
       uses: actions/checkout@v3
 
     - name: Import project variables
-      uses: zlatko-ms/varfiletoenv@v1
+      uses: zlatko-ms/varfiletoenv@1-add-support-for-multiple-var-definition-files
       with:
-        varfilepath: ./test/projectvars.properties
-
+        paths: |
+          ./test/projectvars.properties
+          ./test/release.properties
+          ./test/nonexistingfile.properties
+        
     - name: Ensure variables defined 
       run: |
         function assertDefinedAndEqualTo() {  

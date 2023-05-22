@@ -1,15 +1,15 @@
 name: 'GH Environnement variables injector'
-description: 'Injects GH environnement variables declared in a file '
+description: 'Injects Github environnement variables declared in source files'
 inputs:
-  varfilepath:  # id of input
+  paths:  
     description: 'path to the variable file where the env variables are defined'
     required: true
-    default: 'PROJECTVARS.cfg'
+    default: 'project.vars.properties'
 outputs:
-  definitions: # id of output
-    description: 'The names and values of the defined variables'
+  processed: # id of output
+    description: 'The file paths that were processed'
 runs:
   using: 'docker'
   image: 'Dockerfile'
   args:
-    - ${{ inputs.varfilepath }}
+    - ${{ inputs.paths }}
