@@ -36,8 +36,6 @@ jobs:
           ./test/release.properties
           ./test/nonexistingfile.properties
         
-  
-
     - name: Ensure variables defined 
       run: |
         function assertDefinedAndEqualTo() {  

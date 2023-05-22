@@ -1,14 +1,10 @@
 name: 'GH Environnement variables injector'
 description: 'Injects Github environnement variables declared in source files'
 inputs:
-  override:  
-    description: 'set to true to override existing variables'
-    required: true
-    default: 'False'
   paths:  
     description: 'path to the variable file where the env variables are defined'
     required: true
-    default: 'PROJECTVARS.cfg'
+    default: 'project.vars.properties'
 outputs:
   processed: # id of output
     description: 'The file paths that were processed'
