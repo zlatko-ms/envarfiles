@@ -27,6 +27,7 @@ function readVariablesFiles() {
         eval current="\$$n"
         #logMessage "debug" "current var $n value is $current"
         outputRet="$outputRet $k"
+        logMessage "info" "found variable definition $k"
         echo "$k" >> $GITHUB_ENV
     done < "$varfile"
 
