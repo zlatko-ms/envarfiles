@@ -17,29 +17,21 @@ function readVariablesFiles() {
 
     overrideVar=$1
     varfile=$2
-    
     logMessage "info" "reading variable definitions from $varfile"
-    
     while read p; do
         k=$(echo $p | sed s'/[ ]*=[ ]*/=/g')
         n=$(echo $k | cut -f1 -d'=')
         v=$(echo $k | cut -f2 -d'=')
         eval current="\$$n"
-        
-        logMessage "debug" "current var $n value is $current"
-
         if [ -n "$current" ]; then
             if [ "$overrideVar" == "TRUE" ]; then
-                logMessage "debug" "overriding variable $n from file"
+                logMessage "info" "overriding variable $n from file"
                 echo "$k" >> $GITHUB_ENV
             fi
         else
-            logMessage "debug" "defining variable $n from file"
+            logMessage "info" "defining variable $n from file"
             echo "$k" >> $GITHUB_ENV
         fi
-
-        logMessage "info" "found variable definition $k"
-        
     done < "$varfile"
 
 }
@@ -54,11 +46,6 @@ for varfile in $paths; do
 done
 
 echo "processed=$output ]" >> $GITHUB_OUTPUT
-
-# if [ "x$paths" == "x" ] ; then
-#     logMessage "fatal" "no input files specified !"
-#     exit 255
-# fi
 
 
 
