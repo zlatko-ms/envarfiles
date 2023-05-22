@@ -1,7 +1,7 @@
 #!/bin/sh -l
 
-override=`echo "$1" | tr '[:lower:]' '[:upper:]'`
-logs=`echo "$2" | tr '[:lower:]' '[:upper:]'`
+logs=`echo "$1" | tr '[:lower:]' '[:upper:]'`
+override=`echo "$2" | tr '[:lower:]' '[:upper:]'`
 paths=$3
 output="["
 
