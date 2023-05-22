@@ -1,8 +1,8 @@
 name: 'GH Environnement variables injector'
 description: 'Injects Github environnement variables declared in source files'
 inputs:
-  logs:  
-    description: 'set to 1 to gather internal logs'
+  override:  
+    description: 'set to true to override existing variables'
     required: true
     default: 'False'
   paths:  
