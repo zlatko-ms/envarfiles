@@ -29,15 +29,14 @@ function readVariablesFiles() {
         outputRet="$outputRet $k"
         echo "$k" >> $GITHUB_ENV
     done < "$varfile"
-    outputRet="$outputRet ]"
-    echo "$outputRet"
+
 }
 
 
 for varfile in $paths; do
     if [ -f "$varfile" ] ; then 
+        output="$output $varfile"
         retCall=$(readVariablesFiles "$varfile")
-        output="$output $retCall"
     else
         logMessage "warn" "ignoring file $varfile as it cannot be found"
     fi

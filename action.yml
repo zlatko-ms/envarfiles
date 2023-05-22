@@ -7,7 +7,7 @@ inputs:
     default: 'PROJECTVARS.cfg'
 outputs:
   definitions: # id of output
-    description: 'The names and values of the defined variables'
+    description: 'The file paths that were processed'
 runs:
   using: 'docker'
   image: 'Dockerfile'
