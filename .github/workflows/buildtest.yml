@@ -52,6 +52,7 @@ jobs:
 
 
   it-action-textfile-inject:
+    needs: build-python
 
     name: Integration Test - varaible definitons
     runs-on: ubuntu-latest
@@ -126,7 +127,8 @@ jobs:
     
 
   it-action-textfile-override:
-
+    needs: build-python
+    
     env:
       myVar1: Value1
       myVar2: Value2
