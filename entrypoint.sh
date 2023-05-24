@@ -42,7 +42,7 @@ if [ -n "$overrideFlag" ] ; then
 fi
 
 # excute python parser and redirect the output to the temp file
-$(/usr/bin/python3 ./processor.py $params outdir=$outfile)
+$(/usr/bin/python3 ./processor.py $params outfile=$outfile)
 
 # parse the output and declare vars
 readVariablesFiles $override $outfile
