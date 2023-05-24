@@ -29,10 +29,10 @@ jobs:
       with:
         override: false
         paths: |
-          ./test/projectvars.properties
-          ./test/release.properties
-          ./test/override.properties
-          ./test/nonexistingfile.properties
+          ./test/fixtures/projectvars.properties
+          ./test/fixtures/release.properties
+          ./test/fixtures/override.properties
+          ./test/fixtures/nonexistingfile.properties
         
     - name: Ensure variables are defined from file without overrides 
       run: |
@@ -52,7 +52,7 @@ jobs:
       uses: zlatko-ms/varfiletoenv@topython
       with:
         logs: true
-        paths: ./test/override.properties
+        paths: ./test/fixtures/override.properties
 
     - name: Ensure variables are overidden from file 
       run: |
