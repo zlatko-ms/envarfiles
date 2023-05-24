@@ -20,6 +20,6 @@ runs:
   using: 'docker'
   image: 'Dockerfile'
   args:
-    - ${{ inputs.logs }}
-    - ${{ inputs.override }}
-    - ${{ inputs.paths }}
+    - logs=${{ inputs.logs }}
+    - override=${{ inputs.override }}
+    - paths=${{ inputs.paths }}

@@ -1,0 +1,174 @@
+name: Action Build Process
+
+on:
+  push:
+    branches: [ "main" ]
+    paths-ignore:
+      - 'README.md'
+  pull_request:
+    branches: [ "main" ]
+    paths-ignore:
+      - 'README.md'
+ 
+permissions:
+  contents: read
+
+jobs:
+  build-python:
+    name: Build Python
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Checkout sources
+      uses: actions/checkout@v3
+
+    - name: Setup build vars for project
+      run: |
+        for i in `cat conf/buildvars.properties` ; do echo "$i" >> $GITHUB_ENV ; done
+
+    - name: Setup Python ${{ env.PYTHON_VERSION }} interpreter
+      uses: actions/setup-python@v3
+      with:
+        python-version: ${{ env.PYTHON_VERSION }}
+
+    - name: Ensure all sources in Unix format
+      run: |
+        sudo apt-get install -y dos2unix
+        find . -type f -name "*.py" | xargs dos2unix
+
+    - name: Setup Python dependency modules
+      run: |
+        python -m pip install --upgrade pip
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+    - name: Ensure Python source code respects the coding standards
+      run: |
+        python -m flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+        python -m flake8 . --count --extend-ignore=F811,E266,E203 --max-complexity=12 --statistics
+      
+    - name: Run Python unit tests
+      run: |
+        python -m nose2 -v -F -s ${{ env.UNIT_TEST_DIR }} -t .
+
+
+  it-action-textfile-inject:
+
+    name: Integration Test - varaible definitons
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v3
+
+      - name: Define variable from a single text file
+        uses: zlatko-ms/varfiletoenv@main
+        with:
+          logs: true
+          paths: ./test/fixtures/integ/simple1.properties
+        
+      - name: Ensure variable from single file is defined
+        run: |
+          # Source the assertion shell function
+          source ./test/shell/assertvariable.sh
+            
+          # Test file injected variables
+          assertDefinedAndEqualTo "simpleVar" "simpleVal"
+
+      - name: Define variables from a set of text file
+        uses: zlatko-ms/varfiletoenv@main
+        with:
+          logs: true
+          paths: |
+            ./test/fixtures/integ/simple2.properties
+            ./test/fixtures/integ/simple3.properties
+
+      - name: Ensure variables from multiple files are defined
+        run: |
+          # Source the assertion shell function
+          source ./test/shell/assertvariable.sh
+                
+          # Test file injected variables
+          assertDefinedAndEqualTo "simpleVar2" "simpleVal2"
+          assertDefinedAndEqualTo "simpleVar3" "simpleVal3"
+
+      - name: Define variables from a file list containing inexisting files
+        uses: zlatko-ms/varfiletoenv@main
+        with:
+          logs: true
+          paths: |
+            ./john/coltrane/tenor.sax
+            ./test/fixtures/integ/simple5.properties
+  
+      - name: Ensure variables from existing files are defined
+        run: |
+          # Source the assertion shell function
+          source ./test/shell/assertvariable.sh
+          
+          # Test file injected variables
+          assertDefinedAndEqualTo "simpleVar5" "simpleVal5"
+
+      - name: Define variables from a file list containing non supported files
+        uses: zlatko-ms/varfiletoenv@main
+        with:
+          logs: true
+          paths: |
+            ./test/fixtures/integ/empty.json
+            ./test/fixtures/integ/empty.yaml
+            ./test/fixtures/integ/simple6.properties
+
+  
+      - name: Ensure variables from supported files are defined
+        run: |
+          # Source the assertion shell function
+          source ./test/shell/assertvariable.sh
+              
+          # Test file injected variables
+          assertDefinedAndEqualTo "simpleVar6" "simpleVal6"
+    
+
+  it-action-textfile-override:
+
+    env:
+      myVar1: Value1
+      myVar2: Value2
+      myVar3: Value3
+        
+    name: Integration Test - variables overrides
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v3
+  
+      - name: No override unless flag specified
+        uses: zlatko-ms/varfiletoenv@main
+        with:
+          logs: true
+          override: flase
+          paths: ./test/fixtures/integ/override1.properties
+
+      - name: Ensure variables are not overriden unless flag specified
+        run: |
+          # Source the assertion shell function
+          source ./test/shell/assertvariable.sh
+                
+          # Test file injected variables
+          assertDefinedAndEqualTo "myVar1" "Value1"
+
+      - name: Override when flag specified or omitted
+        uses: zlatko-ms/varfiletoenv@main
+        with:
+          logs: true
+          paths: |
+            ./test/fixtures/integ/override1.properties
+            ./test/fixtures/integ/override2.properties
+            
+      - name: Ensure variables are overriden when flag specified or omitted
+        run: |
+          # Source the assertion shell function
+          source ./test/shell/assertvariable.sh
+                    
+          # Test file injected variables
+          assertDefinedAndEqualTo "myVar1" "UpdatedValue1"
+          assertDefinedAndEqualTo "myVar2" "UpdatedValue2"
+          assertDefinedAndEqualTo "myVar3" "Value3"
+              
+          

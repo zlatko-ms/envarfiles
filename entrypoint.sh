@@ -1,18 +1,5 @@
 #!/bin/sh -l
 
-logs=`echo "$1" | tr '[:lower:]' '[:upper:]'`
-override=`echo "$2" | tr '[:lower:]' '[:upper:]'`
-paths=$3
-
-function logMessage() {
-    levelIn=$1
-    message=$2
-    if [ "$logs" == "TRUE" ] ; then 
-        level=`echo "$levelIn" | tr '[:lower:]' '[:upper:]'`
-        now=`date +%Y%m%d-%H%M%S`
-        echo "[$now] varfiletoenv [$level] $message"
-    fi
-}
 
 function readVariablesFiles() {
 
@@ -26,26 +13,48 @@ function readVariablesFiles() {
         eval current="\$$n"
         if [ -n "$current" ]; then
             if [ "$overrideVar" == "TRUE" ]; then
-                logMessage "info" "overriding $n='$v' from file $varfile"
+                logMessage "info" "overriding $n='$v'"
                 echo "$k" >> $GITHUB_ENV
             fi
         else
-            logMessage "info" "defining $n='$v' from file $varfile"
+            logMessage "info" "defining $n='$v'"
             echo "$k" >> $GITHUB_ENV
         fi
     done < "$varfile"
-
 }
 
-for varfile in $paths; do
-    if [ -f "$varfile" ] ; then 
-        output="$output $varfile"
-        readVariablesFiles "$override" "$varfile"
-    else
-        logMessage "warn" "ignoring file $varfile as it cannot be found"
+function logMessage() {
+    levelIn=$1
+    message=$2
+    if [ "$logs" == "TRUE" ] ; then 
+        level=`echo "$levelIn" | tr '[:lower:]' '[:upper:]'`
+        now=`date +%Y%m%d-%H%M%S`
+        echo "[$now] varfiletoenv [$level] $message"
     fi
-done
+}
 
+# some fun with parms
+params=$(echo $@)
+logs="FALSE"
+override="FALSE"
+outfile=$(mktemp -u)
+
+logsFlag=$(echo "$params" | grep "logs=true" )
+overrideFlag=$(echo "$params" | grep "override=true" )
+
+if [ -n "$logsFlag" ] ; then 
+    logs="TRUE"
+fi
+
+if [ -n "$overrideFlag" ] ; then 
+    override="TRUE"
+fi
+
+# excute python parser and redirect the output to the temp file
+$(/usr/bin/python3 ./processor.py $params outfile=$outfile)
+
+# parse the output and declare vars
+readVariablesFiles $override $outfile
 
 
 
