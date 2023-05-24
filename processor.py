@@ -6,6 +6,8 @@ import os.path
 
 
 class ParamParser(object):
+    CHECK_FOR_LISTS = ["paths"]
+
     """Parses the parameter with the specific/unorthodox ways of passing lists from the gh action call"""
 
     @classmethod
@@ -27,7 +29,31 @@ class ParamParser(object):
                         params[key] = z
                     keyFound = False
                     key = None
+
+        for v in cls.CHECK_FOR_LISTS:
+            if v in params.keys():
+                if type(params[v]) == str:
+                    newlist: list = list()
+                    newlist.append(params[v])
+                    params[v] = newlist
         return params
+
+
+class FileHelper(object):
+    @classmethod
+    def filterExistingFilesOnly(cts, fileList: list) -> list:
+        ret: list = list()
+        for fname in fileList:
+            stripped = fname.lstrip().rstrip().strip()
+            if os.path.isfile(stripped):
+                ret.append(stripped)
+        return ret
+
+    @classmethod
+    def varDictToFile(cts, vars: dict, filePath: str) -> None:
+        with open(filePath, "w") as outfile:
+            for k in vars.keys():
+                outfile.write(f"{k}={vars[k]}\n")
 
 
 class FileParserBase(object):
@@ -42,16 +68,6 @@ class FileParserBase(object):
     def getVariablesDict(cts, filePath: str) -> dict:
         """Returns a dict with variable name as key and variable value as value"""
         pass
-
-
-class FileLister(object):
-    @classmethod
-    def filterExistingFilesOnly(cts, fileList: list) -> list:
-        ret: list = list()
-        for fname in fileList:
-            if os.path.isfile(fname):
-                ret.append(fname)
-        return ret
 
 
 class TextFileParser(FileParserBase):
@@ -112,12 +128,22 @@ class TextFileParser(FileParserBase):
 
 
 def main():
+    overallVars: dict = dict()
+    parsers = [TextFileParser]
     passedArgs: dict = ParamParser.getParameters(" ".join(sys.argv[1:]))
-    print(passedArgs)
-    file = "test/fixtures/release.comments.properties"
-    vars: dict = TextFileParser.getVariablesDict(file)
-    for k in vars.keys():
-        print(f"{k}=>{vars[k]}")
+    allFiles: list = passedArgs["paths"]
+    outfile: str = passedArgs["outfile"]
+
+    # filter only readable/accessabe files
+    files = FileHelper.filterExistingFilesOnly(allFiles)
+    # parse files with correct parser and update global var definitions
+    for file in files:
+        for parser in parsers:
+            if parser.isFileSupported(file):
+                fileDict: dict = parser.getVariablesDict(file)
+                overallVars.update(fileDict)
+    # dump the variables to the specified file
+    FileHelper.varDictToFile(overallVars, outfile)
 
 
 if __name__ == "__main__":

@@ -7,6 +7,7 @@ class TestParamParser(unittest.TestCase):
     paramLineCombined: str = "single=a mutiple=1 2 3 4 mutiple2=5 6 7 8 single2=b"
     paramLineSingleStringVal: str = "single=somestring"
     paramLineSingleListVal: str = "multple=a b c"
+    paramLineSpecifics: str = "paths=a"
 
     def test_001_single_param_parsing(self) -> None:
         params: dict = ParamParser.getParameters(self.paramLineSingleStringVal)
@@ -53,3 +54,9 @@ class TestParamParser(unittest.TestCase):
         mvalues2 = ["5", "6", "7", "8"]
         for mval in mvalues2:
             self.assertTrue(mval in params[multiples[1]])
+
+    def test_004_sepecicifc_param_fixing(self) -> None:
+        params: dict = ParamParser.getParameters(self.paramLineSpecifics)
+        # assert that param 'paths' is always retuened as a list
+        self.assertEqual(type(params["paths"]), list, "param paths is adjusted to list even if provided as string")
+        self.assertEqual(len(params["paths"]), 1, "param paths has a single string value")
