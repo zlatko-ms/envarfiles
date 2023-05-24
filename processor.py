@@ -2,7 +2,6 @@
 
 import sys
 import re
-from numpy import loadtxt
 
 
 class ParamParser(object):
