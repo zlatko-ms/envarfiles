@@ -49,5 +49,5 @@ class TestTextParser(unittest.TestCase):
         for e in expectedVarNames:
             self.assertTrue(e in vars.keys(), f"asserting var {e} found in the file")
         # assert we got the correct values
-        self.assertEqual(vars["MyVar"], "Defined", f"value of variable 'MyVar' is 'Defined'")
-        self.assertEqual(vars["my.property"], "myvalue", f"value of variable 'my.property' is myvalue'")
+        self.assertEqual(vars["MyVar"], "Defined", "value of variable 'MyVar' is 'Defined'")
+        self.assertEqual(vars["my.property"], "myvalue", "value of variable 'my.property' is myvalue'")
