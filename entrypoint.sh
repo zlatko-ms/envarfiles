@@ -23,6 +23,15 @@ function readVariablesFiles() {
     done < "$varfile"
 }
 
+function logMessage() {
+    levelIn=$1
+    message=$2
+    if [ "$logs" == "TRUE" ] ; then 
+        level=`echo "$levelIn" | tr '[:lower:]' '[:upper:]'`
+        now=`date +%Y%m%d-%H%M%S`
+        echo "[$now] varfiletoenv [$level] $message"
+    fi
+}
 
 # some fun with parms
 params=$(echo $@)

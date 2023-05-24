@@ -51,7 +51,7 @@ jobs:
         python -m nose2 -v -F -s ${{ env.UNIT_TEST_DIR }} -t .
 
 
-  it-action-textfile-define-simple:
+  it-action-textfile-inject:
 
     # env:
     #   TEST_VAR: TEST_VAL    
@@ -68,12 +68,12 @@ jobs:
           logs: true
           paths: ./test/fixtures/integ/simple.properties
         
-      # - name: Ensure variables is defined
-      #   run: |
-      #     # Source the assertion shell function
-      #     source ./test/shell/assertvariable.sh
+      - name: Ensure variables is defined
+        run: |
+          # Source the assertion shell function
+          source ./test/shell/assertvariable.sh
             
-      #     # Test file injected variables
-      #     assertDefinedAndEqualTo "simpleVar" "simpleVal"
+          # Test file injected variables
+          assertDefinedAndEqualTo "simpleVar" "simpleVal"
 
         
