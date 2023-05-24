@@ -73,8 +73,8 @@ class TextFileParser(FileParserBase):
     def getVariablesDict(cts, filePath: str) -> dict:
         ret: dict = dict()
         lines = cts.readFile(filePath)
-        for l in lines:
-            stripped = l.rstrip().strip()
+        for line in lines:
+            stripped = line.rstrip().strip()
             nospace = re.sub(r"(\s)=(\s)", "=", stripped)
             if len(nospace) > 0:
                 tokens = nospace.split("=")
