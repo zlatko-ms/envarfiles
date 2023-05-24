@@ -52,15 +52,28 @@ class TextFileParser(FileParserBase):
     IGNORED_LINE_STARTS = ["#", "//", "*", "/*", "/**", "*/", " */", " *"]
 
     @classmethod
+    def __stripLine(cts, line: str) -> str:
+        return line.lstrip().rstrip().strip()
+
+    @classmethod
+    def __isValidLine(cts, line: str) -> bool:
+        if len(line) == 0:
+            return False
+        for ignore in cts.IGNORED_LINE_STARTS:
+            if line.startswith(ignore):
+                return False
+        return True
+
+    @classmethod
     def readFile(cts, filePath: str) -> list:
-        lines = loadtxt(
-            filePath,
-            comments=cts.IGNORED_LINE_STARTS,
-            delimiter=",",
-            dtype=str,
-            unpack=False,
-        )
-        return lines.tolist()
+        validLines: list = list()
+        with open(filePath) as fileToRead:
+            readLines = fileToRead.readlines()
+            for readLine in readLines:
+                strippedLine = cts.__stripLine(readLine)
+                if cts.__isValidLine(strippedLine):
+                    validLines.append(strippedLine)
+        return validLines
 
     @classmethod
     def isFileSupported(cts, filePath: str) -> bool:
@@ -70,15 +83,20 @@ class TextFileParser(FileParserBase):
         return True
 
     @classmethod
+    def _stripVarLine(cts, line: str) -> str:
+        stripped = line.lstrip().rstrip().strip()
+        equalLStrip = re.sub(r"(\s)+=", "=", stripped)
+        return re.sub(r"=(\s)+", "=", equalLStrip)
+
+    @classmethod
     def getVariablesDict(cts, filePath: str) -> dict:
         ret: dict = dict()
         lines = cts.readFile(filePath)
         for line in lines:
-            stripped = line.rstrip().strip()
-            nospace = re.sub(r"(\s)=(\s)", "=", stripped)
-            if len(nospace) > 0:
-                tokens = nospace.split("=")
-                key = tokens[0]
+            stripped = cts._stripVarLine(line)
+            if len(stripped) > 0:
+                tokens = stripped.split("=")
+                key = cts.__stripLine(tokens[0])
                 value = tokens[1]
                 ret[key] = value
         return ret
