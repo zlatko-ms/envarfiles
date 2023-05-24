@@ -2,6 +2,7 @@
 
 import sys
 import re
+import os.path
 
 
 class ParamParser(object):
@@ -43,7 +44,16 @@ class FileParserBase(object):
         pass
 
 
-# text parser class
+class FileLister(object):
+    @classmethod
+    def filterExistingFilesOnly(cts, fileList: list) -> list:
+        ret: list = list()
+        for fname in fileList:
+            if os.path.isfile(fname):
+                ret.append(fname)
+        return ret
+
+
 class TextFileParser(FileParserBase):
     """Handles the parsing of various key/value test files"""
 

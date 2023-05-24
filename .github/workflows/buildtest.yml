@@ -14,12 +14,11 @@ permissions:
   contents: read
 
 jobs:
-  build-and-test-code:
-    
+  build-python:
+    name: Build Python
     runs-on: ubuntu-latest
-    
     steps:
-
+      
     - name: Checkout sources
       uses: actions/checkout@v3
 
@@ -50,4 +49,30 @@ jobs:
     - name: Run Python unit tests
       run: |
         python -m nose2 -v -F -s ${{ env.UNIT_TEST_DIR }} -t .
-  
+
+
+  it-action-textfile-define-simple:
+    name: Integration Test - simple var definition from a file
+    runs-on: ubuntu-latest
+
+    # env:
+    #   TEST_VAR: TEST_VAL    
+          
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v3
+
+      - name: Define a var from a text file
+        uses: zlatko-ms/varfiletoenv@topython
+        with:
+          paths: ./test/fixtures/integ/simple.properties
+        
+      - name: Ensure variables is defined
+        run: |
+          # Source the assertion shell function
+          source ./test/shell/assertvariable.sh
+            
+          # Test file injected variables
+          assertDefinedAndEqualTo "simpleVar" "simpleVal"
+
+        
