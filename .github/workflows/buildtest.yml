@@ -108,7 +108,7 @@ jobs:
   
   it-action-textfile-override:
     needs: build-python
-    
+  
     env:
       myVar1: Value1
       myVar2: Value2
@@ -155,7 +155,9 @@ jobs:
               
   it-action-json-inject:
     needs: [ build-python, it-action-textfile-inject, it-action-textfile-override]
-        
+    env:
+      tags_docker_source : mybranch
+
     name: Integration Test - Handle JSON
     runs-on: ubuntu-latest
     steps:
@@ -179,4 +181,20 @@ jobs:
           assertDefinedAndEqualTo "major" "1"
           assertDefinedAndEqualTo "minor" "2"
           assertDefinedAndEqualTo "build_version_major" "1"
-          assertDefinedAndEqualTo "build_version_minor" "2"            
+          assertDefinedAndEqualTo "build_version_minor" "2"       
+          
+      - name: Define variables from json and prevent overriding
+        uses: zlatko-ms/varfiletoenv@7-add-support-for-json-files
+        with:
+          logs: true
+          override: false
+          paths: |
+            ./test/fixtures/integ/override.json
+
+      - name: Ensure variables are not overriden when flag is set to false
+        run: |
+          # Source the assertion shell function
+          source ./test/shell/assertvariable.sh
+                            
+          # Test file injected variables
+          assertDefinedAndEqualTo "tags_docker_source" "mybranch"

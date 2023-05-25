@@ -112,4 +112,4 @@ Here is a summary of the usage illustrations :
 | Multiple files | Imports all variables from the speficied file set | [view](.github/workflows/buildtest.yml?plain=1#L77-L82) |
 | Prevent Override | Prevent overriding of variables already defined in the workflow file  | [view](.github/workflows/buildtest.yml?plain=1#L123-L128) |
 
-
+Please note that in the ITs the flag *log* is positionned in order to help troubleshooting, but for in a nominal context this is not required.
