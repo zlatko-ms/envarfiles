@@ -5,6 +5,7 @@ import re
 import os.path
 from itertools import chain, starmap
 import json
+import yaml
 
 
 class ParamParser(object):
@@ -97,7 +98,7 @@ class FileParserBase(object):
     """Base class for file format parsers"""
 
     @classmethod
-    def isFileSupported(cts, filePath: str) -> bool:
+    def accepts(cts, filePath: str) -> bool:
         """Returns True if the file is supported by this parser"""
         pass
 
@@ -138,7 +139,7 @@ class TextFileParser(FileParserBase):
         return validLines
 
     @classmethod
-    def isFileSupported(cts, filePath: str) -> bool:
+    def accepts(cts, filePath: str) -> bool:
         for ue in cts.UNSUPPORTED_EXTENSIONS:
             if filePath.endswith(f".{ue}"):
                 return False
@@ -168,7 +169,7 @@ class JsonFileParser(FileParserBase):
     """Handles the parsing of JSON files"""
 
     @classmethod
-    def isFileSupported(cts, filePath: str) -> bool:
+    def accepts(cts, filePath: str) -> bool:
         return filePath.endswith(".json")
 
     @classmethod
@@ -178,9 +179,23 @@ class JsonFileParser(FileParserBase):
             return DictFlattner.flatten(readdict, nestedsep)
 
 
+class YamlFileParser(FileParserBase):
+    """Handles the parsing of YAML files"""
+
+    @classmethod
+    def accepts(cts, filePath: str) -> bool:
+        return filePath.endswith(".yml") or filePath.endswith(".yaml")
+
+    @classmethod
+    def getVariablesDict(cts, filePath: str, nestedsep: str = "_", fencoding: str = "utf-8") -> dict:
+        with open(filePath, encoding=fencoding) as f:
+            readdict: dict = yaml.safe_load(f)
+            return DictFlattner.flatten(readdict, nestedsep)
+
+
 def main():
     overallVars: dict = dict()
-    parsers = [TextFileParser, JsonFileParser]
+    parsers = [TextFileParser, JsonFileParser, YamlFileParser]
     passedArgs: dict = ParamParser.getParameters(" ".join(sys.argv[1:]))
     allFiles: list = passedArgs["paths"]
     outfile: str = passedArgs["outfile"]
@@ -190,7 +205,7 @@ def main():
     # parse files with correct parser and update global var definitions
     for file in files:
         for parser in parsers:
-            if parser.isFileSupported(file):
+            if parser.accepts(file):
                 fileDict: dict = parser.getVariablesDict(file)
                 overallVars.update(fileDict)
     # dump the variables to the specified file

@@ -11,10 +11,10 @@ class TestTextParser(unittest.TestCase):
     def test_001_file_pattern_accetance(self) -> None:
         filesNotParsable = ["conf.json", "conf.yaml", "conf.yml"]
         for f in filesNotParsable:
-            self.assertFalse(TextFileParser.isFileSupported(f))
+            self.assertFalse(TextFileParser.accepts(f))
         filesParsable = ["conf.properties", "conf.cfg", "conf"]
         for f in filesParsable:
-            self.assertTrue(TextFileParser.isFileSupported(f), f"text file {f} supported")
+            self.assertTrue(TextFileParser.accepts(f), f"text file {f} supported")
 
     def test_002_shell_comments_ignored(self) -> None:
         lines: list = TextFileParser.readFile(self.shellCommentedFile)
