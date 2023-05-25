@@ -124,8 +124,7 @@ jobs:
               
           # Test file injected variables
           assertDefinedAndEqualTo "simpleVar6" "simpleVal6"
-    
-
+  
   it-action-textfile-override:
     needs: build-python
     
@@ -173,4 +172,30 @@ jobs:
           assertDefinedAndEqualTo "myVar2" "UpdatedValue2"
           assertDefinedAndEqualTo "myVar3" "Value3"
               
-          
+  it-action-json-inject:
+    needs: build-python
+        
+    name: Integration Test - varaible definitons from Json files
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v3
+
+      - name: Define variables from json files
+        uses: zlatko-ms/varfiletoenv@main
+        with:
+          logs: true
+          paths: |
+            ./test/fixtures/integ/simple.json
+            ./test/fixtures/integ/nested.json
+
+      - name: Ensure variables are defined from json files
+        run: |
+          # Source the assertion shell function
+          source ./test/shell/assertvariable.sh
+                        
+          # Test file injected variables
+          assertDefinedAndEqualTo "major" "1"
+          assertDefinedAndEqualTo "minor" "2"
+          assertDefinedAndEqualTo "build_version_major" "1"
+          assertDefinedAndEqualTo "build_version_minor" "2"            
