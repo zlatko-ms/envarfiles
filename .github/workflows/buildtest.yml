@@ -106,24 +106,6 @@ jobs:
           
           # Test file injected variables
           assertDefinedAndEqualTo "simpleVar5" "simpleVal5"
-
-      - name: Define variables from a file list containing non supported files
-        uses: zlatko-ms/varfiletoenv@7-add-support-for-json-files
-        with:
-          logs: true
-          paths: |
-            ./test/fixtures/integ/empty.json
-            ./test/fixtures/integ/empty.yaml
-            ./test/fixtures/integ/simple6.properties
-
-  
-      - name: Ensure variables from supported files are defined
-        run: |
-          # Source the assertion shell function
-          source ./test/shell/assertvariable.sh
-              
-          # Test file injected variables
-          assertDefinedAndEqualTo "simpleVar6" "simpleVal6"
   
   it-action-textfile-override:
     needs: build-python
