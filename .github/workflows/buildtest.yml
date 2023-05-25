@@ -154,7 +154,7 @@ jobs:
           assertDefinedAndEqualTo "myVar3" "Value3"
               
   it-action-json-inject:
-    needs: build-python
+    needs: [ build-python, it-action-textfile-inject, it-action-textfile-override]
         
     name: Integration Test - Handle JSON
     runs-on: ubuntu-latest
