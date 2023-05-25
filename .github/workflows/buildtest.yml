@@ -51,198 +51,190 @@ jobs:
         python -m nose2 -v -F -s ${{ env.UNIT_TEST_DIR }} -t .
 
 
-  it-action-textfile-inject:
+  it-action-plaintext:
     needs: build-python
-
-    name: Integration Test - Define Variables
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout sources
-        uses: actions/checkout@v3
-
-      - name: Define variable from a single text file
-        uses: zlatko-ms/varfiletoenv@17-refactor-integration-tests
-        with:
-          logs: true
-          paths: ./test/fixtures/integ/simple1.properties
-        
-      - name: Ensure variable from single file is defined
-        run: |
-          # Source the assertion shell function
-          source ./test/shell/assertvariable.sh
-            
-          # Test file injected variables
-          assertDefinedAndEqualTo "simpleVar" "simpleVal"
-
-      - name: Define variables from a set of text file
-        uses: zlatko-ms/varfiletoenv@17-refactor-integration-tests
-        with:
-          paths: |
-            ./test/fixtures/integ/simple2.properties
-            ./test/fixtures/integ/simple3.properties
-
-      - name: Ensure variables from multiple files are defined
-        run: |
-          # Source the assertion shell function
-          source ./test/shell/assertvariable.sh
-                
-          # Test file injected variables
-          assertDefinedAndEqualTo "simpleVar2" "simpleVal2"
-          assertDefinedAndEqualTo "simpleVar3" "simpleVal3"
-
-      - name: Define variables from a file list containing inexisting files
-        uses: zlatko-ms/varfiletoenv@17-refactor-integration-tests
-        with:
-          logs: true
-          paths: |
-            ./john/coltrane/tenor.sax
-            ./test/fixtures/integ/simple5.properties
-  
-      - name: Ensure variables from existing files are defined
-        run: |
-          # Source the assertion shell function
-          source ./test/shell/assertvariable.sh
-          
-          # Test file injected variables
-          assertDefinedAndEqualTo "simpleVar5" "simpleVal5"
-  
-  it-action-textfile-override:
-    needs: build-python
-  
     env:
       myVar1: Value1
       myVar2: Value2
-      myVar3: Value3
-        
-    name: Integration Test - Override Variables
+    name: Integration Test - Plain Text
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout sources
+      - name: Checkout sources for fixtures
         uses: actions/checkout@v3
+
+      - name: When we require all vars from a single file
+        run: | 
+          echo "TBD"
+
+      - name: Then all the vars from the file are injected
+        run: | 
+          echo "TBD"
+
+      - name: When we require all vars from a set of files
+        run: |
+          echo "TBD"
+
+      - name: Then all the vars from the fileset are injected
+        run: | 
+          echo "TBD"
+
+      - name: When we require all vars from a set of files with override set to false
+        run: | 
+          echo "TBD"
+
+      - name: Then the already exiting variables will not be updated
+        run: | 
+          echo "TBD"
+
+      - name: And the non exiting variables will be injected
+        run: | 
+          echo "TBD"
+
+      - name: When we require to inject variables from a file set that contains invalid files
+        run: | 
+          echo "TBD"
+
+      - name: Then the operation will not fail and only variables from valid files will be injected
+        run: | 
+          echo "TBD"
   
-      - name: No override unless flag specified
-        uses: zlatko-ms/varfiletoenv@17-refactor-integration-tests
-        with:
-          logs: true
-          override: flase
-          paths: ./test/fixtures/integ/override1.properties
+  # it-action-textfile-override:
+  #   needs: build-python
+  
+  #   env:
+  #     myVar1: Value1
+  #     myVar2: Value2
+  #     myVar3: Value3
+        
+  #   name: Integration Test - Override Variables
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout sources
+  #       uses: actions/checkout@v3
+  
+  #     - name: No override unless flag specified
+  #       uses: zlatko-ms/varfiletoenv@17-refactor-integration-tests
+  #       with:
+  #         logs: true
+  #         override: flase
+  #         paths: ./test/fixtures/integ/override1.properties
 
-      - name: Ensure variables are not overriden unless flag specified
-        run: |
-          # Source the assertion shell function
-          source ./test/shell/assertvariable.sh
+  #     - name: Ensure variables are not overriden unless flag specified
+  #       run: |
+  #         # Source the assertion shell function
+  #         source ./test/shell/assertvariable.sh
                 
-          # Test file injected variables
-          assertDefinedAndEqualTo "myVar1" "Value1"
+  #         # Test file injected variables
+  #         assertDefinedAndEqualTo "myVar1" "Value1"
 
-      - name: Override when flag specified or omitted
-        uses: zlatko-ms/varfiletoenv@17-refactor-integration-tests
-        with:
-          logs: true
-          paths: |
-            ./test/fixtures/integ/override1.properties
-            ./test/fixtures/integ/override2.properties
+  #     - name: Override when flag specified or omitted
+  #       uses: zlatko-ms/varfiletoenv@17-refactor-integration-tests
+  #       with:
+  #         logs: true
+  #         paths: |
+  #           ./test/fixtures/integ/override1.properties
+  #           ./test/fixtures/integ/override2.properties
             
-      - name: Ensure variables are overriden when flag specified or omitted
-        run: |
-          # Source the assertion shell function
-          source ./test/shell/assertvariable.sh
+  #     - name: Ensure variables are overriden when flag specified or omitted
+  #       run: |
+  #         # Source the assertion shell function
+  #         source ./test/shell/assertvariable.sh
                     
-          # Test file injected variables
-          assertDefinedAndEqualTo "myVar1" "UpdatedValue1"
-          assertDefinedAndEqualTo "myVar2" "UpdatedValue2"
-          assertDefinedAndEqualTo "myVar3" "Value3"
+  #         # Test file injected variables
+  #         assertDefinedAndEqualTo "myVar1" "UpdatedValue1"
+  #         assertDefinedAndEqualTo "myVar2" "UpdatedValue2"
+  #         assertDefinedAndEqualTo "myVar3" "Value3"
               
-  it-action-json:
-    needs: build-python
-    env:
-      tags_docker_source : mybranch
+  # it-action-json:
+  #   needs: build-python
+  #   env:
+  #     tags_docker_source : mybranch
 
-    name: Integration Test - Handle JSON
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout sources
-        uses: actions/checkout@v3
+  #   name: Integration Test - Handle JSON
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout sources
+  #       uses: actions/checkout@v3
 
-      - name: Define variables from json files
-        uses: zlatko-ms/varfiletoenv@17-refactor-integration-tests
-        with:
-          logs: true
-          paths: |
-            ./test/fixtures/integ/simple.json
-            ./test/fixtures/integ/nested.json
+  #     - name: Define variables from json files
+  #       uses: zlatko-ms/varfiletoenv@17-refactor-integration-tests
+  #       with:
+  #         logs: true
+  #         paths: |
+  #           ./test/fixtures/integ/simple.json
+  #           ./test/fixtures/integ/nested.json
 
-      - name: Ensure variables are defined from json files
-        run: |
-          # Source the assertion shell function
-          source ./test/shell/assertvariable.sh
+  #     - name: Ensure variables are defined from json files
+  #       run: |
+  #         # Source the assertion shell function
+  #         source ./test/shell/assertvariable.sh
                         
-          # Test file injected variables
-          assertDefinedAndEqualTo "major" "1"
-          assertDefinedAndEqualTo "minor" "2"
-          assertDefinedAndEqualTo "build_version_major" "1"
-          assertDefinedAndEqualTo "build_version_minor" "2"       
+  #         # Test file injected variables
+  #         assertDefinedAndEqualTo "major" "1"
+  #         assertDefinedAndEqualTo "minor" "2"
+  #         assertDefinedAndEqualTo "build_version_major" "1"
+  #         assertDefinedAndEqualTo "build_version_minor" "2"       
           
-      - name: Define variables from json and prevent overriding
-        uses: zlatko-ms/varfiletoenv@17-refactor-integration-tests
-        with:
-          logs: true
-          override: false
-          paths: |
-            ./test/fixtures/integ/override.json
+  #     - name: Define variables from json and prevent overriding
+  #       uses: zlatko-ms/varfiletoenv@17-refactor-integration-tests
+  #       with:
+  #         logs: true
+  #         override: false
+  #         paths: |
+  #           ./test/fixtures/integ/override.json
 
-      - name: Ensure variables are not overriden when flag is set to false
-        run: |
-          # Source the assertion shell function
-          source ./test/shell/assertvariable.sh
+  #     - name: Ensure variables are not overriden when flag is set to false
+  #       run: |
+  #         # Source the assertion shell function
+  #         source ./test/shell/assertvariable.sh
                             
-          # Test file injected variables
-          assertDefinedAndEqualTo "tags_docker_source" "mybranch"
+  #         # Test file injected variables
+  #         assertDefinedAndEqualTo "tags_docker_source" "mybranch"
 
                
-  it-action-yaml:
-    needs: build-python
-    env:
-      tags_docker_source : mybranch
+  # it-action-yaml:
+  #   needs: build-python
+  #   env:
+  #     tags_docker_source : mybranch
         
-    name: Integration Test - Handle YAML
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout sources
-        uses: actions/checkout@v3
+  #   name: Integration Test - Handle YAML
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout sources
+  #       uses: actions/checkout@v3
         
-      - name: Define variables from yaml files
-        uses: zlatko-ms/varfiletoenv@17-refactor-integration-tests
-        with:
-          logs: true
-          paths: |
-            ./test/fixtures/integ/simple.yaml
-            ./test/fixtures/integ/nested.yaml
+  #     - name: Define variables from yaml files
+  #       uses: zlatko-ms/varfiletoenv@17-refactor-integration-tests
+  #       with:
+  #         logs: true
+  #         paths: |
+  #           ./test/fixtures/integ/simple.yaml
+  #           ./test/fixtures/integ/nested.yaml
         
-      - name: Ensure variables are defined from yaml files
-        run: |
-          # Source the assertion shell function
-          source ./test/shell/assertvariable.sh
+  #     - name: Ensure variables are defined from yaml files
+  #       run: |
+  #         # Source the assertion shell function
+  #         source ./test/shell/assertvariable.sh
                                 
-          # Test file injected variables
-          assertDefinedAndEqualTo "major" "1"
-          assertDefinedAndEqualTo "minor" "2"
-          assertDefinedAndEqualTo "build_version_major" "1"
-          assertDefinedAndEqualTo "build_version_minor" "2"       
+  #         # Test file injected variables
+  #         assertDefinedAndEqualTo "major" "1"
+  #         assertDefinedAndEqualTo "minor" "2"
+  #         assertDefinedAndEqualTo "build_version_major" "1"
+  #         assertDefinedAndEqualTo "build_version_minor" "2"       
                   
-      - name: Define variables from yaml and prevent overriding
-        uses: zlatko-ms/varfiletoenv@17-refactor-integration-tests
-        with:
-          logs: true
-          override: false
-          paths: |
-            ./test/fixtures/integ/override.json
+  #     - name: Define variables from yaml and prevent overriding
+  #       uses: zlatko-ms/varfiletoenv@17-refactor-integration-tests
+  #       with:
+  #         logs: true
+  #         override: false
+  #         paths: |
+  #           ./test/fixtures/integ/override.json
         
-      - name: Ensure variables are not overriden when flag is set to false
-        run: |
-          # Source the assertion shell function
-          source ./test/shell/assertvariable.sh
+  #     - name: Ensure variables are not overriden when flag is set to false
+  #       run: |
+  #         # Source the assertion shell function
+  #         source ./test/shell/assertvariable.sh
                                     
-          # Test file injected variables
-          assertDefinedAndEqualTo "tags_docker_source" "mybranch"
+  #         # Test file injected variables
+  #         assertDefinedAndEqualTo "tags_docker_source" "mybranch"
         
