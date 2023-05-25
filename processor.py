@@ -5,6 +5,7 @@ import re
 import os.path
 from itertools import chain, starmap
 import json
+import yaml
 
 
 class ParamParser(object):
@@ -178,9 +179,23 @@ class JsonFileParser(FileParserBase):
             return DictFlattner.flatten(readdict, nestedsep)
 
 
+class YamlFileParser(FileParserBase):
+    """Handles the parsing of YAML files"""
+
+    @classmethod
+    def isFileSupported(cts, filePath: str) -> bool:
+        return filePath.endswith(".yml") or filePath.endswith(".yaml")
+
+    @classmethod
+    def getVariablesDict(cts, filePath: str, nestedsep: str = "_", fencoding: str = "utf-8") -> dict:
+        with open(filePath, encoding=fencoding) as f:
+            readdict: dict = yaml.safe_load(f)
+            return DictFlattner.flatten(readdict, nestedsep)
+
+
 def main():
     overallVars: dict = dict()
-    parsers = [TextFileParser, JsonFileParser]
+    parsers = [TextFileParser, JsonFileParser, YamlFileParser]
     passedArgs: dict = ParamParser.getParameters(" ".join(sys.argv[1:]))
     allFiles: list = passedArgs["paths"]
     outfile: str = passedArgs["outfile"]
