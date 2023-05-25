@@ -15,7 +15,7 @@ permissions:
 
 jobs:
   build-python:
-    name: Build Python
+    name: Build and Test Python code
     runs-on: ubuntu-latest
     steps:
 
