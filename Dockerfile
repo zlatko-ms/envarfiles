@@ -15,7 +15,7 @@ RUN chmod +x /processor.py
 
 # install additional modules
 COPY ./requirements.txt /requirements.txt
-RUN pip3 install -r /requirements.txt
+RUN pip3 install --ignore-installed -r /requirements.txt
 
 # Code file to execute when the docker container starts up (`entrypoint.sh`)
 ENTRYPOINT ["/entrypoint.sh"]
