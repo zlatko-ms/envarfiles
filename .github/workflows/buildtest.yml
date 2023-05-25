@@ -2,11 +2,11 @@ name: Action Build Process
 
 on:
   push:
-    branches: [ "7-add-support-for-json-files" ]
+    branches: [ "main" ]
     paths-ignore:
       - 'README.md'
   pull_request:
-    branches: [ "7-add-support-for-json-files" ]
+    branches: [ "main" ]
     paths-ignore:
       - 'README.md'
  
@@ -61,7 +61,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Define variable from a single text file
-        uses: zlatko-ms/varfiletoenv@7-add-support-for-json-files
+        uses: zlatko-ms/varfiletoenv@main
         with:
           logs: true
           paths: ./test/fixtures/integ/simple1.properties
@@ -75,7 +75,7 @@ jobs:
           assertDefinedAndEqualTo "simpleVar" "simpleVal"
 
       - name: Define variables from a set of text file
-        uses: zlatko-ms/varfiletoenv@7-add-support-for-json-files
+        uses: zlatko-ms/varfiletoenv@main
         with:
           paths: |
             ./test/fixtures/integ/simple2.properties
@@ -91,7 +91,7 @@ jobs:
           assertDefinedAndEqualTo "simpleVar3" "simpleVal3"
 
       - name: Define variables from a file list containing inexisting files
-        uses: zlatko-ms/varfiletoenv@7-add-support-for-json-files
+        uses: zlatko-ms/varfiletoenv@main
         with:
           logs: true
           paths: |
@@ -121,7 +121,7 @@ jobs:
         uses: actions/checkout@v3
   
       - name: No override unless flag specified
-        uses: zlatko-ms/varfiletoenv@7-add-support-for-json-files
+        uses: zlatko-ms/varfiletoenv@main
         with:
           logs: true
           override: flase
@@ -136,7 +136,7 @@ jobs:
           assertDefinedAndEqualTo "myVar1" "Value1"
 
       - name: Override when flag specified or omitted
-        uses: zlatko-ms/varfiletoenv@7-add-support-for-json-files
+        uses: zlatko-ms/varfiletoenv@main
         with:
           logs: true
           paths: |
@@ -165,7 +165,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Define variables from json files
-        uses: zlatko-ms/varfiletoenv@7-add-support-for-json-files
+        uses: zlatko-ms/varfiletoenv@main
         with:
           logs: true
           paths: |
@@ -184,7 +184,7 @@ jobs:
           assertDefinedAndEqualTo "build_version_minor" "2"       
           
       - name: Define variables from json and prevent overriding
-        uses: zlatko-ms/varfiletoenv@7-add-support-for-json-files
+        uses: zlatko-ms/varfiletoenv@main
         with:
           logs: true
           override: false
