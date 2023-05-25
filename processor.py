@@ -173,13 +173,9 @@ class JsonFileParser(FileParserBase):
 
     @classmethod
     def getVariablesDict(cts, filePath: str, nestedsep: str = "_", fencoding: str = "utf-8") -> dict:
-        try:
-            with open(filePath, encoding=fencoding) as f:
-                readdict: dict = json.load(f)
-                return DictFlattner.flatten(readdict, nestedsep)
-        except:
-            print(f"ERROR - unable to parse file {filePath}")
-        pass
+        with open(filePath, encoding=fencoding) as f:
+            readdict: dict = json.load(f)
+            return DictFlattner.flatten(readdict, nestedsep)
 
 
 def main():

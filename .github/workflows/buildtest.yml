@@ -54,7 +54,7 @@ jobs:
   it-action-textfile-inject:
     needs: build-python
 
-    name: Integration Test - varaible definitons
+    name: Integration Test - varaible definitons from text files
     runs-on: ubuntu-latest
     steps:
       - name: Checkout sources
@@ -133,7 +133,7 @@ jobs:
       myVar2: Value2
       myVar3: Value3
         
-    name: Integration Test - variables overrides
+    name: Integration Test - variables overrides from text file
     runs-on: ubuntu-latest
     steps:
       - name: Checkout sources
