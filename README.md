@@ -100,6 +100,30 @@ For instance the above example should be written as :
 { "envs" : "dev,test,prod" }
 ```
 
+## YAML Files
+
+The action supports JSON files and handles nested properties declaration. Nested properties will be separated by an underscore ("_") before injection.
+
+### Known issues
+
+Similar to the JSON context, the parser does not support variables with list values.
+
+The following YAML : 
+
+```json
+envs:
+- dev
+- test
+- prod
+```
+Will generate the following properties : 
+
+```
+envs_1:dev
+envs_2:test
+envs_3:prod
+```
+
 # Example usages 
 
 All usages are illustrated in the integration tests implemented in the main action workflow file [buildtest.yaml](.github/workflows/buildtest.yml). 
