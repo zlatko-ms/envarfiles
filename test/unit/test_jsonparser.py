@@ -8,9 +8,9 @@ class TestJsonParser(unittest.TestCase):
     nestedFile = "test/fixtures/unit/nested.json"
 
     def test_001_file_pattern_accetance(self) -> None:
-        self.assertTrue(JsonFileParser.isFileSupported("/no/path/file.json"), ".json extensions are supported")
-        self.assertFalse(JsonFileParser.isFileSupported("/no/path/file"), "no extensions are not supported")
-        self.assertFalse(JsonFileParser.isFileSupported("/no/path/file.txt"), "only json extensions are not supported")
+        self.assertTrue(JsonFileParser.accepts("/no/path/file.json"), ".json extensions are supported")
+        self.assertFalse(JsonFileParser.accepts("/no/path/file"), "no extensions are not supported")
+        self.assertFalse(JsonFileParser.accepts("/no/path/file.txt"), "only json extensions are not supported")
 
     def test_002_simple_file(self) -> None:
         props: dict = JsonFileParser.getVariablesDict(self.simpleFile)

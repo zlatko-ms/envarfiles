@@ -8,10 +8,10 @@ class TestYAMLParser(unittest.TestCase):
     nestedFile = "test/fixtures/unit/nested.yaml"
 
     def test_001_file_pattern_accetance(self) -> None:
-        self.assertTrue(YamlFileParser.isFileSupported("/no/path/file.yaml"), ".yaml extensions are supported")
-        self.assertTrue(YamlFileParser.isFileSupported("/no/path/file.yml"), ".yml extensions are supported")
-        self.assertFalse(YamlFileParser.isFileSupported("/no/path/file"), "no extensions are not supported")
-        self.assertFalse(YamlFileParser.isFileSupported("/no/path/file.txt"), "only yaml and yml extensions are not supported")
+        self.assertTrue(YamlFileParser.accepts("/no/path/file.yaml"), ".yaml extensions are supported")
+        self.assertTrue(YamlFileParser.accepts("/no/path/file.yml"), ".yml extensions are supported")
+        self.assertFalse(YamlFileParser.accepts("/no/path/file"), "no extensions are not supported")
+        self.assertFalse(YamlFileParser.accepts("/no/path/file.txt"), "only yaml and yml extensions are not supported")
 
         # def test_002_simple_file(self) -> None:
         props: dict = YamlFileParser.getVariablesDict(self.simpleFile)
