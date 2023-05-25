@@ -77,7 +77,6 @@ jobs:
       - name: Define variables from a set of text file
         uses: zlatko-ms/varfiletoenv@7-add-support-for-json-files
         with:
-          logs: true
           paths: |
             ./test/fixtures/integ/simple2.properties
             ./test/fixtures/integ/simple3.properties

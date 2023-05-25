@@ -1,17 +1,16 @@
 # varfiletoenv
 
-This action reads the definitions of variables from a set of files and injects them in the github environnement variables set.
+The action imports variables defeined in files (plain text, json ) into the GitHub workflow env variable set. 
 
-It provides a conveniant way of centralizing the project variables defintions in the source control and allows to use them saeamlessly from your source code or from the github workflows.
+It provides the following benefits : 
 
-In short the benefits are the following : 
-
-* avoid declaring the same variables in different workflows 
-* avoid duplication of variable declaration between your source code files and the GitHub project variable settings.
+* centralize variable definitions in the source control
+* share variables between different workflows/jobs 
+* share variables between your app code and the github workflows
 
 For more information on github action variables please check [Variables](https://docs.github.com/en/actions/learn-github-actions/variables) 
 
-## Inputs
+# Inputs
 
 | Name      | Required | Description                                                                                     | Default Value             |
 | --------- | -------- | ------------------------------------------------------------------------------------------------| ------------------------- |
@@ -19,63 +18,98 @@ For more information on github action variables please check [Variables](https:/
 | override  | No       | Indicates if already existing workflow variables should be updated with defintions from file(s) | true |
 | logs      | No       | Indicates whenever to provide internal actions logs, handy in case of troubleshooting           | false |
 
+# Supported Formats
 
-## Example usages 
+This version supports variables defied from plain text and json files.
 
-### Basic usage 
+The format will be determined by the file extensions : 
+* JSON : .json
+* Plain Text : all but .json, .yml and .yaml
 
-Let's consider your variables are defined in the *./src/main/resources/versions.txt* file : 
+## Plain Text Files
 
-```bash
-cat ./src/main/resources/versions.txt
-SW_RELEASE=1.0.0
-SW_TAG=latest
+Plain text files (.properties, .conf, .whaever ) expect to provide key=value definitions such as : 
+
+```
+VariableName=Value
 ```
 
-In order to create the github env variables from this file, simply use the action in it's simplest form : 
+Note that the parser will ignore all lignes starting with **standard scripting** ("#") and ***Java/JS** ("//", "/**" , " * " , "*/") **comments**. It will also remove all trailig spaces from the line.
 
-```yaml
-uses: zlatko-ms/varfiletoenv@v1
-with:
-  paths: ./src/main/resources/versions.txt
+For instance the following variable definitions file will inject a variable named VariableName with the value 'New Value' :
+
+```
+# old definition
+# VariableName=OldValue
+# this is the current variable definition
+ VariableName = New Value
 ```
 
-### Multiple files
+## JSON Files
 
-Let's consider your variables are dispatched between *./src/main/resources/versions.txt* and *./src/main/resources/tags.txt* : 
+The action supports JSON files and handles nested properties declaration. Nested properties will be separated by an underscore ("_") before injection.
 
-```bash
-cat ./src/main/resources/versions.txt
-SW_RELEASE=1.0.0
-cat ./src/main/resources/tags.txt
-SW_TAG=latest
+For instance, the following JSON content : 
+
+```json
+{ "build" : { 
+    "version" : {
+      "major" : "1",
+      "minor" : "0",
+      "patch" : "42"
+    }
+}}
+```
+will inject the following variables : 
+
+```
+build_version_major=1
+build_version_minor=0
+build_version_patch=42
 ```
 
-In order to create the github env variables from the above listed files, just provide multiple paths : 
+### Known issues
 
-```yaml
-uses: zlatko-ms/varfiletoenv@v1
-with:
-  paths: |
-    ./src/main/resources/versions.txt
-    ./src/main/resources/tags.txt
+Note that there are a couple of caveats in the structured parsing arrising with JSON format.
+
+To start with the parser can only process *fully compliant JSON object declarations* ( i.e : { "K" : "V" } ) and won't be able to correctly process JSON payloads that declare an array of objects, such as : 
+
+```json
+{ [ {"build" : "always" } , { "tag" : "latest" } ] }
 ```
 
-### Override control
+Moreover the prarser does not fully support list values, such as : 
 
-The default behaviour of the action is to override the definitions of the github env variables if they are present in the definition file(s).
-
-
-If you'd like to disable the override behaviour and make sure your local workflow variables are preserved, the use the override input parameter : 
-
-```yaml
-    - name: Import project variables with overriding
-      uses: zlatko-ms/varfiletoenv@v1
-      with:
-        override: false
-        paths: ./src/main/resources/tags.txt
+```json
+{ "envs" : [ "dev" , "test", "prod "]}
 ```
 
-## Global example
+In the current state, the above mentionned payload will create the following vars : 
 
-If you'd like to see all the possibilities of this action, pleaase take a look at the [test github action workflow](./.github/workflows/test.yml) provided with the project.
+```
+envs_1:dev
+envs_2:test
+envs_3:prod
+```
+
+Whenever possible we advise to consider an alternative declaration for listed values and to post process them. 
+
+For instance the above example should be written as :  
+
+```json
+{ "envs" : "dev,test,prod" }
+```
+
+# Example usages 
+
+All usages are illustrated in the integration tests implemented in the main action workflow file [buildtest.yaml](.github/workflows/buildtest.yml). 
+
+Here is a summary of the usage illustrations : 
+
+| Use Case                 | Description            | Link |
+| ------------------------ | ---------------------- |------|
+| Single file | Imports all variables from the specified file | [view](.github/workflows/buildtest.yml?plain=1#L63-L67) |
+| Multiple files | Imports all variables from the speficied file set | [view](.github/workflows/buildtest.yml?plain=1#L77-L82) |
+| Prevent Override | Prevent overriding of variables already defined in the workflow file  | [view](.github/workflows/buildtest.yml?plain=1#L123-L128) |
+
+
