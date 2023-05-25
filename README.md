@@ -47,7 +47,9 @@ For instance the following variable definitions file will inject a variable name
 
 ## JSON Files
 
-The action supports JSON files and handles nested properties declaration. Nested properties will be separated by an underscore ("_") before injection.
+The action supports JSON files and handles nested properties declaration. 
+
+Nested properties will be separated by an underscore ("_") before injection.
 
 For instance, the following JSON content : 
 
@@ -68,23 +70,50 @@ build_version_minor=0
 build_version_patch=42
 ```
 
-### Known issues
+Please note that the parser will only process *fully compliant JSON object declarations* ( i.e : { "K" : "V" } ).
 
-Note that there are a couple of caveats in the structured parsing arrising with JSON format.
+The parsing of lists of objects such as *{ [ {"build" : "always" } , { "tag" : "latest" } ] }* is not supported.
 
-To start with the parser can only process *fully compliant JSON object declarations* ( i.e : { "K" : "V" } ) and won't be able to correctly process JSON payloads that declare an array of objects, such as : 
+## YAML Files
 
-```json
-{ [ {"build" : "always" } , { "tag" : "latest" } ] }
+The action supports JSON files and handles nested properties declaration. 
+
+Nested properties will be separated by an underscore ("_") before injection.
+
+
+For instance, the following YAML content : 
+
+```yaml
+build:
+  version:
+    major: "1"
+    minor: "2"
+```
+will inject the following variables : 
+
+```
+build_version_major=1
+build_version_minor=2
 ```
 
-Moreover the prarser does not fully support list values, such as : 
+# Known issues
+
+The parsing of the structured formats (JSON and YAML) does not support correctly variables with array values.
+
+Consider the following example files : 
 
 ```json
 { "envs" : [ "dev" , "test", "prod "]}
 ```
 
-In the current state, the above mentionned payload will create the following vars : 
+```yaml
+envs:
+  - dev
+  - test
+  - prod
+```
+
+In the current state, the above mentionned payloads parsing will create the following vars : 
 
 ```
 envs_1:dev
@@ -98,30 +127,6 @@ For instance the above example should be written as :
 
 ```json
 { "envs" : "dev,test,prod" }
-```
-
-## YAML Files
-
-The action supports JSON files and handles nested properties declaration. Nested properties will be separated by an underscore ("_") before injection.
-
-### Known issues
-
-Similar to the JSON context, the parser does not support variables with list values.
-
-The following YAML : 
-
-```json
-envs:
-- dev
-- test
-- prod
-```
-Will generate the following properties : 
-
-```
-envs_1:dev
-envs_2:test
-envs_3:prod
 ```
 
 # Example usages 
