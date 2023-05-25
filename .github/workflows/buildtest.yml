@@ -15,7 +15,7 @@ permissions:
 
 jobs:
   build-python:
-    name: Build Python
+    name: Build and Test Python code
     runs-on: ubuntu-latest
     steps:
 
@@ -54,7 +54,7 @@ jobs:
   it-action-textfile-inject:
     needs: build-python
 
-    name: Integration Test - varaible definitons
+    name: Integration Test - Define Variables
     runs-on: ubuntu-latest
     steps:
       - name: Checkout sources
@@ -77,7 +77,6 @@ jobs:
       - name: Define variables from a set of text file
         uses: zlatko-ms/varfiletoenv@main
         with:
-          logs: true
           paths: |
             ./test/fixtures/integ/simple2.properties
             ./test/fixtures/integ/simple3.properties
@@ -106,35 +105,16 @@ jobs:
           
           # Test file injected variables
           assertDefinedAndEqualTo "simpleVar5" "simpleVal5"
-
-      - name: Define variables from a file list containing non supported files
-        uses: zlatko-ms/varfiletoenv@main
-        with:
-          logs: true
-          paths: |
-            ./test/fixtures/integ/empty.json
-            ./test/fixtures/integ/empty.yaml
-            ./test/fixtures/integ/simple6.properties
-
   
-      - name: Ensure variables from supported files are defined
-        run: |
-          # Source the assertion shell function
-          source ./test/shell/assertvariable.sh
-              
-          # Test file injected variables
-          assertDefinedAndEqualTo "simpleVar6" "simpleVal6"
-    
-
   it-action-textfile-override:
     needs: build-python
-    
+  
     env:
       myVar1: Value1
       myVar2: Value2
       myVar3: Value3
         
-    name: Integration Test - variables overrides
+    name: Integration Test - Override Variables
     runs-on: ubuntu-latest
     steps:
       - name: Checkout sources
@@ -173,4 +153,48 @@ jobs:
           assertDefinedAndEqualTo "myVar2" "UpdatedValue2"
           assertDefinedAndEqualTo "myVar3" "Value3"
               
+  it-action-json-inject:
+    needs: [ build-python, it-action-textfile-inject, it-action-textfile-override]
+    env:
+      tags_docker_source : mybranch
+
+    name: Integration Test - Handle JSON
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v3
+
+      - name: Define variables from json files
+        uses: zlatko-ms/varfiletoenv@main
+        with:
+          logs: true
+          paths: |
+            ./test/fixtures/integ/simple.json
+            ./test/fixtures/integ/nested.json
+
+      - name: Ensure variables are defined from json files
+        run: |
+          # Source the assertion shell function
+          source ./test/shell/assertvariable.sh
+                        
+          # Test file injected variables
+          assertDefinedAndEqualTo "major" "1"
+          assertDefinedAndEqualTo "minor" "2"
+          assertDefinedAndEqualTo "build_version_major" "1"
+          assertDefinedAndEqualTo "build_version_minor" "2"       
           
+      - name: Define variables from json and prevent overriding
+        uses: zlatko-ms/varfiletoenv@main
+        with:
+          logs: true
+          override: false
+          paths: |
+            ./test/fixtures/integ/override.json
+
+      - name: Ensure variables are not overriden when flag is set to false
+        run: |
+          # Source the assertion shell function
+          source ./test/shell/assertvariable.sh
+                            
+          # Test file injected variables
+          assertDefinedAndEqualTo "tags_docker_source" "mybranch"

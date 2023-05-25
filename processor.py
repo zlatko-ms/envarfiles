@@ -3,6 +3,8 @@
 import sys
 import re
 import os.path
+from itertools import chain, starmap
+import json
 
 
 class ParamParser(object):
@@ -56,6 +58,41 @@ class FileHelper(object):
                 outfile.write(f"{k}={vars[k]}\n")
 
 
+class DictFlattner(object):
+    """Flattens a dict with nested values, adapted from https://gist.github.com/alinazhanguwo/03206c554c1a8fcbe42a7d971efc7b26#file-flatten_json_iterative_solution-py, courtesy of Alina Zhang"""
+
+    @classmethod
+    def flatten(ctx, dictionary, separator="_"):
+        """Flatten a nested json file"""
+
+        def unpack(parent_key, parent_value):
+            """Unpack one level of nesting in json file"""
+            # Unpack one level only!!!
+
+            if isinstance(parent_value, dict):
+                for key, value in parent_value.items():
+                    temp1 = parent_key + separator + key
+                    yield temp1, value
+            elif isinstance(parent_value, list):
+                i = 0
+                for value in parent_value:
+                    temp2 = parent_key + separator + str(i)
+                    i += 1
+                    yield temp2, value
+            else:
+                yield parent_key, parent_value
+
+        # Keep iterating until the termination condition is satisfied
+        while True:
+            # Keep unpacking the json file until all values are atomic elements (not dictionary or list)
+            dictionary = dict(chain.from_iterable(starmap(unpack, dictionary.items())))
+            # Terminate condition: not any value in the json file is dictionary or list
+            if not any(isinstance(value, dict) for value in dictionary.values()) and not any(isinstance(value, list) for value in dictionary.values()):
+                break
+
+        return dictionary
+
+
 class FileParserBase(object):
     """Base class for file format parsers"""
 
@@ -65,7 +102,7 @@ class FileParserBase(object):
         pass
 
     @classmethod
-    def getVariablesDict(cts, filePath: str) -> dict:
+    def getVariablesDict(cts, filePath: str, nestedsep: str, fencoding: str) -> dict:
         """Returns a dict with variable name as key and variable value as value"""
         pass
 
@@ -90,9 +127,9 @@ class TextFileParser(FileParserBase):
         return True
 
     @classmethod
-    def readFile(cts, filePath: str) -> list:
+    def readFile(cts, filePath: str, fencoding: str = "utf-8") -> list:
         validLines: list = list()
-        with open(filePath) as fileToRead:
+        with open(filePath, encoding=fencoding) as fileToRead:
             readLines = fileToRead.readlines()
             for readLine in readLines:
                 strippedLine = cts.__stripLine(readLine)
@@ -114,9 +151,9 @@ class TextFileParser(FileParserBase):
         return re.sub(r"=(\s)+", "=", equalLStrip)
 
     @classmethod
-    def getVariablesDict(cts, filePath: str) -> dict:
+    def getVariablesDict(cts, filePath: str, nestedsep: str = "_", fencoding: str = "utf-8") -> dict:
         ret: dict = dict()
-        lines = cts.readFile(filePath)
+        lines = cts.readFile(filePath, fencoding)
         for line in lines:
             stripped = cts._stripVarLine(line)
             if len(stripped) > 0:
@@ -127,9 +164,23 @@ class TextFileParser(FileParserBase):
         return ret
 
 
+class JsonFileParser(FileParserBase):
+    """Handles the parsing of JSON files"""
+
+    @classmethod
+    def isFileSupported(cts, filePath: str) -> bool:
+        return filePath.endswith(".json")
+
+    @classmethod
+    def getVariablesDict(cts, filePath: str, nestedsep: str = "_", fencoding: str = "utf-8") -> dict:
+        with open(filePath, encoding=fencoding) as f:
+            readdict: dict = json.load(f)
+            return DictFlattner.flatten(readdict, nestedsep)
+
+
 def main():
     overallVars: dict = dict()
-    parsers = [TextFileParser]
+    parsers = [TextFileParser, JsonFileParser]
     passedArgs: dict = ParamParser.getParameters(" ".join(sys.argv[1:]))
     allFiles: list = passedArgs["paths"]
     outfile: str = passedArgs["outfile"]
