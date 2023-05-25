@@ -153,8 +153,8 @@ jobs:
           assertDefinedAndEqualTo "myVar2" "UpdatedValue2"
           assertDefinedAndEqualTo "myVar3" "Value3"
               
-  it-action-json-inject:
-    needs: [ build-python, it-action-textfile-inject, it-action-textfile-override]
+  it-action-json:
+    needs: build-python
     env:
       tags_docker_source : mybranch
 
@@ -198,3 +198,51 @@ jobs:
                             
           # Test file injected variables
           assertDefinedAndEqualTo "tags_docker_source" "mybranch"
+
+               
+  it-action-yaml:
+    needs: build-python
+    env:
+      tags_docker_source : mybranch
+        
+    name: Integration Test - Handle YAML
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v3
+        
+      - name: Define variables from yaml files
+        uses: zlatko-ms/varfiletoenv@8-add-support-for-yaml-format
+        with:
+          logs: true
+          paths: |
+            ./test/fixtures/integ/simple.yaml
+            ./test/fixtures/integ/nested.yaml
+        
+      - name: Ensure variables are defined from yaml files
+        run: |
+          # Source the assertion shell function
+          source ./test/shell/assertvariable.sh
+                                
+          # Test file injected variables
+          assertDefinedAndEqualTo "major" "1"
+          assertDefinedAndEqualTo "minor" "2"
+          assertDefinedAndEqualTo "build_version_major" "1"
+          assertDefinedAndEqualTo "build_version_minor" "2"       
+                  
+      - name: Define variables from yaml and prevent overriding
+        uses: zlatko-ms/varfiletoenv@8-add-support-for-yaml-format
+        with:
+          logs: true
+          override: false
+          paths: |
+            ./test/fixtures/integ/override.json
+        
+      - name: Ensure variables are not overriden when flag is set to false
+        run: |
+          # Source the assertion shell function
+          source ./test/shell/assertvariable.sh
+                                    
+          # Test file injected variables
+          assertDefinedAndEqualTo "tags_docker_source" "mybranch"
+        
