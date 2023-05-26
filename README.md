@@ -16,8 +16,8 @@ For more information on github action variables please check [Variables](https:/
 | --------- | -------- | ------------------------------------------------------------------------------------------------| ------------------------- |
 | paths     | Yes      | The paths of files that contain the definitions of the variable                                 | ./project.vars.properties |
 | override  | No       | When set to true, the processing will override the already defined vars in the job with the values read from file  | false |
-| select  | No       | When non empty, this parameter indicates the list of the variables to import from the fileset. All other varaibles discovered in the file set will be ignored.  | '' |
-| logs      | No       | When set to true it will enable action internals logging          | false |
+| select    | No       | When non empty, the parameter indicates the list of the variables to import from the fileset. In that case only the listed variables will be imported, other discovered varaibles will be ignored. When empty all discovered variables will be imported | '' |
+
 
 # Supported Formats
 
