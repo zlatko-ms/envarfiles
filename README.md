@@ -25,6 +25,7 @@ This version supports variables defied from plain text and json files.
 
 The format will be determined by the file extensions : 
 * JSON : .json
+* YAML : .yaml, .yml
 * Plain Text : all but .json, .yml and .yaml
 
 ## Plain Text Files
