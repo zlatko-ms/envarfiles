@@ -228,7 +228,11 @@ class FilesetParser(object):
 def main():
     passedArgs: dict = ParamParser.getParameters(" ".join(sys.argv[1:]))
     allFiles: list = passedArgs["paths"]
-    # varSelection: list = passedArgs["select"]
+    varSelection: list = passedArgs["select"]
+    print("ZDBG >>>>")
+    print(varSelection)
+    print("ZDBG <<<<")
+
     outfile: str = passedArgs["outfile"]
     # filter only readable/accessabe files
     files = FileHelper.filterExistingFilesOnly(allFiles)
