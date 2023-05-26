@@ -1,5 +1,5 @@
 name: 'GH Environnement variables injector'
-description: 'Defines and overrides Github environnement variables declared in files tracked under source control'
+description: 'Injects GitHub env variables from files. Supports JSON, Yaml and Plain text formats'
 inputs:
   override:
     description: 'set to true to override existing workflow variables with definitions from the file(s)'
