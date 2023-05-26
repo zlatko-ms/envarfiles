@@ -131,14 +131,22 @@ For instance the above example should be written as :
 
 # Example usages 
 
+In order to import all vars from a single file, simply use : 
+
+```yaml
+  - name: Import vars example
+    uses: zlatko-ms/varfiletoenv@17-refactor-integration-tests
+    with:
+      paths: ./path/to/my/file.properties
+```
+
 All usages are illustrated in the integration tests implemented in the main action workflow file [buildtest.yaml](.github/workflows/buildtest.yml). 
 
 Here is a summary of the usage illustrations : 
 
 | Use Case                 | Description            | Link |
 | ------------------------ | ---------------------- |------|
-| Single file | Imports all variables from the specified file | [view](.github/workflows/buildtest.yml?plain=1#L63-L67) |
-| Multiple files | Imports all variables from the speficied file set | [view](.github/workflows/buildtest.yml?plain=1#L77-L82) |
-| Prevent Override | Prevent overriding of variables already defined in the workflow file  | [view](.github/workflows/buildtest.yml?plain=1#L123-L128) |
+| Multiple files | Imports all variables from the speficied file set, override already existing var deinitions | [view](.github/workflows/buildtest.yml?plain=1#L358-L364) |
+| Prevent Override | Prevent overriding of variables already defined in the workflow file  | [view](.github/workflows/buildtest.yml?plain=1#L330-L336) |
 
 Please note that in the ITs the flag *log* is positionned in order to help troubleshooting, but for in a nominal context this is not required.
