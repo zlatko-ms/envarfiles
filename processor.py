@@ -235,9 +235,9 @@ def main():
     # parse all valid files with the avaible parsers
     overallVars: dict = FilesetParser.getVariablesDict(files)
     # filter selection, if any
-    fileredVars = VariableSelector.filter(overallVars, varSelection)
+    # fileredVars = VariableSelector.filter(overallVars, varSelection)
     # dump the variables to the specified file
-    FileHelper.varDictToFile(fileredVars, outfile)
+    FileHelper.varDictToFile(overallVars, outfile)
 
 
 if __name__ == "__main__":
