@@ -1,6 +1,6 @@
-# varfiletoenv
+# Env Var Files
 
-The action imports variables defeined in files (plain text, json ) into the GitHub workflow env variable set. 
+The action imports variables defeined in files (plain text, json, yaml) into the GitHub workflow env variable set. 
 
 It provides the following benefits : 
 
