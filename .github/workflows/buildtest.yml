@@ -69,8 +69,8 @@ jobs:
         with:
           override: false
           paths: |
-            ./test/fixtures/integ/plain/plain1.properties
-            ./test/fixtures/integ/plain/plain2.properties
+            ./test/fixtures/integ/plain/build1.properties
+            ./test/fixtures/integ/plain/build2.properties
 
       - name: Then all the vars from the fileset are injected
         run: | 
@@ -95,8 +95,8 @@ jobs:
         with:
           override: true
           paths: |
-            ./test/fixtures/integ/plain/override1.properties
-            ./test/fixtures/integ/plain/override2.properties
+            ./test/fixtures/integ/plain/product1.properties
+            ./test/fixtures/integ/plain/product2.properties
 
       - name: Then the already exiting variables will be updated
         run: | 
@@ -131,7 +131,20 @@ jobs:
 
           # perform assertions
           assertDefinedAndEqualTo "version_product_lead" "someone"
-  
+
+  it-action-json:
+    needs: build-python
+    env:
+      version_build_tag: "RC"
+      version_product_major: 1
+      version_product_minor: 0
+
+    name: Integration Tests - JSON
+    runs-on: ubuntu-latest
+    steps:
+        - name: Checkout sources for fixtures
+          uses: actions/checkout@v3
+
   # it-action-textfile-override:
   #   needs: build-python
   
