@@ -7,7 +7,8 @@ class TestParamParser(unittest.TestCase):
     paramLineCombined: str = "single=a mutiple=1 2 3 4 mutiple2=5 6 7 8 single2=b"
     paramLineSingleStringVal: str = "single=somestring"
     paramLineSingleListVal: str = "multple=a b c"
-    paramLineSpecifics: str = "paths=a"
+    paramLineSpecifics: str = "paths=a select=var1"
+    paramLineSpecificsWithEmpty: str = "paths=a select="
 
     def test_001_single_param_parsing(self) -> None:
         params: dict = ParamParser.getParameters(self.paramLineSingleStringVal)
@@ -57,6 +58,13 @@ class TestParamParser(unittest.TestCase):
 
     def test_004_sepecicifc_param_fixing(self) -> None:
         params: dict = ParamParser.getParameters(self.paramLineSpecifics)
-        # assert that param 'paths' is always retuened as a list
-        self.assertEqual(type(params["paths"]), list, "param paths is adjusted to list even if provided as string")
-        self.assertEqual(len(params["paths"]), 1, "param paths has a single string value")
+        # assert that specific params are always retuened as a list
+        for param in ParamParser.CHECK_FOR_LISTS:
+            self.assertEqual(type(params[param]), list, f"param {param} is adjusted to list even if provided as string")
+            self.assertEqual(len(params[param]), 1, f"param {param} has a single string value")
+
+    def test_005_sepecicifc_param_empty(self) -> None:
+        params: dict = ParamParser.getParameters(self.paramLineSpecificsWithEmpty)
+        # assert that specific param provided as empty is transformed in empty list
+        self.assertEqual(type(params["select"]), list, "param select is adjusted to list even if provided as empty string")
+        self.assertEqual(len(params["select"]), 0, "param select, provided as ampty has a 0 values")

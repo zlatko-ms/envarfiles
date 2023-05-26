@@ -9,7 +9,7 @@ import yaml
 
 
 class ParamParser(object):
-    CHECK_FOR_LISTS = ["paths"]
+    CHECK_FOR_LISTS = ["paths", "select"]
 
     """Parses the parameter with the specific/unorthodox ways of passing lists from the gh action call"""
 
@@ -39,6 +39,8 @@ class ParamParser(object):
                     newlist: list = list()
                     newlist.append(params[v])
                     params[v] = newlist
+            else:
+                params[v] = list()
         return params
 
 
@@ -92,6 +94,20 @@ class DictFlattner(object):
                 break
 
         return dictionary
+
+
+class VariableSelector(object):
+    """Filters variables based on a seclection"""
+
+    @classmethod
+    def filter(ctx, allVars: dict, selection: list) -> dict:
+        if len(selection) == 0:
+            return allVars
+        selectedVars = dict()
+        for varName in selection:
+            if varName in allVars.keys():
+                selectedVars[varName] = allVars[varName]
+        return selectedVars
 
 
 class FileParserBase(object):
@@ -193,23 +209,35 @@ class YamlFileParser(FileParserBase):
             return DictFlattner.flatten(readdict, nestedsep)
 
 
+class FilesetParser(object):
+    """Handles the parsing of a list of file, regardless of the file format"""
+
+    ALL_PARSERS = [TextFileParser, JsonFileParser, YamlFileParser]
+
+    @classmethod
+    def getVariablesDict(cts, files: list) -> dict:
+        allVars: dict = dict()
+        for file in files:
+            for parser in cts.ALL_PARSERS:
+                if parser.accepts(file):
+                    fileDict = parser.getVariablesDict(file)
+                    allVars.update(fileDict)
+        return allVars
+
+
 def main():
-    overallVars: dict = dict()
-    parsers = [TextFileParser, JsonFileParser, YamlFileParser]
     passedArgs: dict = ParamParser.getParameters(" ".join(sys.argv[1:]))
     allFiles: list = passedArgs["paths"]
+    varSelection: list = passedArgs["select"]
     outfile: str = passedArgs["outfile"]
-
     # filter only readable/accessabe files
     files = FileHelper.filterExistingFilesOnly(allFiles)
-    # parse files with correct parser and update global var definitions
-    for file in files:
-        for parser in parsers:
-            if parser.accepts(file):
-                fileDict: dict = parser.getVariablesDict(file)
-                overallVars.update(fileDict)
+    # parse all valid files with the avaible parsers
+    overallVars: dict = FilesetParser.getVariablesDict(files)
+    # filter selection, if any
+    fileredVars = VariableSelector.filter(overallVars, varSelection)
     # dump the variables to the specified file
-    FileHelper.varDictToFile(overallVars, outfile)
+    FileHelper.varDictToFile(fileredVars, outfile)
 
 
 if __name__ == "__main__":

@@ -136,6 +136,36 @@ jobs:
           # perform assertions
           assertDefinedAndEqualTo "version_product_lead" "someone"
 
+      ## FEATURE : Only selected variables are processed
+
+      - name: When we require to inject selected variables from a larger set
+        uses: zlatko-ms/varfiletoenv@main
+        with:
+          select: |
+            runtime_version_minor
+            runtime_version_patch
+          paths: |
+            ./test/fixtures/integ/plain/somevars1.properties
+            ./test/fixtures/integ/plain/somevars2.properties
+
+      - name: Then the selected variables will be imported
+        run: | 
+          # load assertion function
+          source ./test/shell/assertvariable.sh
+  
+          # perform assertions
+          assertDefinedAndEqualTo "runtime_version_minor" "2"
+          assertDefinedAndEqualTo "runtime_version_patch" "16"
+
+      - name: And the variables not part of the selection will be ignored
+        run: | 
+          # load assertion function
+          source ./test/shell/assertvariable.sh
+
+          # perform assertions
+          assertNotDefined "runtime_version_major"
+        
+
   it-action-json:
     needs: build-python
     env:
@@ -220,6 +250,37 @@ jobs:
   
             # perform assertions
             assertDefinedAndEqualTo "version_product_lead" "someone" 
+
+
+        ## FEATURE : Only selected variables are processed
+
+        - name: When we require to inject selected variables from a larger set
+          uses: zlatko-ms/varfiletoenv@main
+          with:
+            select: |
+              runtime_version_minor
+              runtime_version_patch
+            paths: |
+              ./test/fixtures/integ/json/somevars1.json
+              ./test/fixtures/integ/json/somevars2.json
+
+        - name: Then the selected variables will be imported
+          run: | 
+            # load assertion function
+            source ./test/shell/assertvariable.sh
+    
+            # perform assertions
+            assertDefinedAndEqualTo "runtime_version_minor" "2"
+            assertDefinedAndEqualTo "runtime_version_patch" "16"
+
+        - name: And the variables not part of the selection will be ignored
+          run: | 
+            # load assertion function
+            source ./test/shell/assertvariable.sh
+
+            # perform assertions
+            assertNotDefined "runtime_version_major"
+                
   
   it-action-yaml:
     needs: build-python
@@ -305,6 +366,37 @@ jobs:
   
             # perform assertions
             assertDefinedAndEqualTo "version_product_lead" "someone" 
+
+
+        ## FEATURE : Only selected variables are processed
+
+        - name: When we require to inject selected variables from a larger set
+          uses: zlatko-ms/varfiletoenv@main
+          with:
+            select: |
+              runtime_version_minor
+              runtime_version_patch
+            paths: |
+              ./test/fixtures/integ/yaml/somevars1.yaml
+              ./test/fixtures/integ/yaml/somevars2.yaml
+
+        - name: Then the selected variables will be imported
+          run: | 
+            # load assertion function
+            source ./test/shell/assertvariable.sh
+    
+            # perform assertions
+            assertDefinedAndEqualTo "runtime_version_minor" "2"
+            assertDefinedAndEqualTo "runtime_version_patch" "16"
+
+        - name: And the variables not part of the selection will be ignored
+          run: | 
+            # load assertion function
+            source ./test/shell/assertvariable.sh
+
+            # perform assertions
+            assertNotDefined "runtime_version_major"
+  
   
   it-action-mixed:
     needs: build-python
@@ -313,7 +405,7 @@ jobs:
       version_product_major: 1
       version_product_minor: 0
 
-    name: Integration Tests - Mixed Formats
+    name: Integration Tests - Mixed
     runs-on: ubuntu-latest
     steps:
         - name: Checkout sources for fixtures
@@ -390,3 +482,33 @@ jobs:
   
             # perform assertions
             assertDefinedAndEqualTo "version_product_lead" "someone" 
+
+
+        ## FEATURE : Only selected variables are processed
+
+        - name: When we require to inject selected variables from a larger set
+          uses: zlatko-ms/varfiletoenv@main
+          with:
+            select: |
+              runtime_version_minor
+              runtime_version_patch
+            paths: |
+              ./test/fixtures/integ/yaml/somevars1.yaml
+              ./test/fixtures/integ/plain/somevars2.properties
+
+        - name: Then the selected variables will be imported
+          run: | 
+            # load assertion function
+            source ./test/shell/assertvariable.sh
+    
+            # perform assertions
+            assertDefinedAndEqualTo "runtime_version_minor" "2"
+            assertDefinedAndEqualTo "runtime_version_patch" "16"
+
+        - name: And the variables not part of the selection will be ignored
+          run: | 
+            # load assertion function
+            source ./test/shell/assertvariable.sh
+
+            # perform assertions
+            assertNotDefined "runtime_version_major"          
