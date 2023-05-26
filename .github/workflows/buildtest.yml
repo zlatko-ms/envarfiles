@@ -22,7 +22,7 @@ jobs:
     - name: Checkout sources
       uses: actions/checkout@v3
 
-    - name: Setup build vars for project
+    - name: Setup project build variables
       run: |
         for i in `cat conf/buildvars.properties` ; do echo "$i" >> $GITHUB_ENV ; done
 
@@ -41,208 +41,360 @@ jobs:
         python -m pip install --upgrade pip
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-    - name: Ensure Python source code respects the coding standards
+    - name: Enforce coding standards
       run: |
         python -m flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
         python -m flake8 . --count --extend-ignore=F811,E266,E203 --max-complexity=12 --statistics
       
-    - name: Run Python unit tests
+    - name: Run Unit Tests
       run: |
         python -m nose2 -v -F -s ${{ env.UNIT_TEST_DIR }} -t .
 
 
-  it-action-textfile-inject:
+  it-action-plaintext:
     needs: build-python
-
-    name: Integration Test - Define Variables
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout sources
-        uses: actions/checkout@v3
-
-      - name: Define variable from a single text file
-        uses: zlatko-ms/varfiletoenv@main
-        with:
-          logs: true
-          paths: ./test/fixtures/integ/simple1.properties
-        
-      - name: Ensure variable from single file is defined
-        run: |
-          # Source the assertion shell function
-          source ./test/shell/assertvariable.sh
-            
-          # Test file injected variables
-          assertDefinedAndEqualTo "simpleVar" "simpleVal"
-
-      - name: Define variables from a set of text file
-        uses: zlatko-ms/varfiletoenv@main
-        with:
-          paths: |
-            ./test/fixtures/integ/simple2.properties
-            ./test/fixtures/integ/simple3.properties
-
-      - name: Ensure variables from multiple files are defined
-        run: |
-          # Source the assertion shell function
-          source ./test/shell/assertvariable.sh
-                
-          # Test file injected variables
-          assertDefinedAndEqualTo "simpleVar2" "simpleVal2"
-          assertDefinedAndEqualTo "simpleVar3" "simpleVal3"
-
-      - name: Define variables from a file list containing inexisting files
-        uses: zlatko-ms/varfiletoenv@main
-        with:
-          logs: true
-          paths: |
-            ./john/coltrane/tenor.sax
-            ./test/fixtures/integ/simple5.properties
-  
-      - name: Ensure variables from existing files are defined
-        run: |
-          # Source the assertion shell function
-          source ./test/shell/assertvariable.sh
-          
-          # Test file injected variables
-          assertDefinedAndEqualTo "simpleVar5" "simpleVal5"
-  
-  it-action-textfile-override:
-    needs: build-python
-  
     env:
-      myVar1: Value1
-      myVar2: Value2
-      myVar3: Value3
-        
-    name: Integration Test - Override Variables
+      version_build_tag: "RC"
+      version_product_major: 1
+      version_product_minor: 0
+
+    name: Integration Tests - Plain Text
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout sources
+      - name: Checkout sources for fixtures
         uses: actions/checkout@v3
-  
-      - name: No override unless flag specified
+
+      ## FEATURE : Importing without overrides 
+
+      - name: When we require all vars from a set of files without override 
         uses: zlatko-ms/varfiletoenv@main
         with:
-          logs: true
-          override: flase
-          paths: ./test/fixtures/integ/override1.properties
-
-      - name: Ensure variables are not overriden unless flag specified
-        run: |
-          # Source the assertion shell function
-          source ./test/shell/assertvariable.sh
-                
-          # Test file injected variables
-          assertDefinedAndEqualTo "myVar1" "Value1"
-
-      - name: Override when flag specified or omitted
-        uses: zlatko-ms/varfiletoenv@main
-        with:
-          logs: true
+          override: false
           paths: |
-            ./test/fixtures/integ/override1.properties
-            ./test/fixtures/integ/override2.properties
-            
-      - name: Ensure variables are overriden when flag specified or omitted
-        run: |
-          # Source the assertion shell function
+            ./test/fixtures/integ/plain/build1.properties
+            ./test/fixtures/integ/plain/build2.properties
+
+      - name: Then all the vars from the fileset are injected
+        run: | 
+          # load assertion function
           source ./test/shell/assertvariable.sh
-                    
-          # Test file injected variables
-          assertDefinedAndEqualTo "myVar1" "UpdatedValue1"
-          assertDefinedAndEqualTo "myVar2" "UpdatedValue2"
-          assertDefinedAndEqualTo "myVar3" "Value3"
-              
+
+          # perform assertions
+          assertDefinedAndEqualTo "version_build_major" "1"
+          assertDefinedAndEqualTo "version_build_minor" "2"
+          assertDefinedAndEqualTo "version_build_patch" "42"
+
+      - name: And no existing variable was overriden
+        run: | 
+          # load assertion function
+          source ./test/shell/assertvariable.sh
+  
+          # perform assertions
+          assertDefinedAndEqualTo "version_build_tag" "RC"
+
+      ## FEATURE : Importing with overrides 
+
+      - name: When we require all vars from a set of files with override
+        uses: zlatko-ms/varfiletoenv@main
+        with:
+          override: true
+          paths: |
+            ./test/fixtures/integ/plain/product1.properties
+            ./test/fixtures/integ/plain/product2.properties
+
+      - name: Then the already exiting variables will be updated
+        run: | 
+          # load assertion function
+          source ./test/shell/assertvariable.sh
+
+          # perform assertions
+          assertDefinedAndEqualTo "version_product_major" "2"
+          assertDefinedAndEqualTo "version_product_minor" "1"
+
+      - name: And non exiting variables will be injected
+        run: | 
+          # load assertion function
+          source ./test/shell/assertvariable.sh
+
+          # perform assertions
+          assertDefinedAndEqualTo "version_product_label" "fresh"
+
+      ## FEATURE : Only valid files are processed
+
+      - name: When we require to inject variables from a file set that contains invalid files
+        uses: zlatko-ms/varfiletoenv@main
+        with:
+          override: false
+          paths: |
+            ./test/fixtures/integ/plain/org.properties
+            ./test/fixtures/integ/plain/missing1.properties
+            ./test/fixtures/integ/plain/missing2.properties
+
+      - name: Then the operation will not fail and only variables from valid files will be processed
+        run: | 
+          # load assertion function
+          source ./test/shell/assertvariable.sh
+
+          # perform assertions
+          assertDefinedAndEqualTo "version_product_lead" "someone"
+
   it-action-json:
     needs: build-python
     env:
-      tags_docker_source : mybranch
+      version_build_tag: "RC"
+      version_product_major: 1
+      version_product_minor: 0
 
-    name: Integration Test - Handle JSON
+    name: Integration Tests - JSON
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout sources
-        uses: actions/checkout@v3
+        - name: Checkout sources for fixtures
+          uses: actions/checkout@v3
 
-      - name: Define variables from json files
-        uses: zlatko-ms/varfiletoenv@main
-        with:
-          logs: true
-          paths: |
-            ./test/fixtures/integ/simple.json
-            ./test/fixtures/integ/nested.json
+        ## FEATURE : Importing without overrides 
 
-      - name: Ensure variables are defined from json files
-        run: |
-          # Source the assertion shell function
-          source ./test/shell/assertvariable.sh
-                        
-          # Test file injected variables
-          assertDefinedAndEqualTo "major" "1"
-          assertDefinedAndEqualTo "minor" "2"
-          assertDefinedAndEqualTo "build_version_major" "1"
-          assertDefinedAndEqualTo "build_version_minor" "2"       
-          
-      - name: Define variables from json and prevent overriding
-        uses: zlatko-ms/varfiletoenv@main
-        with:
-          logs: true
-          override: false
-          paths: |
-            ./test/fixtures/integ/override.json
+        - name: When we require all vars from a set of files without override 
+          uses: zlatko-ms/varfiletoenv@main
+          with:
+            override: false
+            paths: |
+              ./test/fixtures/integ/json/build1.json
+              ./test/fixtures/integ/json/build2.json
 
-      - name: Ensure variables are not overriden when flag is set to false
-        run: |
-          # Source the assertion shell function
-          source ./test/shell/assertvariable.sh
-                            
-          # Test file injected variables
-          assertDefinedAndEqualTo "tags_docker_source" "mybranch"
+        - name: Then all the vars from the fileset are injected
+          run: | 
+            # load assertion function
+            source ./test/shell/assertvariable.sh
 
-               
+            # perform assertions
+            assertDefinedAndEqualTo "version_build_major" "1"
+            assertDefinedAndEqualTo "version_build_minor" "2"
+            assertDefinedAndEqualTo "version_build_patch" "42"
+
+        - name: And no existing variable was overriden
+          run: | 
+            # load assertion function
+            source ./test/shell/assertvariable.sh
+    
+            # perform assertions
+            assertDefinedAndEqualTo "version_build_tag" "RC"
+
+        ## FEATURE : Importing with overrides 
+
+        - name: When we require all vars from a set of files with override
+          uses: zlatko-ms/varfiletoenv@main
+          with:
+            override: true
+            paths: |
+              ./test/fixtures/integ/json/product1.json
+              ./test/fixtures/integ/json/product2.json
+
+        - name: Then the already exiting variables will be updated
+          run: | 
+            # load assertion function
+            source ./test/shell/assertvariable.sh
+
+            # perform assertions
+            assertDefinedAndEqualTo "version_product_major" "2"
+            assertDefinedAndEqualTo "version_product_minor" "1"
+
+        - name: And non exiting variables will be injected
+          run: | 
+            # load assertion function
+            source ./test/shell/assertvariable.sh
+
+            # perform assertions
+            assertDefinedAndEqualTo "version_product_label" "fresh"
+
+        ## FEATURE : Only valid files are processed
+
+        - name: When we require to inject variables from a file set that contains invalid files
+          uses: zlatko-ms/varfiletoenv@main
+          with:
+            override: false
+            paths: |
+              ./test/fixtures/integ/json/org.json
+              ./test/fixtures/integ/json/missing1.json
+              ./test/fixtures/integ/json/missing2.json
+  
+        - name: Then the operation will not fail and only variables from valid files will be processed
+          run: | 
+            # load assertion function
+            source ./test/shell/assertvariable.sh
+  
+            # perform assertions
+            assertDefinedAndEqualTo "version_product_lead" "someone" 
+  
   it-action-yaml:
     needs: build-python
     env:
-      tags_docker_source : mybranch
-        
-    name: Integration Test - Handle YAML
+      version_build_tag: "RC"
+      version_product_major: 1
+      version_product_minor: 0
+
+    name: Integration Tests - YAML
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout sources
-        uses: actions/checkout@v3
-        
-      - name: Define variables from yaml files
-        uses: zlatko-ms/varfiletoenv@main
-        with:
-          logs: true
-          paths: |
-            ./test/fixtures/integ/simple.yaml
-            ./test/fixtures/integ/nested.yaml
-        
-      - name: Ensure variables are defined from yaml files
-        run: |
-          # Source the assertion shell function
-          source ./test/shell/assertvariable.sh
-                                
-          # Test file injected variables
-          assertDefinedAndEqualTo "major" "1"
-          assertDefinedAndEqualTo "minor" "2"
-          assertDefinedAndEqualTo "build_version_major" "1"
-          assertDefinedAndEqualTo "build_version_minor" "2"       
-                  
-      - name: Define variables from yaml and prevent overriding
-        uses: zlatko-ms/varfiletoenv@main
-        with:
-          logs: true
-          override: false
-          paths: |
-            ./test/fixtures/integ/override.json
-        
-      - name: Ensure variables are not overriden when flag is set to false
-        run: |
-          # Source the assertion shell function
-          source ./test/shell/assertvariable.sh
-                                    
-          # Test file injected variables
-          assertDefinedAndEqualTo "tags_docker_source" "mybranch"
-        
+        - name: Checkout sources for fixtures
+          uses: actions/checkout@v3
+
+        ## FEATURE : Importing without overrides 
+
+        - name: When we require all vars from a set of files without override 
+          uses: zlatko-ms/varfiletoenv@main
+          with:
+            override: false
+            paths: |
+              ./test/fixtures/integ/yaml/build1.yaml
+              ./test/fixtures/integ/yaml/build2.yaml
+
+        - name: Then all the vars from the fileset are injected
+          run: | 
+            # load assertion function
+            source ./test/shell/assertvariable.sh
+
+            # perform assertions
+            assertDefinedAndEqualTo "version_build_major" "1"
+            assertDefinedAndEqualTo "version_build_minor" "2"
+            assertDefinedAndEqualTo "version_build_patch" "42"
+
+        - name: And no existing variable was overriden
+          run: | 
+            # load assertion function
+            source ./test/shell/assertvariable.sh
+    
+            # perform assertions
+            assertDefinedAndEqualTo "version_build_tag" "RC"
+
+        ## FEATURE : Importing with overrides 
+
+        - name: When we require all vars from a set of files with override
+          uses: zlatko-ms/varfiletoenv@main
+          with:
+            override: true
+            paths: |
+              ./test/fixtures/integ/yaml/product1.yaml
+              ./test/fixtures/integ/yaml/product2.yaml
+
+        - name: Then the already exiting variables will be updated
+          run: | 
+            # load assertion function
+            source ./test/shell/assertvariable.sh
+
+            # perform assertions
+            assertDefinedAndEqualTo "version_product_major" "2"
+            assertDefinedAndEqualTo "version_product_minor" "1"
+
+        - name: And non exiting variables will be injected
+          run: | 
+            # load assertion function
+            source ./test/shell/assertvariable.sh
+
+            # perform assertions
+            assertDefinedAndEqualTo "version_product_label" "fresh"
+
+        ## FEATURE : Only valid files are processed
+
+        - name: When we require to inject variables from a file set that contains invalid files
+          uses: zlatko-ms/varfiletoenv@main
+          with:
+            override: false
+            paths: |
+              ./test/fixtures/integ/yaml/org.yaml
+              ./test/fixtures/integ/yaml/missing1.yaml
+              ./test/fixtures/integ/yaml/missing2.yaml
+  
+        - name: Then the operation will not fail and only variables from valid files will be processed
+          run: | 
+            # load assertion function
+            source ./test/shell/assertvariable.sh
+  
+            # perform assertions
+            assertDefinedAndEqualTo "version_product_lead" "someone" 
+  
+  it-action-mixed:
+    needs: build-python
+    env:
+      version_build_tag: "RC"
+      version_product_major: 1
+      version_product_minor: 0
+
+    name: Integration Tests - Mixed Formats
+    runs-on: ubuntu-latest
+    steps:
+        - name: Checkout sources for fixtures
+          uses: actions/checkout@v3
+
+        ## FEATURE : Importing without overrides 
+
+        - name: When we require all vars from a set of files without override 
+          uses: zlatko-ms/varfiletoenv@main
+          with:
+            override: false
+            paths: |
+              ./test/fixtures/integ/json/build1.json
+              ./test/fixtures/integ/yaml/build2.yaml
+
+        - name: Then all the vars from the fileset are injected
+          run: | 
+            # load assertion function
+            source ./test/shell/assertvariable.sh
+
+            # perform assertions
+            assertDefinedAndEqualTo "version_build_major" "1"
+            assertDefinedAndEqualTo "version_build_minor" "2"
+            assertDefinedAndEqualTo "version_build_patch" "42"
+
+        - name: And no existing variable was overriden
+          run: | 
+            # load assertion function
+            source ./test/shell/assertvariable.sh
+    
+            # perform assertions
+            assertDefinedAndEqualTo "version_build_tag" "RC"
+
+        ## FEATURE : Importing with overrides 
+
+        - name: When we require all vars from a set of files with override
+          uses: zlatko-ms/varfiletoenv@main
+          with:
+            override: true
+            paths: |
+              ./test/fixtures/integ/yaml/product1.yaml
+              ./test/fixtures/integ/plain/product2.properties
+
+        - name: Then the already exiting variables will be updated
+          run: | 
+            # load assertion function
+            source ./test/shell/assertvariable.sh
+
+            # perform assertions
+            assertDefinedAndEqualTo "version_product_major" "2"
+            assertDefinedAndEqualTo "version_product_minor" "1"
+
+        - name: And non exiting variables will be injected
+          run: | 
+            # load assertion function
+            source ./test/shell/assertvariable.sh
+
+            # perform assertions
+            assertDefinedAndEqualTo "version_product_label" "fresh"
+
+        ## FEATURE : Only valid files are processed
+
+        - name: When we require to inject variables from a file set that contains invalid files
+          uses: zlatko-ms/varfiletoenv@main
+          with:
+            override: false
+            paths: |
+              ./test/fixtures/integ/yaml/org.yaml
+              ./test/fixtures/integ/plain/missing1.properties
+              ./test/fixtures/integ/json/missing2.json
+  
+        - name: Then the operation will not fail and only variables from valid files will be processed
+          run: | 
+            # load assertion function
+            source ./test/shell/assertvariable.sh
+  
+            # perform assertions
+            assertDefinedAndEqualTo "version_product_lead" "someone" 
