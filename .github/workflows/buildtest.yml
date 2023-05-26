@@ -91,302 +91,302 @@ jobs:
           # perform assertions
           assertDefinedAndEqualTo "version_build_tag" "RC"
 
-      # ## FEATURE : Importing with overrides 
+      ## FEATURE : Importing with overrides 
 
-      # - name: When we require all vars from a set of files with override
-      #   uses: zlatko-ms/varfiletoenv@9-add-support-for-filter-on-variables
-      #   with:
-      #     override: true
-      #     paths: |
-      #       ./test/fixtures/integ/plain/product1.properties
-      #       ./test/fixtures/integ/plain/product2.properties
+      - name: When we require all vars from a set of files with override
+        uses: zlatko-ms/varfiletoenv@9-add-support-for-filter-on-variables
+        with:
+          override: true
+          paths: |
+            ./test/fixtures/integ/plain/product1.properties
+            ./test/fixtures/integ/plain/product2.properties
 
-      # - name: Then the already exiting variables will be updated
-      #   run: | 
-      #     # load assertion function
-      #     source ./test/shell/assertvariable.sh
+      - name: Then the already exiting variables will be updated
+        run: | 
+          # load assertion function
+          source ./test/shell/assertvariable.sh
 
-      #     # perform assertions
-      #     assertDefinedAndEqualTo "version_product_major" "2"
-      #     assertDefinedAndEqualTo "version_product_minor" "1"
+          # perform assertions
+          assertDefinedAndEqualTo "version_product_major" "2"
+          assertDefinedAndEqualTo "version_product_minor" "1"
 
-      # - name: And non exiting variables will be injected
-      #   run: | 
-      #     # load assertion function
-      #     source ./test/shell/assertvariable.sh
+      - name: And non exiting variables will be injected
+        run: | 
+          # load assertion function
+          source ./test/shell/assertvariable.sh
 
-      #     # perform assertions
-      #     assertDefinedAndEqualTo "version_product_label" "fresh"
+          # perform assertions
+          assertDefinedAndEqualTo "version_product_label" "fresh"
 
-      # ## FEATURE : Only valid files are processed
+      ## FEATURE : Only valid files are processed
 
-      # - name: When we require to inject variables from a file set that contains invalid files
-      #   uses: zlatko-ms/varfiletoenv@9-add-support-for-filter-on-variables
-      #   with:
-      #     paths: |
-      #       ./test/fixtures/integ/plain/org.properties
-      #       ./test/fixtures/integ/plain/missing1.properties
-      #       ./test/fixtures/integ/plain/missing2.properties
+      - name: When we require to inject variables from a file set that contains invalid files
+        uses: zlatko-ms/varfiletoenv@9-add-support-for-filter-on-variables
+        with:
+          paths: |
+            ./test/fixtures/integ/plain/org.properties
+            ./test/fixtures/integ/plain/missing1.properties
+            ./test/fixtures/integ/plain/missing2.properties
 
-      # - name: Then the operation will not fail and only variables from valid files will be processed
-      #   run: | 
-      #     # load assertion function
-      #     source ./test/shell/assertvariable.sh
+      - name: Then the operation will not fail and only variables from valid files will be processed
+        run: | 
+          # load assertion function
+          source ./test/shell/assertvariable.sh
 
-      #     # perform assertions
-      #     assertDefinedAndEqualTo "version_product_lead" "someone"
+          # perform assertions
+          assertDefinedAndEqualTo "version_product_lead" "someone"
 
-  # it-action-json:
-  #   needs: build-python
-  #   env:
-  #     version_build_tag: "RC"
-  #     version_product_major: 1
-  #     version_product_minor: 0
+  it-action-json:
+    needs: build-python
+    env:
+      version_build_tag: "RC"
+      version_product_major: 1
+      version_product_minor: 0
 
-  #   name: Integration Tests - JSON
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #       - name: Checkout sources for fixtures
-  #         uses: actions/checkout@v3
+    name: Integration Tests - JSON
+    runs-on: ubuntu-latest
+    steps:
+        - name: Checkout sources for fixtures
+          uses: actions/checkout@v3
 
-  #       ## FEATURE : Importing without overrides 
+        ## FEATURE : Importing without overrides 
 
-  #       - name: When we require all vars from a set of files without override 
-  #         uses: zlatko-ms/varfiletoenv@9-add-support-for-filter-on-variables
-  #         with:
-  #           paths: |
-  #             ./test/fixtures/integ/json/build1.json
-  #             ./test/fixtures/integ/json/build2.json
+        - name: When we require all vars from a set of files without override 
+          uses: zlatko-ms/varfiletoenv@9-add-support-for-filter-on-variables
+          with:
+            paths: |
+              ./test/fixtures/integ/json/build1.json
+              ./test/fixtures/integ/json/build2.json
 
-  #       - name: Then all the vars from the fileset are injected
-  #         run: | 
-  #           # load assertion function
-  #           source ./test/shell/assertvariable.sh
+        - name: Then all the vars from the fileset are injected
+          run: | 
+            # load assertion function
+            source ./test/shell/assertvariable.sh
 
-  #           # perform assertions
-  #           assertDefinedAndEqualTo "version_build_major" "1"
-  #           assertDefinedAndEqualTo "version_build_minor" "2"
-  #           assertDefinedAndEqualTo "version_build_patch" "42"
+            # perform assertions
+            assertDefinedAndEqualTo "version_build_major" "1"
+            assertDefinedAndEqualTo "version_build_minor" "2"
+            assertDefinedAndEqualTo "version_build_patch" "42"
 
-  #       - name: And no existing variable was overriden
-  #         run: | 
-  #           # load assertion function
-  #           source ./test/shell/assertvariable.sh
+        - name: And no existing variable was overriden
+          run: | 
+            # load assertion function
+            source ./test/shell/assertvariable.sh
     
-  #           # perform assertions
-  #           assertDefinedAndEqualTo "version_build_tag" "RC"
+            # perform assertions
+            assertDefinedAndEqualTo "version_build_tag" "RC"
 
-  #       ## FEATURE : Importing with overrides 
+        ## FEATURE : Importing with overrides 
 
-  #       - name: When we require all vars from a set of files with override
-  #         uses: zlatko-ms/varfiletoenv@9-add-support-for-filter-on-variables
-  #         with:
-  #           override: true
-  #           paths: |
-  #             ./test/fixtures/integ/json/product1.json
-  #             ./test/fixtures/integ/json/product2.json
+        - name: When we require all vars from a set of files with override
+          uses: zlatko-ms/varfiletoenv@9-add-support-for-filter-on-variables
+          with:
+            override: true
+            paths: |
+              ./test/fixtures/integ/json/product1.json
+              ./test/fixtures/integ/json/product2.json
 
-  #       - name: Then the already exiting variables will be updated
-  #         run: | 
-  #           # load assertion function
-  #           source ./test/shell/assertvariable.sh
+        - name: Then the already exiting variables will be updated
+          run: | 
+            # load assertion function
+            source ./test/shell/assertvariable.sh
 
-  #           # perform assertions
-  #           assertDefinedAndEqualTo "version_product_major" "2"
-  #           assertDefinedAndEqualTo "version_product_minor" "1"
+            # perform assertions
+            assertDefinedAndEqualTo "version_product_major" "2"
+            assertDefinedAndEqualTo "version_product_minor" "1"
 
-  #       - name: And non exiting variables will be injected
-  #         run: | 
-  #           # load assertion function
-  #           source ./test/shell/assertvariable.sh
+        - name: And non exiting variables will be injected
+          run: | 
+            # load assertion function
+            source ./test/shell/assertvariable.sh
 
-  #           # perform assertions
-  #           assertDefinedAndEqualTo "version_product_label" "fresh"
+            # perform assertions
+            assertDefinedAndEqualTo "version_product_label" "fresh"
 
-  #       ## FEATURE : Only valid files are processed
+        ## FEATURE : Only valid files are processed
 
-  #       - name: When we require to inject variables from a file set that contains invalid files
-  #         uses: zlatko-ms/varfiletoenv@9-add-support-for-filter-on-variables
-  #         with:
-  #           paths: |
-  #             ./test/fixtures/integ/json/org.json
-  #             ./test/fixtures/integ/json/missing1.json
-  #             ./test/fixtures/integ/json/missing2.json
+        - name: When we require to inject variables from a file set that contains invalid files
+          uses: zlatko-ms/varfiletoenv@9-add-support-for-filter-on-variables
+          with:
+            paths: |
+              ./test/fixtures/integ/json/org.json
+              ./test/fixtures/integ/json/missing1.json
+              ./test/fixtures/integ/json/missing2.json
   
-  #       - name: Then the operation will not fail and only variables from valid files will be processed
-  #         run: | 
-  #           # load assertion function
-  #           source ./test/shell/assertvariable.sh
+        - name: Then the operation will not fail and only variables from valid files will be processed
+          run: | 
+            # load assertion function
+            source ./test/shell/assertvariable.sh
   
-  #           # perform assertions
-  #           assertDefinedAndEqualTo "version_product_lead" "someone" 
+            # perform assertions
+            assertDefinedAndEqualTo "version_product_lead" "someone" 
   
-  # it-action-yaml:
-  #   needs: build-python
-  #   env:
-  #     version_build_tag: "RC"
-  #     version_product_major: 1
-  #     version_product_minor: 0
+  it-action-yaml:
+    needs: build-python
+    env:
+      version_build_tag: "RC"
+      version_product_major: 1
+      version_product_minor: 0
 
-  #   name: Integration Tests - YAML
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #       - name: Checkout sources for fixtures
-  #         uses: actions/checkout@v3
+    name: Integration Tests - YAML
+    runs-on: ubuntu-latest
+    steps:
+        - name: Checkout sources for fixtures
+          uses: actions/checkout@v3
 
-  #       ## FEATURE : Importing without overrides 
+        ## FEATURE : Importing without overrides 
 
-  #       - name: When we require all vars from a set of files without override 
-  #         uses: zlatko-ms/varfiletoenv@9-add-support-for-filter-on-variables
-  #         with:
-  #           paths: |
-  #             ./test/fixtures/integ/yaml/build1.yaml
-  #             ./test/fixtures/integ/yaml/build2.yaml
+        - name: When we require all vars from a set of files without override 
+          uses: zlatko-ms/varfiletoenv@9-add-support-for-filter-on-variables
+          with:
+            paths: |
+              ./test/fixtures/integ/yaml/build1.yaml
+              ./test/fixtures/integ/yaml/build2.yaml
 
-  #       - name: Then all the vars from the fileset are injected
-  #         run: | 
-  #           # load assertion function
-  #           source ./test/shell/assertvariable.sh
+        - name: Then all the vars from the fileset are injected
+          run: | 
+            # load assertion function
+            source ./test/shell/assertvariable.sh
 
-  #           # perform assertions
-  #           assertDefinedAndEqualTo "version_build_major" "1"
-  #           assertDefinedAndEqualTo "version_build_minor" "2"
-  #           assertDefinedAndEqualTo "version_build_patch" "42"
+            # perform assertions
+            assertDefinedAndEqualTo "version_build_major" "1"
+            assertDefinedAndEqualTo "version_build_minor" "2"
+            assertDefinedAndEqualTo "version_build_patch" "42"
 
-  #       - name: And no existing variable was overriden
-  #         run: | 
-  #           # load assertion function
-  #           source ./test/shell/assertvariable.sh
+        - name: And no existing variable was overriden
+          run: | 
+            # load assertion function
+            source ./test/shell/assertvariable.sh
     
-  #           # perform assertions
-  #           assertDefinedAndEqualTo "version_build_tag" "RC"
+            # perform assertions
+            assertDefinedAndEqualTo "version_build_tag" "RC"
 
-  #       ## FEATURE : Importing with overrides 
+        ## FEATURE : Importing with overrides 
 
-  #       - name: When we require all vars from a set of files with override
-  #         uses: zlatko-ms/varfiletoenv@9-add-support-for-filter-on-variables
-  #         with:
-  #           override: true
-  #           paths: |
-  #             ./test/fixtures/integ/yaml/product1.yaml
-  #             ./test/fixtures/integ/yaml/product2.yaml
+        - name: When we require all vars from a set of files with override
+          uses: zlatko-ms/varfiletoenv@9-add-support-for-filter-on-variables
+          with:
+            override: true
+            paths: |
+              ./test/fixtures/integ/yaml/product1.yaml
+              ./test/fixtures/integ/yaml/product2.yaml
 
-  #       - name: Then the already exiting variables will be updated
-  #         run: | 
-  #           # load assertion function
-  #           source ./test/shell/assertvariable.sh
+        - name: Then the already exiting variables will be updated
+          run: | 
+            # load assertion function
+            source ./test/shell/assertvariable.sh
 
-  #           # perform assertions
-  #           assertDefinedAndEqualTo "version_product_major" "2"
-  #           assertDefinedAndEqualTo "version_product_minor" "1"
+            # perform assertions
+            assertDefinedAndEqualTo "version_product_major" "2"
+            assertDefinedAndEqualTo "version_product_minor" "1"
 
-  #       - name: And non exiting variables will be injected
-  #         run: | 
-  #           # load assertion function
-  #           source ./test/shell/assertvariable.sh
+        - name: And non exiting variables will be injected
+          run: | 
+            # load assertion function
+            source ./test/shell/assertvariable.sh
 
-  #           # perform assertions
-  #           assertDefinedAndEqualTo "version_product_label" "fresh"
+            # perform assertions
+            assertDefinedAndEqualTo "version_product_label" "fresh"
 
-  #       ## FEATURE : Only valid files are processed
+        ## FEATURE : Only valid files are processed
 
-  #       - name: When we require to inject variables from a file set that contains invalid files
-  #         uses: zlatko-ms/varfiletoenv@9-add-support-for-filter-on-variables
-  #         with:
-  #           paths: |
-  #             ./test/fixtures/integ/yaml/org.yaml
-  #             ./test/fixtures/integ/yaml/missing1.yaml
-  #             ./test/fixtures/integ/yaml/missing2.yaml
+        - name: When we require to inject variables from a file set that contains invalid files
+          uses: zlatko-ms/varfiletoenv@9-add-support-for-filter-on-variables
+          with:
+            paths: |
+              ./test/fixtures/integ/yaml/org.yaml
+              ./test/fixtures/integ/yaml/missing1.yaml
+              ./test/fixtures/integ/yaml/missing2.yaml
   
-  #       - name: Then the operation will not fail and only variables from valid files will be processed
-  #         run: | 
-  #           # load assertion function
-  #           source ./test/shell/assertvariable.sh
+        - name: Then the operation will not fail and only variables from valid files will be processed
+          run: | 
+            # load assertion function
+            source ./test/shell/assertvariable.sh
   
-  #           # perform assertions
-  #           assertDefinedAndEqualTo "version_product_lead" "someone" 
+            # perform assertions
+            assertDefinedAndEqualTo "version_product_lead" "someone" 
   
-  # it-action-mixed:
-  #   needs: build-python
-  #   env:
-  #     version_build_tag: "RC"
-  #     version_product_major: 1
-  #     version_product_minor: 0
+  it-action-mixed:
+    needs: build-python
+    env:
+      version_build_tag: "RC"
+      version_product_major: 1
+      version_product_minor: 0
 
-  #   name: Integration Tests - Mixed Formats
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #       - name: Checkout sources for fixtures
-  #         uses: actions/checkout@v3
+    name: Integration Tests - Mixed Formats
+    runs-on: ubuntu-latest
+    steps:
+        - name: Checkout sources for fixtures
+          uses: actions/checkout@v3
 
-  #       ## FEATURE : Importing without overrides 
+        ## FEATURE : Importing without overrides 
 
-  #       - name: When we require all vars from a set of files without override 
-  #         uses: zlatko-ms/varfiletoenv@9-add-support-for-filter-on-variables
-  #         with:
-  #           paths: |
-  #             ./test/fixtures/integ/json/build1.json
-  #             ./test/fixtures/integ/yaml/build2.yaml
+        - name: When we require all vars from a set of files without override 
+          uses: zlatko-ms/varfiletoenv@9-add-support-for-filter-on-variables
+          with:
+            paths: |
+              ./test/fixtures/integ/json/build1.json
+              ./test/fixtures/integ/yaml/build2.yaml
 
-  #       - name: Then all the vars from the fileset are injected
-  #         run: | 
-  #           # load assertion function
-  #           source ./test/shell/assertvariable.sh
+        - name: Then all the vars from the fileset are injected
+          run: | 
+            # load assertion function
+            source ./test/shell/assertvariable.sh
 
-  #           # perform assertions
-  #           assertDefinedAndEqualTo "version_build_major" "1"
-  #           assertDefinedAndEqualTo "version_build_minor" "2"
-  #           assertDefinedAndEqualTo "version_build_patch" "42"
+            # perform assertions
+            assertDefinedAndEqualTo "version_build_major" "1"
+            assertDefinedAndEqualTo "version_build_minor" "2"
+            assertDefinedAndEqualTo "version_build_patch" "42"
 
-  #       - name: And no existing variable was overriden
-  #         run: | 
-  #           # load assertion function
-  #           source ./test/shell/assertvariable.sh
+        - name: And no existing variable was overriden
+          run: | 
+            # load assertion function
+            source ./test/shell/assertvariable.sh
     
-  #           # perform assertions
-  #           assertDefinedAndEqualTo "version_build_tag" "RC"
+            # perform assertions
+            assertDefinedAndEqualTo "version_build_tag" "RC"
 
-  #       ## FEATURE : Importing with overrides 
+        ## FEATURE : Importing with overrides 
 
-  #       - name: When we require all vars from a set of files with override
-  #         uses: zlatko-ms/varfiletoenv@9-add-support-for-filter-on-variables
-  #         with:
-  #           override: true
-  #           paths: |
-  #             ./test/fixtures/integ/yaml/product1.yaml
-  #             ./test/fixtures/integ/plain/product2.properties
+        - name: When we require all vars from a set of files with override
+          uses: zlatko-ms/varfiletoenv@9-add-support-for-filter-on-variables
+          with:
+            override: true
+            paths: |
+              ./test/fixtures/integ/yaml/product1.yaml
+              ./test/fixtures/integ/plain/product2.properties
 
-  #       - name: Then the already exiting variables will be updated
-  #         run: | 
-  #           # load assertion function
-  #           source ./test/shell/assertvariable.sh
+        - name: Then the already exiting variables will be updated
+          run: | 
+            # load assertion function
+            source ./test/shell/assertvariable.sh
 
-  #           # perform assertions
-  #           assertDefinedAndEqualTo "version_product_major" "2"
-  #           assertDefinedAndEqualTo "version_product_minor" "1"
+            # perform assertions
+            assertDefinedAndEqualTo "version_product_major" "2"
+            assertDefinedAndEqualTo "version_product_minor" "1"
 
-  #       - name: And non exiting variables will be injected
-  #         run: | 
-  #           # load assertion function
-  #           source ./test/shell/assertvariable.sh
+        - name: And non exiting variables will be injected
+          run: | 
+            # load assertion function
+            source ./test/shell/assertvariable.sh
 
-  #           # perform assertions
-  #           assertDefinedAndEqualTo "version_product_label" "fresh"
+            # perform assertions
+            assertDefinedAndEqualTo "version_product_label" "fresh"
 
-  #       ## FEATURE : Only valid files are processed
+        ## FEATURE : Only valid files are processed
 
-  #       - name: When we require to inject variables from a file set that contains invalid files
-  #         uses: zlatko-ms/varfiletoenv@9-add-support-for-filter-on-variables
-  #         with:
-  #           paths: |
-  #             ./test/fixtures/integ/yaml/org.yaml
-  #             ./test/fixtures/integ/plain/missing1.properties
-  #             ./test/fixtures/integ/json/missing2.json
+        - name: When we require to inject variables from a file set that contains invalid files
+          uses: zlatko-ms/varfiletoenv@9-add-support-for-filter-on-variables
+          with:
+            paths: |
+              ./test/fixtures/integ/yaml/org.yaml
+              ./test/fixtures/integ/plain/missing1.properties
+              ./test/fixtures/integ/json/missing2.json
   
-  #       - name: Then the operation will not fail and only variables from valid files will be processed
-  #         run: | 
-  #           # load assertion function
-  #           source ./test/shell/assertvariable.sh
+        - name: Then the operation will not fail and only variables from valid files will be processed
+          run: | 
+            # load assertion function
+            source ./test/shell/assertvariable.sh
   
-  #           # perform assertions
-  #           assertDefinedAndEqualTo "version_product_lead" "someone" 
+            # perform assertions
+            assertDefinedAndEqualTo "version_product_lead" "someone" 
