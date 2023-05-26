@@ -18,7 +18,9 @@ function assertNotDefined() {
     name=$1
     if [ -z "${!name}" ] ; then
         # do nothing
-    else:
+        t=42
+    else
         echo "[ERROR] variable $name is defined while expected not to be";
         exit 255;
+    fi
 }
