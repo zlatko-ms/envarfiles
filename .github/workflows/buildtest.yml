@@ -2,11 +2,11 @@ name: Action Build Process
 
 on:
   push:
-    branches: [ "15-change-default-override-behavior" ]
+    branches: [ "main" ]
     paths-ignore:
       - 'README.md'
   pull_request:
-    branches: [ "15-change-default-override-behavior" ]
+    branches: [ "main" ]
     paths-ignore:
       - 'README.md'
  
@@ -67,7 +67,7 @@ jobs:
       ## FEATURE : Importing without overrides 
 
       - name: When we require all vars from a set of files without override 
-        uses: zlatko-ms/varfiletoenv@15-change-default-override-behavior
+        uses: zlatko-ms/varfiletoenv@main
         with:
           paths: |
             ./test/fixtures/integ/plain/build1.properties
@@ -94,7 +94,7 @@ jobs:
       ## FEATURE : Importing with overrides 
 
       - name: When we require all vars from a set of files with override
-        uses: zlatko-ms/varfiletoenv@15-change-default-override-behavior
+        uses: zlatko-ms/varfiletoenv@main
         with:
           override: true
           paths: |
@@ -121,7 +121,7 @@ jobs:
       ## FEATURE : Only valid files are processed
 
       - name: When we require to inject variables from a file set that contains invalid files
-        uses: zlatko-ms/varfiletoenv@15-change-default-override-behavior
+        uses: zlatko-ms/varfiletoenv@main
         with:
           paths: |
             ./test/fixtures/integ/plain/org.properties
@@ -152,7 +152,7 @@ jobs:
         ## FEATURE : Importing without overrides 
 
         - name: When we require all vars from a set of files without override 
-          uses: zlatko-ms/varfiletoenv@15-change-default-override-behavior
+          uses: zlatko-ms/varfiletoenv@main
           with:
             paths: |
               ./test/fixtures/integ/json/build1.json
@@ -179,7 +179,7 @@ jobs:
         ## FEATURE : Importing with overrides 
 
         - name: When we require all vars from a set of files with override
-          uses: zlatko-ms/varfiletoenv@15-change-default-override-behavior
+          uses: zlatko-ms/varfiletoenv@main
           with:
             override: true
             paths: |
@@ -206,7 +206,7 @@ jobs:
         ## FEATURE : Only valid files are processed
 
         - name: When we require to inject variables from a file set that contains invalid files
-          uses: zlatko-ms/varfiletoenv@15-change-default-override-behavior
+          uses: zlatko-ms/varfiletoenv@main
           with:
             paths: |
               ./test/fixtures/integ/json/org.json
@@ -237,7 +237,7 @@ jobs:
         ## FEATURE : Importing without overrides 
 
         - name: When we require all vars from a set of files without override 
-          uses: zlatko-ms/varfiletoenv@15-change-default-override-behavior
+          uses: zlatko-ms/varfiletoenv@main
           with:
             paths: |
               ./test/fixtures/integ/yaml/build1.yaml
@@ -264,7 +264,7 @@ jobs:
         ## FEATURE : Importing with overrides 
 
         - name: When we require all vars from a set of files with override
-          uses: zlatko-ms/varfiletoenv@15-change-default-override-behavior
+          uses: zlatko-ms/varfiletoenv@main
           with:
             override: true
             paths: |
@@ -291,7 +291,7 @@ jobs:
         ## FEATURE : Only valid files are processed
 
         - name: When we require to inject variables from a file set that contains invalid files
-          uses: zlatko-ms/varfiletoenv@15-change-default-override-behavior
+          uses: zlatko-ms/varfiletoenv@main
           with:
             paths: |
               ./test/fixtures/integ/yaml/org.yaml
@@ -322,7 +322,7 @@ jobs:
         ## FEATURE : Importing without overrides 
 
         - name: When we require all vars from a set of files without override 
-          uses: zlatko-ms/varfiletoenv@15-change-default-override-behavior
+          uses: zlatko-ms/varfiletoenv@main
           with:
             paths: |
               ./test/fixtures/integ/json/build1.json
@@ -349,7 +349,7 @@ jobs:
         ## FEATURE : Importing with overrides 
 
         - name: When we require all vars from a set of files with override
-          uses: zlatko-ms/varfiletoenv@15-change-default-override-behavior
+          uses: zlatko-ms/varfiletoenv@main
           with:
             override: true
             paths: |
@@ -376,7 +376,7 @@ jobs:
         ## FEATURE : Only valid files are processed
 
         - name: When we require to inject variables from a file set that contains invalid files
-          uses: zlatko-ms/varfiletoenv@15-change-default-override-behavior
+          uses: zlatko-ms/varfiletoenv@main
           with:
             paths: |
               ./test/fixtures/integ/yaml/org.yaml
