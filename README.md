@@ -136,7 +136,7 @@ In order to import all vars from a single file, simply use :
 
 ```yaml
   - name: Import vars example
-    uses: zlatko-ms/varfiletoenv@17-refactor-integration-tests
+    uses: zlatko-ms/varfiletoenv@main
     with:
       paths: ./path/to/my/file.properties
 ```
