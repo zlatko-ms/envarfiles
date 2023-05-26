@@ -56,13 +56,15 @@ Nested properties will be separated by an underscore ("_") before injection.
 For instance, the following JSON content : 
 
 ```json
-{ "build" : { 
-    "version" : {
-      "major" : "1",
-      "minor" : "0",
-      "patch" : "42"
+{ 
+ "build" : { 
+  "version" : {
+   "major" : "1",
+   "minor" : "0",
+   "patch" : "42"
     }
-}}
+  }
+}
 ```
 will inject the following variables : 
 
