@@ -146,7 +146,7 @@ Here is a summary of the usage illustrations :
 
 | Use Case                 | Description            | Link |
 | ------------------------ | ---------------------- |------|
-| Multiple files | Imports all variables from the speficied file set, override already existing var deinitions | [view](.github/workflows/buildtest.yml?plain=1#L358-L364) |
-| Prevent Override | Prevent overriding of variables already defined in the workflow file  | [view](.github/workflows/buildtest.yml?plain=1#L330-L336) |
+| Multiple files   | Import all variables from the speficied file set | [view](.github/workflows/buildtest.yml?plain=1#L324-L329) |
+| Override existing values   | Override values of already existing vars         | [view](.github/workflows/buildtest.yml?plain=1#L351-L357) |
 
 Please note that in the ITs the flag *log* is positionned in order to help troubleshooting, but for in a nominal context this is not required.
