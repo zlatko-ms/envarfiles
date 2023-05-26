@@ -9,12 +9,8 @@ inputs:
     description: 'path(s) to the file(s) where the variables are defined'
     required: true
     default: 'project.vars.properties'
-  logs:
-    description: 'indicates whenever the action should produce internal logs upon execution'
-    required: true
-    default: 'false'
   select:  
-    description: 'list of variables to import'
+    description: 'list of variables to import, when empty import all discovered variables'
     required: true
     default: ''
 branding:
@@ -24,7 +20,6 @@ runs:
   using: 'docker'
   image: 'Dockerfile'
   args:
-    - logs=${{ inputs.logs }}
     - override=${{ inputs.override }}
     - paths=${{ inputs.paths }}
     - select=${{ inputs.select }}
