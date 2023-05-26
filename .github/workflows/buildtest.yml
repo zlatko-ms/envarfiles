@@ -54,49 +54,83 @@ jobs:
   it-action-plaintext:
     needs: build-python
     env:
-      myVar1: Value1
-      myVar2: Value2
+      version_build_tag: "RC"
+      version_product_major: 1
+      version_product_minor: 0
+
     name: Integration Test - Plain Text
     runs-on: ubuntu-latest
     steps:
       - name: Checkout sources for fixtures
         uses: actions/checkout@v3
 
-      - name: When we require all vars from a single file
-        run: | 
-          echo "TBD"
-
-      - name: Then all the vars from the file are injected
-        run: | 
-          echo "TBD"
-
-      - name: When we require all vars from a set of files
-        run: |
-          echo "TBD"
+      - name: When we require all vars from a set of files without override 
+        uses: zlatko-ms/varfiletoenv@17-refactor-integration-tests
+        with:
+          override: false
+          paths: |
+            ./test/fixtures/integ/plain/plain1.properties
+            ./test/fixtures/integ/plain/plain2.properties
 
       - name: Then all the vars from the fileset are injected
         run: | 
-          echo "TBD"
+          # load assertion function
+          source ./test/shell/assertvariable.sh
 
-      - name: When we require all vars from a set of files with override set to false
-        run: | 
-          echo "TBD"
+          # perform assertions
+          assertDefinedAndEqualTo "version_build_major" "1"
+          assertDefinedAndEqualTo "version_build_major" "2"
+          assertDefinedAndEqualTo "version_build_patch" "42"
 
-      - name: Then the already exiting variables will not be updated
+      - name: And no existing variable was overriden
         run: | 
-          echo "TBD"
+          # load assertion function
+          source ./test/shell/assertvariable.sh
+  
+          # perform assertions
+          assertDefinedAndEqualTo "version_build_tag" "RC"
 
-      - name: And the non exiting variables will be injected
+      - name: When we require all vars from a set of files with override
+        uses: zlatko-ms/varfiletoenv@17-refactor-integration-tests
+        with:
+          override: true
+          paths: |
+            ./test/fixtures/integ/plain/override1.properties
+            ./test/fixtures/integ/plain/override2.properties
+
+      - name: Then the already exiting variables will be updated
         run: | 
-          echo "TBD"
+          # load assertion function
+          source ./test/shell/assertvariable.sh
+
+          # perform assertions
+          assertDefinedAndEqualTo "version_product_major" "2"
+          assertDefinedAndEqualTo "version_product_minor" "1"
+
+      - name: And non exiting variables will be injected
+        run: | 
+          # load assertion function
+          source ./test/shell/assertvariable.sh
+
+          # perform assertions
+          assertDefinedAndEqualTo "version_product_label" "fresh"
 
       - name: When we require to inject variables from a file set that contains invalid files
-        run: | 
-          echo "TBD"
+        uses: zlatko-ms/varfiletoenv@17-refactor-integration-tests
+        with:
+          override: false
+          paths: |
+            ./test/fixtures/integ/plain/org.properties
+            ./test/fixtures/integ/plain/missing1.properties
+            ./test/fixtures/integ/plain/missing2.properties
 
-      - name: Then the operation will not fail and only variables from valid files will be injected
+      - name: Then the operation will not fail and only variables from valid files will be processed
         run: | 
-          echo "TBD"
+          # load assertion function
+          source ./test/shell/assertvariable.sh
+
+          # perform assertions
+          assertDefinedAndEqualTo "version_product_lead" "someone"
   
   # it-action-textfile-override:
   #   needs: build-python
