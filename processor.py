@@ -229,19 +229,15 @@ def main():
     passedArgs: dict = ParamParser.getParameters(" ".join(sys.argv[1:]))
     allFiles: list = passedArgs["paths"]
     varSelection: list = passedArgs["select"]
-    print("ZDBG >>>>")
-    print(varSelection)
-    print("ZDBG <<<<")
-
     outfile: str = passedArgs["outfile"]
     # filter only readable/accessabe files
     files = FileHelper.filterExistingFilesOnly(allFiles)
     # parse all valid files with the avaible parsers
     overallVars: dict = FilesetParser.getVariablesDict(files)
     # filter selection, if any
-    # fileredVars = VariableSelector.filter(overallVars, varSelection)
+    fileredVars = VariableSelector.filter(overallVars, varSelection)
     # dump the variables to the specified file
-    FileHelper.varDictToFile(overallVars, outfile)
+    FileHelper.varDictToFile(fileredVars, outfile)
 
 
 if __name__ == "__main__":

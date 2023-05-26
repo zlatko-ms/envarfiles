@@ -50,6 +50,8 @@ if [ -n "$overrideFlag" ] ; then
     override="TRUE"
 fi
 
+echo "ZDBG params:$params"
+
 # excute python parser and redirect the output to the temp file
 $(/usr/bin/python3 ./processor.py $params outfile=$outfile)
 
