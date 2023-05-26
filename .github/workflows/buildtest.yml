@@ -58,7 +58,7 @@ jobs:
       version_product_major: 1
       version_product_minor: 0
 
-    name: Integration Test - Plain Text
+    name: Integration Tests - Plain Text
     runs-on: ubuntu-latest
     steps:
       - name: Checkout sources for fixtures
@@ -79,7 +79,7 @@ jobs:
 
           # perform assertions
           assertDefinedAndEqualTo "version_build_major" "1"
-          assertDefinedAndEqualTo "version_build_major" "2"
+          assertDefinedAndEqualTo "version_build_minor" "2"
           assertDefinedAndEqualTo "version_build_patch" "42"
 
       - name: And no existing variable was overriden
