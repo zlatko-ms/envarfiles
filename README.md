@@ -15,7 +15,7 @@ For more information on github action variables please check [Variables](https:/
 | Name      | Required | Description                                                                                     | Default Value             |
 | --------- | -------- | ------------------------------------------------------------------------------------------------| ------------------------- |
 | paths     | Yes      | The paths of files that contain the definitions of the variable                                 | ./project.vars.properties |
-| override  | No       | Indicates if already existing workflow variables should be updated with defintions from file(s) | true |
+| override  | No       | Indicates if already existing workflow variables should be updated with defintions from file(s) | false |
 | logs      | No       | Indicates whenever to provide internal actions logs, handy in case of troubleshooting           | false |
 
 # Supported Formats

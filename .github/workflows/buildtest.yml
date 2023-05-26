@@ -69,7 +69,6 @@ jobs:
       - name: When we require all vars from a set of files without override 
         uses: zlatko-ms/varfiletoenv@15-change-default-override-behavior
         with:
-          override: false
           paths: |
             ./test/fixtures/integ/plain/build1.properties
             ./test/fixtures/integ/plain/build2.properties
@@ -124,7 +123,6 @@ jobs:
       - name: When we require to inject variables from a file set that contains invalid files
         uses: zlatko-ms/varfiletoenv@15-change-default-override-behavior
         with:
-          override: false
           paths: |
             ./test/fixtures/integ/plain/org.properties
             ./test/fixtures/integ/plain/missing1.properties
@@ -156,7 +154,6 @@ jobs:
         - name: When we require all vars from a set of files without override 
           uses: zlatko-ms/varfiletoenv@15-change-default-override-behavior
           with:
-            override: false
             paths: |
               ./test/fixtures/integ/json/build1.json
               ./test/fixtures/integ/json/build2.json
@@ -211,7 +208,6 @@ jobs:
         - name: When we require to inject variables from a file set that contains invalid files
           uses: zlatko-ms/varfiletoenv@15-change-default-override-behavior
           with:
-            override: false
             paths: |
               ./test/fixtures/integ/json/org.json
               ./test/fixtures/integ/json/missing1.json
@@ -243,7 +239,6 @@ jobs:
         - name: When we require all vars from a set of files without override 
           uses: zlatko-ms/varfiletoenv@15-change-default-override-behavior
           with:
-            override: false
             paths: |
               ./test/fixtures/integ/yaml/build1.yaml
               ./test/fixtures/integ/yaml/build2.yaml
@@ -298,7 +293,6 @@ jobs:
         - name: When we require to inject variables from a file set that contains invalid files
           uses: zlatko-ms/varfiletoenv@15-change-default-override-behavior
           with:
-            override: false
             paths: |
               ./test/fixtures/integ/yaml/org.yaml
               ./test/fixtures/integ/yaml/missing1.yaml
@@ -330,7 +324,6 @@ jobs:
         - name: When we require all vars from a set of files without override 
           uses: zlatko-ms/varfiletoenv@15-change-default-override-behavior
           with:
-            override: false
             paths: |
               ./test/fixtures/integ/json/build1.json
               ./test/fixtures/integ/yaml/build2.yaml
@@ -385,7 +378,6 @@ jobs:
         - name: When we require to inject variables from a file set that contains invalid files
           uses: zlatko-ms/varfiletoenv@15-change-default-override-behavior
           with:
-            override: false
             paths: |
               ./test/fixtures/integ/yaml/org.yaml
               ./test/fixtures/integ/plain/missing1.properties
