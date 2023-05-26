@@ -17,7 +17,7 @@ For more information on github action variables please check [Variables](https:/
 | paths     | Yes      | The paths of files that contain the definitions of the variable                                 | ./project.vars.properties |
 | override  | No       | When set to true, the processing will override the already defined vars in the job with the values read from file  | false |
 | select  | No       | When non empty, this parameter indicates the list of the variables to import from the fileset. All other varaibles discovered in the file set will be ignored.  | '' |
-| logs      | No       | Verbose logging           | false |
+| logs      | No       | When set to true it will enable action internals logging          | false |
 
 # Supported Formats
 
@@ -147,8 +147,8 @@ Here is a summary of the usage illustrations :
 
 | Use Case                 | Description            | Link |
 | ------------------------ | ---------------------- |------|
-| Multiple files   | Import all variables from the speficied file set | [view](.github/workflows/buildtest.yml?plain=1#L324-L329) |
-| Override  | Override values of already existing vars         | [view](.github/workflows/buildtest.yml?plain=1#L351-L357) |
+| Multiple files   | Import all variables from the speficied file set | [view](.github/workflows/buildtest.yml?plain=1#L416-L421) |
+| Override  | Override values of already existing vars         | [view](.github/workflows/buildtest.yml?plain=1#L443-L449) |
 | Selection | Imports only specified variables from the file set |  [view](.github/workflows/buildtest.yml?plain=1#L489-L497) |
 
 Please note that in the ITs the flag *log* is positionned in order to help troubleshooting, but for in a nominal context this is not required.
