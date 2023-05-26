@@ -139,7 +139,7 @@ In order to import all vars from a single file, simply use :
 
 ```yaml
   - name: Import vars example
-    uses: zlatko-ms/varfiletoenv@main
+    uses: zlatko-ms/varfiletoenv@v2
     with:
       paths: ./path/to/my/file.properties
 ```
@@ -154,4 +154,4 @@ Here is a summary of the usage illustrations :
 | Override  | Override values of already existing vars         | [view](.github/workflows/buildtest.yml?plain=1#L443-L449) |
 | Selection | Imports only specified variables from the file set |  [view](.github/workflows/buildtest.yml?plain=1#L489-L497) |
 
-Please note that in the ITs the flag *log* is positionned in order to help troubleshooting, but for in a nominal context this is not required.
+When copying/pasting from the examples, remember to replace the @main tag by @v2.
