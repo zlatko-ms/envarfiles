@@ -7,7 +7,6 @@ function readVariablesFiles() {
     varfile=$2
     
     while read p; do
-        echo "ZDBG reading line $p"
         k=$(echo $p | sed s'/[ ]*=[ ]*/=/g')
         n=$(echo $k | cut -f1 -d'=')
         v=$(echo $k | cut -f2 -d'=')
@@ -51,10 +50,8 @@ if [ -n "$overrideFlag" ] ; then
     override="TRUE"
 fi
 
-echo "ZDBG params:$params"
-
 # excute python parser and redirect the output to the temp file
-$(/usr/bin/python3 ./processor.py $params outfile=$outfile)
+$(/usr/bin/python3 ./processor.py outfile=$outfile $params)
 
 # parse the output and declare vars
 readVariablesFiles $override $outfile
