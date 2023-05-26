@@ -225,19 +225,45 @@ class FilesetParser(object):
         return allVars
 
 
+class OverrideManager(object):
+    """Handles filtering for override behaviour"""
+
+    @classmethod
+    def filterVars(cts, override: bool, allVarDefs: dict) -> dict:
+        if override:
+            return allVarDefs
+        varDefs: dict = dict()
+        for k in allVarDefs.keys():
+            if k not in os.environ:
+                varDefs[k] = allVarDefs[k]
+        return varDefs
+
+
+class VarInjector(object):
+    """Handles the injection of variables into github job variables"""
+
+    @classmethod
+    def injectVars(cts, varDefs: dict) -> None:
+        ghEnvFileName = os.getenv("GITHUB_ENV")
+        with open(ghEnvFileName, "a") as ghfile:
+            for k in varDefs.keys():
+                ghfile.write(f"{k}={varDefs[k]}\n")
+
+
 def main():
+    # deal with params
     passedArgs: dict = ParamParser.getParameters(" ".join(sys.argv[1:]))
     allFiles: list = passedArgs["paths"]
     varSelection: list = passedArgs["select"]
-    outfile: str = passedArgs["outfile"]
-    # filter only readable/accessabe files
-    files = FileHelper.filterExistingFilesOnly(allFiles)
-    # parse all valid files with the avaible parsers
-    overallVars: dict = FilesetParser.getVariablesDict(files)
-    # filter selection, if any
-    fileredVars = VariableSelector.filter(overallVars, varSelection)
-    # dump the variables to the specified file
-    FileHelper.varDictToFile(fileredVars, outfile)
+    overrideVars: bool = passedArgs["override"].lower() == "true"
+    # parse all valid files with the matching parser
+    overallVars: dict = FilesetParser.getVariablesDict(FileHelper.filterExistingFilesOnly(allFiles))
+    # filter selection, if any provided
+    fileredVars: dict = VariableSelector.filter(overallVars, varSelection)
+    # filter depending on the override behaviour
+    varsToInject: dict = OverrideManager.filterVars(overrideVars, fileredVars)
+    # inject the vars
+    VarInjector.injectVars(varsToInject)
 
 
 if __name__ == "__main__":
