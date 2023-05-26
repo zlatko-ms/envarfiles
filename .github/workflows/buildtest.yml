@@ -148,7 +148,6 @@ jobs:
             ./test/fixtures/integ/plain/somevars1.properties
             ./test/fixtures/integ/plain/somevars2.properties
 
-
       - name: Then the selected variables will be imported
         run: | 
           # load assertion function
@@ -157,6 +156,15 @@ jobs:
           # perform assertions
           assertDefinedAndEqualTo "runtime_version_minor" "2"
           assertDefinedAndEqualTo "runtime_version_patch" "16"
+
+      - name: And the variables not part of the selection will be ignored
+        run: | 
+          # load assertion function
+          source ./test/shell/assertvariable.sh
+
+          # perform assertions
+          assertNotDefined "runtime_version_major"
+        
 
   # it-action-json:
   #   needs: build-python
