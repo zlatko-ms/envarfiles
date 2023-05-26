@@ -1,4 +1,4 @@
-name: 'GH Environnement variables injector'
+name: 'Envarfiles'
 description: 'Injects GitHub env variables from files. Supports JSON, Yaml and Plain text formats'
 inputs:
   override:
