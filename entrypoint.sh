@@ -7,6 +7,7 @@ function readVariablesFiles() {
     varfile=$2
     
     while read p; do
+        echo "ZDBG reading line $p"
         k=$(echo $p | sed s'/[ ]*=[ ]*/=/g')
         n=$(echo $k | cut -f1 -d'=')
         v=$(echo $k | cut -f2 -d'=')

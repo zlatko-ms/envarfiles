@@ -7,8 +7,7 @@ class TestVarSelector(unittest.TestCase):
     allVarDefs: dict = {"var1": "val1", "var2": "val2", "var3": "val3", "var4": "val4"}
 
     def test_001_empty_selector(self) -> None:
-        selector: list = ()
-        filteredDefs = VariableSelector.filter(self.allVarDefs, selector)
+        filteredDefs = VariableSelector.filter(self.allVarDefs, [])
         self.assertEqual(len(filteredDefs.keys()), len(self.allVarDefs), "empty selector returns all vars")
         for v in self.allVarDefs.keys():
             self.assertTrue(v in filteredDefs.keys(), f"var {v} has been selected")
