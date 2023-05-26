@@ -13,3 +13,12 @@ function assertDefinedAndEqualTo() {
         exit 255;
     fi
 }
+
+function assertNotDefined() {
+    name=$1
+    if [ -z "${!name}" ] ; then
+        # do nothing
+    else:
+        echo "[ERROR] variable $name is defined while expected not to be";
+        exit 255;
+}
