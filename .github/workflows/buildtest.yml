@@ -378,7 +378,7 @@ jobs:
               runtime_version_patch
             paths: |
               ./test/fixtures/integ/yaml/somevars1.yaml
-              ./test/fixtures/integ/yaml/somevars2.json
+              ./test/fixtures/integ/yaml/somevars2.yaml
 
         - name: Then the selected variables will be imported
           run: | 
