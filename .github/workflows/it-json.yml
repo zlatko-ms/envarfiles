@@ -9,7 +9,7 @@ permissions:
 jobs:
   it-action-format-json:
 
-    name: Integration Tests
+    name: JSON
     runs-on: ubuntu-latest
     steps:
       - name: Checkout sources for fixtures

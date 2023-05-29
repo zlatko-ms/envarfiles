@@ -8,7 +8,7 @@ permissions:
 
 jobs:
   it-action-feature-select:
-    name: Select Variables
+    name: Selecttive Load
     runs-on: ubuntu-latest
     steps:
       - name: Checkout sources for fixtures

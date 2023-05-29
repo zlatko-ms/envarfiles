@@ -13,7 +13,7 @@ jobs:
       version_product_minor: 2
       version_product_patch: 3
 
-    name: Select and Override
+    name: Selective Override
     runs-on: ubuntu-latest
     steps:
       - name: Checkout sources for fixtures
