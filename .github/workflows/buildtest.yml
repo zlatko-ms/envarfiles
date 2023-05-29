@@ -1,4 +1,4 @@
-name: Build and Test Action
+name: Action Build and Test
 
 on:
   push:
@@ -17,9 +17,9 @@ jobs:
   
   ## invoke the python build & unit test process
   build:
-    uses: ./.github/workflows/build/python-build.yml
+    uses: ./.github/workflows/python-build.yml
   
   ## invoke the integration test suite
   it:
     needs: build
-    uses: ./.github/workflows/it/it-all.yml
+    uses: ./.github/workflows/it-all.yml
