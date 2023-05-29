@@ -144,14 +144,15 @@ In order to import all vars from a single file, simply use :
       paths: ./path/to/my/file.properties
 ```
 
-All usages are illustrated in the integration tests implemented in the main action workflow file [buildtest.yaml](.github/workflows/buildtest.yml). 
+All usages are illustrated by the integration tests implemented in the main action workflow directory.
 
-Here is a summary of the usage illustrations : 
+Here is a selection of the common usages : 
 
-| Use Case                 | Description            | Link |
-| ------------------------ | ---------------------- |------|
-| Multiple files   | Import all variables from the speficied file set | [view](.github/workflows/buildtest.yml?plain=1#L416-L421) |
-| Override  | Override values of already existing vars         | [view](.github/workflows/buildtest.yml?plain=1#L443-L449) |
-| Selection | Imports only specified variables from the file set |  [view](.github/workflows/buildtest.yml?plain=1#L489-L497) |
+
+| Use Case                 | Description                                                                   | Link     |
+| ------------------------ | ----------------------------------------------------------------------------- |----------|
+| Load from multiple files | Load variables from multiple files and formats                                | [view](.github/workflows/it-multiformat.yml?plain=1#L18-L24)
+| Override existing values | Override the values of already defined variables                              | [view](.github/workflows/it-override.yml?plain=1#L22-L29)
+| Select variables         | Load or override only variables that are specified in the selector            | [view](.github/workflows/it-select.yml?plain=1#L17-L28)
 
 When copying/pasting from the examples, remember to replace the @main tag by @v2.
