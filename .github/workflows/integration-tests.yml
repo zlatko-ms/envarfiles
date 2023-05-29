@@ -28,5 +28,19 @@ jobs:
     needs : [it-format-plain-text-files,it-format-json-files, it-format-yaml-files ]
     uses: ./.github/workflows/it-multiformat.yml
 
+  it-feature-noverride:
+    needs: [ it-action-format-multiple ]
+    uses: ./.github/workflows/it-no-override.yml
 
+  it-feature-override:
+    needs: [ it-action-format-multiple ]
+    uses: ./.github/workflows/it-override.yml
+
+  it-feature-select:
+      needs: [ it-action-format-multiple ]
+      uses: ./.github/workflows/it-select.yml
+  
+  it-feature-select-override:
+      needs: [ it-action-format-multiple ]
+      uses: ./.github/workflows/it-select-override.yml
   
