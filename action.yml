@@ -1,5 +1,5 @@
 name: 'Envarfiles'
-description: 'Injects GitHub env variables from files. Supports JSON, Yaml and Plain text formats'
+description: 'Loads env variables from JSON, YAML and Plain text files. Supports properties nesting from structured formats (json, yaml)'
 inputs:
   override:
     description: 'set to true to override existing workflow variables with definitions from the file(s)'
@@ -13,6 +13,10 @@ inputs:
     description: 'list of variables to import, when empty import all discovered variables'
     required: true
     default: ''
+  separator:
+    description: 'defines the separator for nested defintions loaded from structures formats (json, yaml, ...)'
+    reruired: true
+    default: '_'
 branding:
   icon: 'file-text'
   color: 'orange'
@@ -23,3 +27,4 @@ runs:
     - override=${{ inputs.override }}
     - paths=${{ inputs.paths }}
     - select=${{ inputs.select }}
+    - separator=${{ inputs.select }}
