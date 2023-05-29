@@ -1,0 +1,39 @@
+name: Integration Tests
+
+on:
+  workflow_call:
+ 
+permissions:
+  contents: read
+
+jobs:
+  
+  plain:
+    uses: ./.github/workflows/it-plain.yml
+
+  json:
+    uses: ./.github/workflows/it-json.yml
+
+  yaml:
+    uses: ./.github/workflows/it-yaml.yml
+
+  # multiple:
+  #   needs : [ plain, json, yaml ]
+  #   uses: ./.github/workflows/it-multiformat.yml
+
+  # noverride:
+  #   needs: [ its-multiple ]
+  #   uses: ./.github/workflows/it-no-override.yml
+
+  # override:
+  #   needs: [ its-multiple ]
+  #   uses: ./.github/workflows/it-override.yml
+
+  # select:
+  #     needs: [ its-multiple ]
+  #     uses: ./.github/workflows/it-select.yml
+  
+  # select-override:
+  #     needs: [ its-multiple ]
+  #     uses: ./.github/workflows/it-select-override.yml
+  
