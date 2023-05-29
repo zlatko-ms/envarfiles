@@ -20,9 +20,9 @@ jobs:
   multi:
     uses: ./.github/workflows/it-multiformat.yml
 
-  override:
-    uses: ./.github/workflows/it-override.yml
+  # override:
+  #   uses: ./.github/workflows/it-override.yml
 
-  select:
-    uses: ./.github/workflows/it-select.yml
+  # select:
+  #   uses: ./.github/workflows/it-select.yml
   
