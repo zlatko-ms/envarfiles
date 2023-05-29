@@ -1,0 +1,34 @@
+name: IT Mulitple Formats
+
+on:
+  workflow_call:
+ 
+permissions:
+  contents: read
+
+jobs:
+  it-action-format-multi:
+
+    name: Integration Tests - Multiple Formats
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout sources for fixtures
+        uses: actions/checkout@v3
+
+      - name: When we require to load all vars from a set of files of different formats
+        uses: zlatko-ms/varfiletoenv@main
+        with:
+          paths: |
+            ./test/fixtures/integ/plain/multi.properties
+            ./test/fixtures/integ/json/multi.json
+            ./test/fixtures/integ/yaml/multi.yaml
+
+      - name: Then all the vars from the plain text file are loaded
+        run: | 
+          # load assertion function
+          source ./test/shell/assertvariable.sh
+
+          # perform assertions
+          assertDefinedAndEqualTo "build_version_major" "12"
+          assertDefinedAndEqualTo "build_version_minor" "13"
+          assertDefinedAndEqualTo "build_version_patch" "14"

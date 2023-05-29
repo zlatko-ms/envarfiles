@@ -1,0 +1,31 @@
+name: IT JSON
+
+on:
+  workflow_call:
+ 
+permissions:
+  contents: read
+
+jobs:
+  it-action-format-json:
+
+    name: Integration Tests - JSON
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout sources for fixtures
+        uses: actions/checkout@v3
+
+      - name: When we require to load all vars from a json file
+        uses: zlatko-ms/varfiletoenv@main
+        with:
+          paths: ./test/fixtures/integ/json/format.json
+
+      - name: Then all the vars from the json file are loaded
+        run: | 
+          # load assertion function
+          source ./test/shell/assertvariable.sh
+
+          # perform assertions
+          assertDefinedAndEqualTo "container_base_image" "ubuntu:22"
+          assertDefinedAndEqualTo "container_base_tag" "latest"
+          assertDefinedAndEqualTo "container_base_repo" "dockerhub"

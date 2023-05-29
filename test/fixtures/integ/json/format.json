@@ -1,0 +1,9 @@
+{
+    "container" : {
+        "base" : {
+            "image" : "ubuntu:22",
+            "tag" : "latest",
+            "repo" : "dockerhub"
+        }
+    }
+}
