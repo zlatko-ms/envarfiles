@@ -25,15 +25,15 @@ jobs:
     needs: [ multiple ]
     uses: ./.github/workflows/it-no-override.yml
 
-  # override:
-  #   needs: [ multiple ]
-  #   uses: ./.github/workflows/it-override.yml
+  override:
+    needs: [ multiple ]
+    uses: ./.github/workflows/it-override.yml
 
-  # select:
-  #     needs: [ multiple ]
-  #     uses: ./.github/workflows/it-select.yml
+  select:
+    needs: [ multiple ]
+    uses: ./.github/workflows/it-select.yml
   
-  # select-override:
-  #     needs: [ multiple ]
-  #     uses: ./.github/workflows/it-select-override.yml
+  select-override:
+    needs: [ multiple ]
+    uses: ./.github/workflows/it-select-override.yml
   
