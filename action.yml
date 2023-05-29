@@ -1,4 +1,4 @@
-name: 'Envarfiles'
+name: 'envarfiles'
 description: 'Loads env variables from JSON, YAML and Plain text files. Supports properties nesting from structured formats (json, yaml)'
 inputs:
   override:

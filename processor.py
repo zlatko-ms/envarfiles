@@ -215,12 +215,12 @@ class FilesetParser(object):
     ALL_PARSERS = [TextFileParser, JsonFileParser, YamlFileParser]
 
     @classmethod
-    def getVariablesDict(cts, files: list) -> dict:
+    def getVariablesDict(cts, files: list, nestedsep: str = "_", fencoding: str = "utf-8") -> dict:
         allVars: dict = dict()
         for file in files:
             for parser in cts.ALL_PARSERS:
                 if parser.accepts(file):
-                    fileDict = parser.getVariablesDict(file)
+                    fileDict = parser.getVariablesDict(file, nestedsep, fencoding)
                     allVars.update(fileDict)
         return allVars
 
@@ -255,9 +255,11 @@ def main():
     passedArgs: dict = ParamParser.getParameters(" ".join(sys.argv[1:]))
     allFiles: list = passedArgs["paths"]
     varSelection: list = passedArgs["select"]
+    varSeparator: list = passedArgs["separator"]
     overrideVars: bool = passedArgs["override"].lower() == "true"
+
     # parse all valid files with the matching parser
-    overallVars: dict = FilesetParser.getVariablesDict(FileHelper.filterExistingFilesOnly(allFiles))
+    overallVars: dict = FilesetParser.getVariablesDict(FileHelper.filterExistingFilesOnly(allFiles), varSeparator)
     # filter selection, if any provided
     fileredVars: dict = VariableSelector.filter(overallVars, varSelection)
     # filter depending on the override behaviour
