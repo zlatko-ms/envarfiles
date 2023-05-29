@@ -13,7 +13,7 @@ jobs:
       version_product_minor: 2
       version_product_patch: 3
 
-    name: Integration Tests - No Override
+    name: No Variable override
     runs-on: ubuntu-latest
     steps:
       - name: Checkout sources for fixtures

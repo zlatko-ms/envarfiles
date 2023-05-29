@@ -9,7 +9,7 @@ permissions:
 jobs:
   it-action-format-plaintext:
 
-    #name: Integration Tests - Plain Text
+    name: Plain Text Format
     runs-on: ubuntu-latest
     steps:
       - name: Checkout sources for fixtures

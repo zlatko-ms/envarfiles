@@ -1,4 +1,4 @@
-name: Build and Test
+name: Build and Test Action
 
 on:
   push:
@@ -14,8 +14,12 @@ permissions:
   contents: read
 
 jobs:
+  
+  ## invoke the python build & unit test process
   build-python:
     uses: ./.github/workflows/python-build.yml
+  
+  ## invoke the integration test suite
   integ-tests:
     needs: build-python
     uses: ./.github/workflows/integration-tests.yml

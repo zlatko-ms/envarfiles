@@ -13,7 +13,7 @@ jobs:
       version_product_minor: 2
       version_product_patch: 3
 
-    name: Integration Tests - Select and override
+    name: Select and Override
     runs-on: ubuntu-latest
     steps:
       - name: Checkout sources for fixtures

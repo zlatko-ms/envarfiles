@@ -2,7 +2,7 @@ name: IT Override
 
 on:
   workflow_call:
-    
+
 permissions:
   contents: read
 
@@ -13,7 +13,7 @@ jobs:
       version_product_minor: 2
       version_product_patch: 3
 
-    name: Integration Tests - Override
+    name: Override Variables
     runs-on: ubuntu-latest
     steps:
       - name: Checkout sources for fixtures
