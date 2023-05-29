@@ -16,7 +16,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: When we require to load all vars from a plain text file
-        uses: zlatko-ms/envarfiles@main
+        uses: zlatko-ms/envarfiles@38-add-coverage-in-build-process
         with:
           paths: ./test/fixtures/integ/plain/format.properties
 

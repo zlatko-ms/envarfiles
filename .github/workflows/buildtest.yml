@@ -2,11 +2,11 @@ name: Action Build and Test
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "38-add-coverage-in-build-process" ]
     paths-ignore:
       - 'README.md'
   pull_request:
-    branches: [ "main" ]
+    branches: [ "38-add-coverage-in-build-process" ]
     paths-ignore:
       - 'README.md'
  
