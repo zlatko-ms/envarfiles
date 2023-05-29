@@ -15,22 +15,22 @@ jobs:
       - name: Checkout sources for fixtures
         uses: actions/checkout@v3
 
-      - name: When we require to load from structures formats with a spefific nesting separator
-        uses: zlatko-ms/envarfiles@34-nested_sep
+      - name: When we require to load from structured formats with a specific nesting separator
+        uses: zlatko-ms/envarfiles@main
         with:
           separator: '-'
           paths: |
             ./test/fixtures/integ/json/override.json
             ./test/fixtures/integ/yaml/override.yaml  
 
-      - name: Then the variable from JSON is defined with the expected separator 
+      - name: Then the variable from JSON is defined with the expected separator
         uses: nick-fields/assert-action@v1
         with:
           expected: 3
           actual: ${{ env.version-product-minor }}
 
 
-      - name: And the variable from YAML is defined with the expected separator 
+      - name: And the variable from YAML is defined with the expected separator
         uses: nick-fields/assert-action@v1
         with:
           expected: 4
