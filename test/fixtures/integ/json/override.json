@@ -1,7 +1,7 @@
 { 
-    "version" : { 
+    "version" : {
         "product" : {
-            "major" : 2
+            "minor" : 3
         }
     }
 }

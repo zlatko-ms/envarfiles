@@ -1,9 +1,0 @@
-{ 
-    "version" : { 
-        "build" : {
-            "patch" : 42,
-            "tag" : "latest"
-        }
-    }
-}
-
