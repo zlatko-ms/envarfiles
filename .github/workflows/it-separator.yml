@@ -23,11 +23,15 @@ jobs:
             ./test/fixtures/integ/json/override.json
             ./test/fixtures/integ/yaml/override.yaml  
 
-      - name: Then the nested variables are defined with the expected separator 
-        run: | 
-          # load assertion function
-          source ./test/shell/assertvariable.sh
+      - name: Then the variable from JSON is defined with the expected separator 
+        uses: nick-fields/assert-action@v1
+        with:
+          expected: 1
+          actual: ${{ env.version.product.minor }}
 
-          # perform assertions
-          assertDefinedAndEqualTo "version.product.minor" "3"
-          assertDefinedAndEqualTo "version.product.patch" "4"
+
+      - name: And the variable from YAML is defined with the expected separator 
+        uses: nick-fields/assert-action@v1
+        with:
+          expected: 4
+          actual: ${{ env.version.product.patch }}

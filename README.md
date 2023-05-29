@@ -17,7 +17,7 @@ For more information on github action variables please check [Variables](https:/
 | paths     | Yes      | The paths of files that contain the definitions of the variable                                 | ./project.vars.properties |
 | override  | No       | When set to true, the processing will override the already defined vars in the job with the values read from file  | false |
 | select    | No       | When non empty, the parameter indicates the list of the variables to import from the fileset. In that case only the listed variables will be imported, other discovered varaibles will be ignored. When empty all discovered variables will be imported | '' |
-
+| separator | No       | Override the default separator for nested properties that can be part of structured files (json, yaml) | '_' |
 
 # Supported Formats
 
@@ -154,5 +154,6 @@ Here is a selection of the common usages :
 | Load from multiple files | Load variables from multiple files and formats                                | [view](.github/workflows/it-multiformat.yml?plain=1#L18-L24)
 | Override existing values | Override the values of already defined variables                              | [view](.github/workflows/it-override.yml?plain=1#L22-L29)
 | Select variables         | Load or override only variables that are specified in the selector            | [view](.github/workflows/it-select.yml?plain=1#L17-L28)
+| Change nested separator  | Loaded nested variables using a specific separator instead of the default "_"  | [view](.github/workflows/it-separator.yml?plain=1#L18-L24)
 
 When copying/pasting from the examples, remember to replace the @main tag by @v2.
