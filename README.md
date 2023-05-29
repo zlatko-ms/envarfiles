@@ -1,3 +1,5 @@
+![example workflow](https://github.com/zlatko-ms/envarfiles/actions/workflows/buildtest.yml/badge.svg)
+
 # Env Var Files
 
 The action imports variables defeined in files (plain text, json, yaml) into the GitHub workflow env variable set. 
