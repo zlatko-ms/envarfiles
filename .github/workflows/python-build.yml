@@ -43,11 +43,11 @@ jobs:
       run: |
         python -m nose2 -v -F -s ${{ env.UNIT_TEST_DIR }} -t .
 
-    - name: Ensure Unit Test coverage is greater then ${{ env.PYTHON_MIN_COVERAGE }}
+    - name: Ensure Unit Test coverage is greater or equal to  ${{ env.PYTHON_MIN_COVERAGE }} %
       run: |
         python -m nose2 --with-coverage -F -s ${{ env.UNIT_TEST_DIR }} -t . 2> /tmp/coverage
         r=$(grep "TOTAL" /tmp/coverage | cut -f41 -d' ' | sed 's/\%//g')
-        echo "Current coverage is $r"
+        echo "Found coverage of $r %"
         if [ $r -lt ${{ env.PYTHON_MIN_COVERAGE }} ]; then
           echo "Error, current coverage is $r, while the standard is set to ${{ env.PYTHON_MIN_COVERAGE }}"
           exit 255
