@@ -2,11 +2,11 @@ name: Action Build and Test
 
 on:
   push:
-    branches: [ "28-it-refactoring" ]
+    branches: [ "main" ]
     paths-ignore:
       - 'README.md'
   pull_request:
-    branches: [ "28-it-refactoring" ]
+    branches: [ "main" ]
     paths-ignore:
       - 'README.md'
  
