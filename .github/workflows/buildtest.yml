@@ -17,4 +17,5 @@ jobs:
   build-python:
     uses: ./.github/workflows/python-build.yml
   integ-tests:
+    needs: build-python
     uses: ./.github/workflows/integration-tests.yml
