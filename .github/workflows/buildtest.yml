@@ -2,11 +2,11 @@ name: Action Build and Test
 
 on:
   push:
-    branches: [ "35-fix-tag-in-its" ]
+    branches: [ "main" ]
     paths-ignore:
       - 'README.md'
   pull_request:
-    branches: [ "35-fix-tag-in-its" ]
+    branches: [ "main" ]
     paths-ignore:
       - 'README.md'
  
