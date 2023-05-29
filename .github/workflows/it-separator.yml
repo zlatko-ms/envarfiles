@@ -26,7 +26,7 @@ jobs:
       - name: Then the variable from JSON is defined with the expected separator 
         uses: nick-fields/assert-action@v1
         with:
-          expected: 1
+          expected: 3
           actual: ${{ env.version-product-minor }}
 
 
