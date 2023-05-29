@@ -9,10 +9,9 @@ function usage {
         echo "ERROR  : $errorMessage"
         echo ""
     fi
-    echo "USAGE  : rebase_workflow -w path/to/workflow.yml -s sourceBranchName -t targetBranchName"
+    echo "USAGE  : rebase_workflow -d path/to/workflows -s sourceBranchName -t targetBranchName"
     echo "PARAMS :"
-    echo "  -w : path to the worfklow file to rebase"
-    echo "  -d : directory of the workflow files to rebase"
+    echo "  -d : directory of the workflow files to rebase, defaults to .github/workflows"
     echo "  -s : sourceBranchName, for instance main"
     echo "  -t : targetBranchName, for instance 9-fix-my-bug"
     echo ""
@@ -59,9 +58,8 @@ if [ -d "$directory" ] ; then
       # branches: [ "main" ]
       perl -pi -e "s/branches\: \[ \"$source\" \]/branches\: \[ \"$target\" \]/g" $f
     done
-       
 else
-    echo "ERROR : unable to access file(s) to peform rebase"
+    echo "ERROR : unable to access directory $directory to peform rebase"
     exit 255
 fi 
 
