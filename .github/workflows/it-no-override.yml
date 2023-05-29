@@ -1,4 +1,4 @@
-name: IT No Override
+name: No Override
 
 on:
   workflow_call:

@@ -1,4 +1,4 @@
-name: IT Mulitple Formats
+name: Mulitple Formats
 
 on:
   workflow_call:

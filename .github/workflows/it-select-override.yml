@@ -1,4 +1,4 @@
-name: IT Select Override
+name: Select and Override
 
 on:
   workflow_call:

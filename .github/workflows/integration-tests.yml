@@ -15,32 +15,36 @@ permissions:
   contents: read
 
 jobs:
-  it-format-plain-text-files:
+  its-plain:
+    name: "IT - Plain Text Format"
     uses: ./.github/workflows/it-plain.yml
 
-  it-format-json-files:
+  its-json:
+    name: "IT - JSON Format"
     uses: ./.github/workflows/it-json.yml
 
-  it-format-yaml-files:
+  its-yaml:
+    name : "IT - YAML Format"
     uses: ./.github/workflows/it-yaml.yml
 
-  it-action-format-multiple:
-    needs : [it-format-plain-text-files,it-format-json-files, it-format-yaml-files ]
+  its-multiple:
+    name : "IT - Multiple Formats"
+    needs : [its-plain,its-json, its-yaml ]
     uses: ./.github/workflows/it-multiformat.yml
 
   it-feature-noverride:
-    needs: [ it-action-format-multiple ]
+    needs: [ its-multiple ]
     uses: ./.github/workflows/it-no-override.yml
 
   it-feature-override:
-    needs: [ it-action-format-multiple ]
+    needs: [ its-multiple ]
     uses: ./.github/workflows/it-override.yml
 
   it-feature-select:
-      needs: [ it-action-format-multiple ]
+      needs: [ its-multiple ]
       uses: ./.github/workflows/it-select.yml
   
   it-feature-select-override:
-      needs: [ it-action-format-multiple ]
+      needs: [ its-multiple ]
       uses: ./.github/workflows/it-select-override.yml
   

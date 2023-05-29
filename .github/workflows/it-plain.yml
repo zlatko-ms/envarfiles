@@ -1,4 +1,4 @@
-name: IT Plain Text
+name: Plain Text Format
 
 on:
   workflow_call:

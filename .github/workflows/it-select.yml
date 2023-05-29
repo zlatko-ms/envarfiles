@@ -1,4 +1,4 @@
-name: IT Select
+name: Select Variables
 
 on:
   workflow_call:
