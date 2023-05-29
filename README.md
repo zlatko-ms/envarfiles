@@ -158,4 +158,4 @@ Here is a selection of the common usages :
 | Select variables         | Load or override only variables that are specified in the selector            | [view](.github/workflows/it-select.yml?plain=1#L17-L28)
 | Change nested separator  | Loaded nested variables using a specific separator instead of the default "_"  | [view](.github/workflows/it-separator.yml?plain=1#L18-L24)
 
-When copying/pasting from the examples, remember to replace the @main tag by @v2.
+When copying/pasting from the examples, remember to replace the @main tag by the release tag [ currently @v2 ].
