@@ -18,11 +18,14 @@ jobs:
     uses: ./.github/workflows/it-yaml.yml
 
   multi:
+    needs: [ plain, json, yaml]
     uses: ./.github/workflows/it-multiformat.yml
 
   override:
+    needs: [ multi ]
     uses: ./.github/workflows/it-override.yml
 
   select:
+    needs: [ multi]
     uses: ./.github/workflows/it-select.yml
   
