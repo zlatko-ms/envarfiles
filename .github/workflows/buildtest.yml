@@ -2,11 +2,11 @@ name: Action Build and Test
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "34-nested_sep" ]
     paths-ignore:
       - 'README.md'
   pull_request:
-    branches: [ "main" ]
+    branches: [ "34-nested_sep" ]
     paths-ignore:
       - 'README.md'
  
