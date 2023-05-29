@@ -9,7 +9,7 @@ permissions:
 jobs:
   it-action-format-yaml:
 
-    name: Integration Tests - YAML
+    #name: Integration Tests - YAML
     runs-on: ubuntu-latest
     steps:
       - name: Checkout sources for fixtures

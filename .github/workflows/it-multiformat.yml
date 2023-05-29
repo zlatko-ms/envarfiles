@@ -9,7 +9,7 @@ permissions:
 jobs:
   it-action-format-multi:
 
-    name: Integration Tests - Multiple Formats
+    #name: Integration Tests - Multiple Formats
     runs-on: ubuntu-latest
     steps:
       - name: Checkout sources for fixtures
