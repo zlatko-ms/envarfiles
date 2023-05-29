@@ -1,35 +1,24 @@
 name: Integration Tests
 
 on:
-  push:
-    branches: [ "28-it-refactoring" ]
-    paths-ignore:
-      - 'README.md'
-  pull_request:
-    branches: [ "28-it-refactoring" ]
-    paths-ignore:
-      - 'README.md'
-  workflow_dispatch:
+  workflow_call:
  
 permissions:
   contents: read
 
 jobs:
+  
   its-plain:
-    name: "IT - Plain Text Format"
     uses: ./.github/workflows/it-plain.yml
 
   its-json:
-    name: "IT - JSON Format"
     uses: ./.github/workflows/it-json.yml
 
   its-yaml:
-    name : "IT - YAML Format"
     uses: ./.github/workflows/it-yaml.yml
 
   its-multiple:
-    name : "IT - Multiple Formats"
-    needs : [its-plain,its-json, its-yaml ]
+    needs : [ its-json, its-plain, its-yaml ]
     uses: ./.github/workflows/it-multiformat.yml
 
   it-feature-noverride:
