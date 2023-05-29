@@ -1,4 +1,4 @@
-![example workflow](https://github.com/zlatko-ms/envarfiles/actions/workflows/buildtest.yml/badge.svg)
+![Build and Test](https://github.com/zlatko-ms/envarfiles/actions/workflows/buildtest.yml/badge.svg)
 
 # Env Var Files
 
