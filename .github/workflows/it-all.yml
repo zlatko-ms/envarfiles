@@ -28,4 +28,8 @@ jobs:
   select:
     needs: [ multi]
     uses: ./.github/workflows/it-select.yml
+
+  separator:
+    needs: [ multi]
+    uses: ./.github/workflows/it-separator.yml
   
