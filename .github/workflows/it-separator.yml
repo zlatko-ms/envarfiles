@@ -1,4 +1,4 @@
-name: Nestes Separator
+name: Nested Separator
 
 on:
   workflow_call:
@@ -8,7 +8,7 @@ permissions:
 
 jobs:
 
-  it-action-feature-select-load:
+  it-action-nested-sep:
     name: Nested Separator
     runs-on: ubuntu-latest
     steps:
