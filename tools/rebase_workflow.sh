@@ -20,7 +20,7 @@ function usage {
 
 }
 
-while getopts 'w:s:t:' OPTION; do
+while getopts 's:t:d:' OPTION; do
   case "$OPTION" in 
     w) 
       workflow="$OPTARG"
@@ -45,22 +45,21 @@ while getopts 'w:s:t:' OPTION; do
   esac
 done
 
-if [ -z "$workflow" or -z "$directory" ]; then usage "missing one of the mandatory params -w or -d " ; fi
+if [ -z "$directory" ] ; then 
+  directory=".github/workflows"
+fi
+
 if [ -z "$source" ]; then usage "missing mandatory param -s" ; fi
 if [ -z "$target" ]; then usage "missing mandatory param -t" ; fi
 
-echo "INFO : processing file $workflow"
-
-if [ -f "$workflow" ] ; then 
-    perl -pi -e "s/varfiletoenv\@$source/envarfiles\@$target/g" $workflow
-    # branches: [ "main" ]
-    perl -pi -e "s/branches\: \[ \"$source\" \]/branches\: \[ \"$target\" \]/g" $workflow
-elif [ -d "$directory" ] ; then
-    files=$(find "$directory" -type f -name "*.yml" )
-    for f in files:
-      perl -pi -e "s/varfiletoenv\@$source/envarfiles\@$target/g" $f
+if [ -d "$directory" ] ; then
+    for f in `find "$directory" -type f -name "*.yml"` ; do
+      echo "[INFO] processing file $f"       
+      perl -pi -e "s/envarfiles\@$source/envarfiles\@$target/g" $f
       # branches: [ "main" ]
-      perl -pi -e "s/branches\: \[ \"$source\" \]/branches\: \[ \"$target\" \]/g" $f      
+      perl -pi -e "s/branches\: \[ \"$source\" \]/branches\: \[ \"$target\" \]/g" $f
+    done
+       
 else
     echo "ERROR : unable to access file(s) to peform rebase"
     exit 255
