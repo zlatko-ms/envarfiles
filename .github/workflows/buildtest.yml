@@ -2,11 +2,11 @@ name: Action Build and Test
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "31-distinct-dependencies" ]
     paths-ignore:
       - 'README.md'
   pull_request:
-    branches: [ "main" ]
+    branches: [ "31-distinct-dependencies" ]
     paths-ignore:
       - 'README.md'
  
