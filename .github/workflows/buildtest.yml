@@ -20,6 +20,6 @@ jobs:
     uses: ./.github/workflows/python-build.yml
   
   ## invoke the integration test suite
-  it:
+  integration-tests:
     needs: build
     uses: ./.github/workflows/it-all.yml

@@ -17,23 +17,23 @@ jobs:
   yaml:
     uses: ./.github/workflows/it-yaml.yml
 
-  # multiple:
-  #   needs : [ plain, json, yaml ]
-  #   uses: ./.github/workflows/it-multiformat.yml
+  multiple:
+    needs : [ plain, json, yaml ]
+    uses: ./.github/workflows/it-multiformat.yml
 
-  # noverride:
-  #   needs: [ its-multiple ]
-  #   uses: ./.github/workflows/it-no-override.yml
+  noverride:
+    needs: [ multiple ]
+    uses: ./.github/workflows/it-no-override.yml
 
   # override:
-  #   needs: [ its-multiple ]
+  #   needs: [ multiple ]
   #   uses: ./.github/workflows/it-override.yml
 
   # select:
-  #     needs: [ its-multiple ]
+  #     needs: [ multiple ]
   #     uses: ./.github/workflows/it-select.yml
   
   # select-override:
-  #     needs: [ its-multiple ]
+  #     needs: [ multiple ]
   #     uses: ./.github/workflows/it-select-override.yml
   
