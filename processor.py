@@ -257,7 +257,6 @@ def main():
     varSelection: list = passedArgs["select"]
     varSeparator: list = passedArgs["separator"]
     overrideVars: bool = passedArgs["override"].lower() == "true"
-
     # parse all valid files with the matching parser
     overallVars: dict = FilesetParser.getVariablesDict(FileHelper.filterExistingFilesOnly(allFiles), varSeparator)
     # filter selection, if any provided
