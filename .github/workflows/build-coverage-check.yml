@@ -1,4 +1,4 @@
-name: Python Unit Tests
+name: Python Coverage
 
 on:
   workflow_call:
@@ -8,7 +8,7 @@ permissions:
 
 jobs:
   build-python:
-    name: Enforce Pyton Coding Conventions
+    name: Enforce Unit Coverage
     runs-on: ubuntu-latest
     steps:
 

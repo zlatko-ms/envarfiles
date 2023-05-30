@@ -8,7 +8,7 @@ permissions:
 
 jobs:
   build-python:
-    name: Enforce Pyton Coding Conventions
+    name: Unit Tests
     runs-on: ubuntu-latest
     steps:
 
