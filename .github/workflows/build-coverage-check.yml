@@ -33,6 +33,7 @@ jobs:
       run: |
       
         python -m nose2 --with-coverage -F -s ${{ env.UNIT_TEST_DIR }} -t . 2> /tmp/coverage
+        cat /tmp/coverage
         expected=${{ env.PYTHON_MIN_COVERAGE }}
         found=$(grep "TOTAL" /tmp/coverage | cut -f41 -d' ' | sed 's/\%//g')
         echo "[INFO] Current  Coverage is $found %"
