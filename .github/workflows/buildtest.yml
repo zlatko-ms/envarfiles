@@ -17,7 +17,7 @@ jobs:
   
   ## invoke the python build & unit test process
   build:
-    uses: ./.github/workflows/python-build.yml
+    uses: ./.github/workflows/build-all.yml
   
   ## invoke the integration test suite
   integration-tests:
