@@ -37,7 +37,7 @@ jobs:
         found=$(grep "TOTAL" /tmp/coverage | cut -f41 -d' ' | sed 's/\%//g')
         echo "[INFO] Current  Coverage is $found %"
         echo "[INFO] Expected Coverage is $expected % "
-        if [ $r -lt $expected ]; then
+        if [ $found -lt $expected ]; then
           echo "[ERROR] Current coverage is below minimal treshold !"
           exit 255
         fi
