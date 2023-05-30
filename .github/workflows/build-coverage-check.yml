@@ -8,7 +8,7 @@ permissions:
 
 jobs:
   build-python:
-    name: Enforce Unit Coverage
+    name: Enforce Python Unit Coverage
     runs-on: ubuntu-latest
     steps:
 
@@ -29,17 +29,25 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r ./conf/python/build.txt -r ./conf/python/runtime.txt
 
-    - name: Ensure Unit Test coverage is greater or equal to  ${{ env.PYTHON_MIN_COVERAGE }} %
+    - name: Ensure Unit Test coverage is high enough 
       run: |
-      
+        # compute and display coverage
         python -m nose2 --with-coverage -F -s ${{ env.UNIT_TEST_DIR }} -t . 2> /tmp/coverage
         cat /tmp/coverage
-        expected=${{ env.PYTHON_MIN_COVERAGE }}
-        found=$(grep "TOTAL" /tmp/coverage | cut -f41 -d' ' | sed 's/\%//g')
-        echo "[INFO] Current  Coverage is $found %"
-        echo "[INFO] Expected Coverage is $expected % "
-        if [ $found -lt $expected ]; then
-          echo "[ERROR] Current coverage is below minimal treshold !"
+        # get coverage metrics
+        expectedTotal=${{ env.PYTHON_COVERAGE_MIN_TOTAL }}
+        foundTotal=$(grep "TOTAL" /tmp/coverage | cut -f41 -d' ' | sed 's/\%//g')
+        expectedProcessor=${{ env.PYTHON_COVERAGE_MIN_PROCESSOR }}
+        foundProcessor=$(grep "processor.py" /tmp/coverage | cut -f34 -d' ' | sed 's/\%//g')
+        echo "[INFO] Global    code coverage expected=$expectedTotal found=$foundTotal"
+        echo "[INFO] Processor code coverage expected=$expectedProcessor found=$foundProcessor"
+        # acceptance
+        if [ $foundTotal -lt $expectedTotal ]; then
+          echo "[ERROR] Current global coverage is below minimal treshold !"
+          exit 255
+        fi
+        if [ $foundProcessor -lt $expectedProcessor ]; then
+          echo "[ERROR] Current processor coverage is below minimal treshold !"
           exit 255
         fi
 
