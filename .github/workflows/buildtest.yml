@@ -2,11 +2,11 @@ name: Action Build and Test
 
 on:
   push:
-    branches: [ "40-minor-impro" ]
+    branches: [ "main" ]
     paths-ignore:
       - 'README.md'
   pull_request:
-    branches: [ "40-minor-impro" ]
+    branches: [ "main" ]
     paths-ignore:
       - 'README.md'
  
