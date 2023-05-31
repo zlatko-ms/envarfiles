@@ -1,4 +1,4 @@
-name: Variable Override
+name: IT Variable Override
 
 on:
   workflow_call:
