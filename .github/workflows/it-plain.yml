@@ -1,15 +1,16 @@
-name: Plain Text Format
+name: IT Plain Text Format
 
 on:
   workflow_call:
- 
+  workflow_dispatch:
+
 permissions:
   contents: read
 
 jobs:
   it-action-format-plaintext:
 
-    name: Plain Text
+    name: Plain Text Format
     runs-on: ubuntu-latest
     steps:
       - name: Checkout sources for fixtures

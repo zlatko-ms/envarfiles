@@ -1,7 +1,8 @@
-name: JSON Format
+name: IT JSON Format
 
 on:
   workflow_call:
+  workflow_dispatch:
  
 permissions:
   contents: read
@@ -9,7 +10,7 @@ permissions:
 jobs:
   it-action-format-json:
 
-    name: JSON
+    name: JSON Format
     runs-on: ubuntu-latest
     steps:
       - name: Checkout sources for fixtures

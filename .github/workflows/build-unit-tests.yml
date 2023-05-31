@@ -2,13 +2,14 @@ name: Python Unit Tests
 
 on:
   workflow_call:
- 
+  workflow_dispatch:
+
 permissions:
   contents: read
 
 jobs:
-  build-python:
-    name: Python Unit Tests
+  build-python-unit:
+    name: Run Python Unit Tests
     runs-on: ubuntu-latest
     steps:
 

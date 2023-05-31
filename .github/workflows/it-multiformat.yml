@@ -1,7 +1,8 @@
-name: Mulitple Formats
+name: IT Mulitple Formats
 
 on:
   workflow_call:
+  workflow_dispatch:
  
 permissions:
   contents: read

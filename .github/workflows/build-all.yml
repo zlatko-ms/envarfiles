@@ -2,6 +2,7 @@ name: Python Build
 
 on:
   workflow_call:
+  workflow_dispatch:
  
 permissions:
   contents: read
@@ -12,11 +13,9 @@ jobs:
     uses: ./.github/workflows/build-coding-style.yml
 
   unittest:
-    needs: coding
     uses: ./.github/workflows/build-unit-tests.yml
 
   coverage:
-    needs: unittest
     uses: ./.github/workflows/build-coverage-check.yml
 
   

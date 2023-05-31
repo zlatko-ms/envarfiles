@@ -2,13 +2,14 @@ name: Python Test Coverage
 
 on:
   workflow_call:
+  workflow_dispatch:
  
 permissions:
   contents: read
 
 jobs:
-  build-python:
-    name: Python Test Coverage
+  build-python-coverage:
+    name: Enforce Python Unit Test Coverage
     runs-on: ubuntu-latest
     steps:
 

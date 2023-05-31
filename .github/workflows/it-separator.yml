@@ -1,15 +1,16 @@
-name: Override Nested Separator
+name: IT Override Nested Separator
 
 on:
   workflow_call:
- 
+  workflow_dispatch:
+
 permissions:
   contents: read
 
 jobs:
 
   it-action-nested-sep:
-    name: Override Nested Separator
+    name: Nested Separator Override
     runs-on: ubuntu-latest
     steps:
       - name: Checkout sources for fixtures

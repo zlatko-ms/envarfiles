@@ -1,15 +1,16 @@
-name: YAML Format
+name: IT YAML Format
 
 on:
   workflow_call:
- 
+  workflow_dispatch:
+
 permissions:
   contents: read
 
 jobs:
   it-action-format-yaml:
 
-    name: YAML
+    name: YAML Format
     runs-on: ubuntu-latest
     steps:
       - name: Checkout sources for fixtures

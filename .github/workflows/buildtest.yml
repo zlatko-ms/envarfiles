@@ -16,10 +16,10 @@ permissions:
 jobs:
   
   ## invoke the python build & unit test process
-  build:
+  python-build:
     uses: ./.github/workflows/build-all.yml
   
   ## invoke the integration test suite
-  integration-tests:
-    needs: build
+  action-integration-tests:
+    needs: python-build
     uses: ./.github/workflows/it-all.yml

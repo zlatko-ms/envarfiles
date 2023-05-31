@@ -2,13 +2,14 @@ name: Python Coding Conventions
 
 on:
   workflow_call:
+  workflow_dispatch:
  
 permissions:
   contents: read
 
 jobs:
-  build-python:
-    name: Python Coding Conventions
+  build-python-codingstyle:
+    name: Enforce Python Coding Conventions
     runs-on: ubuntu-latest
     steps:
 
