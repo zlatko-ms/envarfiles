@@ -153,9 +153,9 @@ Here is a selection of the common usages :
 
 | Use Case                 | Description                                                                   | Link     |
 | ------------------------ | ----------------------------------------------------------------------------- |----------|
-| Load from multiple files | Load variables from multiple files and formats                                | [view](.github/workflows/it-multiformat.yml?plain=1#L18-L24)
-| Override existing values | Override the values of already defined variables                              | [view](.github/workflows/it-override.yml?plain=1#L22-L29)
-| Select variables         | Load or override only variables that are specified in the selector            | [view](.github/workflows/it-select.yml?plain=1#L17-L28)
-| Change nested separator  | Loaded nested variables using a specific separator instead of the default "_"  | [view](.github/workflows/it-separator.yml?plain=1#L18-L24)
+| Load from multiple files | Load variables from multiple files and formats                                | [view](.github/workflows/it-multiformat.yml?plain=1#L19-L25)
+| Override existing values | Override the values of already defined variables                              | [view](.github/workflows/it-override.yml?plain=1#L23-L30)
+| Select variables         | Load or override only variables that are specified in the selector            | [view](.github/workflows/it-select.yml?plain=1#L18-L29)
+| Change nested separator  | Loaded nested variables using a specific separator instead of the default "_"  | [view](.github/workflows/it-separator.yml?plain=1#L19-L25)
 
 When copying/pasting from the examples, remember to replace the @main tag by the release tag [ currently @v3 ].
