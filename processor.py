@@ -46,6 +46,7 @@ class ParamParser(object):
 
 class FileHelper(object):
     """contains file utility methods"""
+    
     @classmethod
     def filterExistingFilesOnly(cts, fileList: list) -> list:
         ret: list = list()
@@ -55,6 +56,7 @@ class FileHelper(object):
                 ret.append(stripped)
         return ret
 
+    
 class DictFlattner(object):
     """Flattens a dict with nested values, adapted from https://gist.github.com/alinazhanguwo/03206c554c1a8fcbe42a7d971efc7b26#file-flatten_json_iterative_solution-py, courtesy of Alina Zhang"""
 
