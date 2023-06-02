@@ -21,7 +21,7 @@ class TestFilesetParser(unittest.TestCase):
         # ensure the fileset parser collects results from the underlying parsers
         self.assertTrue("textName" in allVars.keys(), "var from text parser was collected")
         self.assertTrue("jsonName" in allVars.keys(), "var from json parser was collected")
-        self.assertTrue("yamlName" in allVars.keys(), "var from json parser was collected")
+        self.assertTrue("yamlName" in allVars.keys(), "var from yaml parser was collected")
         self.assertEqual(allVars["yamlName"], "yaml", "value of yaml defined variable is accurate ")
-        self.assertEqual(allVars["jsonName"], "json", "value of yaml defined variable is accurate ")
-        self.assertEqual(allVars["textName"], "text", "value of yaml defined variable is accurate ")
+        self.assertEqual(allVars["jsonName"], "json", "value of json defined variable is accurate ")
+        self.assertEqual(allVars["textName"], "text", "value of text defined variable is accurate ")
