@@ -30,29 +30,16 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r ./conf/python/build.txt -r ./conf/python/runtime.txt
 
-    - name: Ensure Unit Test coverage is high enough 
+    - name: Run Test Coverage
       run: |
-        # compute and display coverage
-        python -m nose2 --with-coverage -F -s ${{ env.UNIT_TEST_DIR }} -t . 2> /tmp/coverage
-        cat /tmp/coverage
-        # get coverage metrics
-        expectedTotal=${{ env.PYTHON_COVERAGE_MIN_TOTAL }}
-        foundTotal=$(grep "TOTAL" /tmp/coverage | cut -f41 -d' ' | sed 's/\%//g')
-        expectedProcessor=${{ env.PYTHON_COVERAGE_MIN_PROCESSOR }}
-        foundProcessor=$(grep "processor.py" /tmp/coverage | cut -f34 -d' ' | sed 's/\%//g')
-        echo "[INFO] Global    code coverage expected=$expectedTotal found=$foundTotal"
-        echo "[INFO] Processor code coverage expected=$expectedProcessor found=$foundProcessor"
-        # acceptance
-        if [ $foundTotal -lt $expectedTotal ]; then
-          echo "[ERROR] Current global coverage is below minimal treshold !"
-          exit 255
-        fi
-        if [ $foundProcessor -lt $expectedProcessor ]; then
-          echo "[ERROR] Current processor coverage is below minimal treshold !"
-          exit 255
-        fi
+        python -m nose2 --with-coverage --coverage-report xml -v -F -s ${{ env.UNIT_TEST_DIR }} -t .
 
 
+    - name: Ensure Global Coverage is above 90%
+      uses: zlatko-ms/pycovcheck@v2
+      with:
+        classes: :0.9
+        packages: :0.9
     
 
   
