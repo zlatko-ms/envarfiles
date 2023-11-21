@@ -51,7 +51,7 @@ jobs:
       - name: Checkout sources for fixtures
         uses: actions/checkout@v3
 
-      - name: When we require to load all vars from a set of files with override flag
+      - name: When we require to load all vars from a set of files without override flag
         uses: zlatko-ms/envarfiles@main
         with:
           paths: |
