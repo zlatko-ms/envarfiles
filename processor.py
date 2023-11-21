@@ -35,7 +35,7 @@ class ParamParser(object):
 
         for v in cls.CHECK_FOR_LISTS:
             if v in params.keys():
-                if type(params[v]) == str:
+                if isinstance(params[v],str):
                     newlist: list = list()
                     newlist.append(params[v])
                     params[v] = newlist
